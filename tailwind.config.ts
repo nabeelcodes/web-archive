@@ -1,14 +1,14 @@
 import type { Config } from "tailwindcss";
 import plugin from "tailwindcss/plugin";
-import { colors } from "@/designSystem/tokens/colors";
-import { tailwindSpacingTokens } from "@/designSystem/tokens/spacings";
-import { tailwindFontSizeTokens } from "@/designSystem/tokens/typography";
-import { borderRadiusTokens, breakpoints, transitionTimings, zIndexTokens } from "@/designSystem/tokens/misc";
+import { colors } from "./src/designSystem/tokens/colors";
+import { tailwindSpacingTokens } from "./src/designSystem/tokens/spacings";
+import { tailwindFontSizeTokens } from "./src/designSystem/tokens/typography";
+import { borderRadiusTokens, breakpoints, transitionTimings, zIndexTokens } from "./src/designSystem/tokens/misc";
 
 const variants = Object.keys(breakpoints);
 
 export default {
-  content: ["@/components/**/*.{js,ts,jsx,tsx,mdx}", "@/app/**/*.{js,ts,jsx,tsx,mdx}"],
+  content: ["./src/components/**/*.{js,ts,jsx,tsx,mdx}", "./src/app/**/*.{js,ts,jsx,tsx,mdx}"],
   safelist: [
     { pattern: /grid-cols-/, variants },
     { pattern: /col-span-/, variants }

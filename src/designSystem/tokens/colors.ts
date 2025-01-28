@@ -1,4 +1,4 @@
-const colors = {
+export const colors = {
   current: "currentColor",
   inherit: "inherit",
   transparent: "transparent",
@@ -34,5 +34,3 @@ const colors = {
     "950": "#450a0a"
   }
 } as const;
-
-export { colors };
