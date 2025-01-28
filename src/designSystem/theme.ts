@@ -17,7 +17,7 @@ const theme = {
   transitionTimings: transitionTimings,
   zIndex: zIndexTokens,
   fonts: {
-    manrope: "var(--manrope)"
+    manrope: "var(--font-manrope)"
   }
 } as const;
 

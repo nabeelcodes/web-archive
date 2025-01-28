@@ -4,7 +4,7 @@ import { siteConfig } from "@/data/globals";
 import "./globals.css";
 
 const manrope = Manrope({
-  variable: "--manrope",
+  variable: "--font-manrope",
   subsets: ["latin"]
 });
 

@@ -28,6 +28,7 @@ const getGridCols = ({ xxs, xs, sm, md, lg, xl, "2xl": twoXl }: ColumnCountProp)
   const colLgString = lg ? `lg:grid-cols-${lg}` : "";
   const colXlString = xl ? `xl:grid-cols-${xl}` : "";
   const col2xlString = twoXl ? `2xl:grid-cols-${twoXl}` : "";
+
   return [colXxsString, colXsString, colSmString, colMdString, colLgString, colXlString, col2xlString].join(" ");
 };
 
@@ -71,6 +72,7 @@ const getColSpan = ({ xxs, xs, sm, md, lg, xl, "2xl": twoXl }: ColSizeConfig) =>
   const colLgString = lg ? `lg:col-span-${lg}` : "";
   const colXlString = xl ? `xl:col-span-${xl}` : "";
   const col2xlString = twoXl ? `2xl:col-span-${twoXl}` : "";
+
   return [colXxsString, colXsString, colSmString, colMdString, colLgString, colXlString, col2xlString].join(" ");
 };
 
