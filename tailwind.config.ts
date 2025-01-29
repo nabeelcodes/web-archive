@@ -28,6 +28,11 @@ export default {
     zIndex: zIndexTokens,
     fontFamily: {
       manrope: "var(--font-manrope)"
+    },
+    extend: {
+      spacing: {
+        halfScreen: "50vh"
+      }
     }
   },
   plugins: [

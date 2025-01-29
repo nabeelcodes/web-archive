@@ -1,10 +1,17 @@
-import LayoutContainer from "@/components/UI/LayoutContainer";
-import H1 from "@/components/UI/Typography/H1";
+import Hero from "@/components/Shared/Hero";
+import PostsSearch from "@/components/Shared/PostsSearch";
+import apiEndpoints from "@/data/apiEndpoints";
+import { Post } from "@/utils/types";
 
-export default function Home() {
+export default async function Home() {
+  const apiResponse = await fetch(apiEndpoints.posts.getPosts);
+  const allPosts: Post[] = await apiResponse.json();
+
   return (
-    <LayoutContainer className='py-2448'>
-      <H1 className='mb-16 text-center'>Welcome to web archive</H1>
-    </LayoutContainer>
+    <main className='min-h-screen'>
+      <Hero />
+
+      <PostsSearch allPosts={allPosts} />
+    </main>
   );
 }

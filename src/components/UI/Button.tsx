@@ -1,3 +1,5 @@
+"use client";
+
 import { MotionProps, motion } from "motion/react";
 import { ComponentPropsWithRef } from "react";
 
@@ -8,9 +10,10 @@ type ButtonProps = ComponentPropsWithRef<"button"> &
     variant?: "primary" | "secondary" | "outline";
     size?: "small" | "default" | "large";
     weight?: "normal" | "medium" | "semibold" | "bold";
+    shape?: "circle" | "rounded";
   };
 
-const Button = ({ children, className, variant = "primary", size = "default", weight = "medium", ref, ...props }: ButtonProps) => (
+const Button = ({ children, className, variant = "primary", size = "default", weight = "medium", ref, shape = "rounded", ...props }: ButtonProps) => (
   <motion.button
     ref={ref}
     whileHover={{ scale: 1.05 }}
@@ -22,7 +25,7 @@ const Button = ({ children, className, variant = "primary", size = "default", we
       {
         "bg-neutral-200 text-black": matches(variant, "primary"),
         "bg-neutral-700 text-white": matches(variant, "secondary"),
-        "border border-neutral-600 bg-black text-white disabled:border-neutral-600 disabled:bg-black disabled:text-neutral-400": matches(
+        "border border-neutral-400 text-neutral-900 disabled:border-neutral-600 disabled:bg-black disabled:text-neutral-400": matches(
           variant,
           "outline"
         )
@@ -37,6 +40,9 @@ const Button = ({ children, className, variant = "primary", size = "default", we
         "font-medium": matches(weight, "medium"),
         "font-semibold": matches(weight, "semibold"),
         "font-bold": matches(weight, "bold")
+      },
+      {
+        "rounded-full aspect-square h-auto": matches(shape, "circle")
       },
       className
     )}

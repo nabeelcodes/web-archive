@@ -19,10 +19,6 @@
   @apply bg-neutral-400;
 }
 
-body {
-  @apply bg-black text-white font-manrope;
-}
-
 .grid-center {
   display: grid;
   place-items: center;
