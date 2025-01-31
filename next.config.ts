@@ -20,10 +20,6 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "tkdodo.eu"
-      },
-      {
-        protocol: "https",
         hostname: "cdn.stackoverflow.co"
       }
     ]
