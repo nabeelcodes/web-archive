@@ -27,7 +27,8 @@ export default {
     transitionDuration: transitionTimings,
     zIndex: zIndexTokens,
     fontFamily: {
-      manrope: "var(--font-manrope)"
+      manrope: "var(--font-manrope)",
+      geistMono: "var(--font-geist-mono)"
     },
     extend: {
       spacing: {

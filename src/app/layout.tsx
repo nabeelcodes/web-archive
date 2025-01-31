@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
-import { Manrope } from "next/font/google";
+import { Manrope, Geist_Mono } from "next/font/google";
 import { siteConfig } from "@/data/globals";
 import "./globals.css";
 
 const manrope = Manrope({
   variable: "--font-manrope",
+  subsets: ["latin"]
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"]
 });
 
@@ -20,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={`${manrope.variable} font-manrope bg-background text-neutral-900`}>{children}</body>
+      <body className={`${manrope.variable} ${geistMono.variable} bg-background font-manrope text-neutral-900`}>{children}</body>
     </html>
   );
 }

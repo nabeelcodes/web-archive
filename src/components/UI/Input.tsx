@@ -17,7 +17,7 @@ const Input = ({ className, type, ref, suffix, fullWidth = false, shape = "round
         type={type}
         className={cn(
           "text-p",
-          "h-10 rounded-lg px-16 py-8 ",
+          "h-10 rounded-lg px-16 py-8",
           "disabled:cursor-not-allowed disabled:opacity-50",
           "bg-transparent text-neutral-900 placeholder:text-neutral-700",
           "border border-neutral-400 ring-offset-neutral-300 focus:ring-2 focus:ring-neutral-200 focus:ring-offset-2 focus-visible:outline-none",

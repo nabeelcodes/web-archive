@@ -15,6 +15,15 @@ const cspHeader = `
   `;
 
 const nextConfig: NextConfig = {
+  images: {
+    unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "tkdodo.eu"
+      }
+    ]
+  },
   async headers() {
     return [
       {

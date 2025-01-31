@@ -42,7 +42,7 @@ const Button = ({ children, className, variant = "primary", size = "default", we
         "font-bold": matches(weight, "bold")
       },
       {
-        "rounded-full aspect-square h-auto": matches(shape, "circle")
+        "aspect-square h-auto rounded-full": matches(shape, "circle")
       },
       className
     )}

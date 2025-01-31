@@ -6,7 +6,7 @@ import heroImage from "/public/heroBanner.svg";
 
 const Hero = () => {
   return (
-    <LayoutContainer className='py-2448 flex justify-center items-end min-h-[380px] text-balance relative'>
+    <LayoutContainer className='relative flex min-h-[380px] items-end justify-center text-balance py-2448'>
       <Image src={heroImage} alt='hero-section-image' className='absolute -top-20 bottom-0 -z-1' />
 
       <div className='max-w-screen-md text-center'>
