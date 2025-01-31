@@ -3,6 +3,7 @@ export type Post = {
   title: string;
   description: string;
   link: string;
+  image: string;
   tags: string[];
   createdAt: string; // Can be a Date object
   updatedAt: string; // Can be a Date object

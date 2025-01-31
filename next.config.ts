@@ -21,6 +21,10 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "tkdodo.eu"
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.stackoverflow.co"
       }
     ]
   },

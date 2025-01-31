@@ -9,8 +9,7 @@ import ListStylePicker from "@/components/Shared/ListStylePicker";
 import { Post } from "@/utils/types";
 import { Grid } from "@/components/UI/Grid";
 import PostCard from "@/components/Shared/PostCard";
-import Button from "@/components/UI/Button";
-import H5 from "@/components/UI/Typography/H5";
+import Pagination from "@/components/Shared/Pagination";
 
 const PostsSearch = ({ allPosts }: { allPosts: Post[] }) => {
   const [postStyle, setPostStyle] = useState<"grid" | "list">("grid");
@@ -18,36 +17,25 @@ const PostsSearch = ({ allPosts }: { allPosts: Post[] }) => {
   return (
     <LayoutContainer className='py-2448'>
       <FlexBox className='items-center gap-12'>
+        {/* main search */}
         <Input fullWidth placeholder='Search for articles' shape='pill' suffix={<Search size={20} className='text-neutral-700' role='button' />} />
 
+        {/* grid vs list picker */}
         <ListStylePicker postStyle={postStyle} setPostStyle={setPostStyle} />
       </FlexBox>
 
+      {/* posts grid */}
       <Grid
         colConfig={{
           sm: 2,
           lg: 3
         }}
         className='my-2440 gap-1624'>
-        {allPosts && allPosts.map((post, index) => <PostCard key={post.id} post={post} index={index} />)}
+        {allPosts && allPosts.map((post) => <PostCard key={post.id} post={post} />)}
       </Grid>
 
       {/* pagination */}
-      <FlexBox className='items-center justify-between gap-32'>
-        <FlexBox className='items-center gap-12'>
-          <H5 className='font-geistMono'>1</H5>
-        </FlexBox>
-
-        <FlexBox className='items-center gap-16'>
-          <Button variant='secondary' className='bg-neutral-900 text-background'>
-            Previous
-          </Button>
-
-          <Button variant='secondary' className='bg-neutral-900 text-background'>
-            Next
-          </Button>
-        </FlexBox>
-      </FlexBox>
+      <Pagination />
     </LayoutContainer>
   );
 };

@@ -11,7 +11,7 @@ export default async function Home() {
     <main className='min-h-screen'>
       <Hero />
 
-      <PostsSearch allPosts={allPosts} />
+      <PostsSearch allPosts={allPosts.reverse()} />
     </main>
   );
 }
