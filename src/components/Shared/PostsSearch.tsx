@@ -4,17 +4,19 @@ import { useState } from "react";
 import { Search } from "lucide-react";
 import LayoutContainer from "@/components/UI/LayoutContainer";
 import FlexBox from "@/components/UI/FlexBox";
+import { Grid } from "@/components/UI/Grid";
 import Input from "@/components/UI/Input";
 import ListStylePicker from "@/components/Shared/ListStylePicker";
-import { Grid } from "@/components/UI/Grid";
-import PostCard from "@/components/Shared/PostCard";
 import Pagination from "@/components/Shared/Pagination";
+import PostCard from "@/components/Shared/PostCard";
+import TagList from "@/components/Shared/TagList";
 import { matches } from "@/utils/helper";
 import { Post } from "@/utils/types";
 
 const PostsSearch = ({ allPosts }: { allPosts: Post[] }) => {
   const [postStyle, setPostStyle] = useState<"grid" | "list">("grid");
   const [expandedCardId, setExpandedCardId] = useState<string>("");
+  const [tagArray, setTagArray] = useState<string[]>([]);
 
   return (
     <LayoutContainer className='py-2448'>
@@ -25,6 +27,9 @@ const PostsSearch = ({ allPosts }: { allPosts: Post[] }) => {
         {/* grid vs list picker */}
         <ListStylePicker postStyle={postStyle} setPostStyle={setPostStyle} />
       </FlexBox>
+
+      {/* clicked tags list */}
+      <TagList tagArray={tagArray} setTagArray={setTagArray} />
 
       {/* posts grid */}
       <Grid
@@ -39,7 +44,15 @@ const PostsSearch = ({ allPosts }: { allPosts: Post[] }) => {
             const isInactive = matches(expandedCardId, "");
 
             return (
-              <PostCard key={post.id} post={post} isPostExpanded={isPostExpanded} setExpandedCardId={setExpandedCardId} isInactive={isInactive} />
+              <PostCard
+                key={post.id}
+                post={post}
+                isPostExpanded={isPostExpanded}
+                setExpandedCardId={setExpandedCardId}
+                isInactive={isInactive}
+                tagArray={tagArray}
+                setTagArray={setTagArray}
+              />
             );
           })}
       </Grid>

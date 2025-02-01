@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useRef, useState, MouseEvent } from "react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import FlexBox from "@/components/UI/FlexBox";
@@ -7,24 +7,35 @@ import P from "@/components/UI/Typography/P";
 import { Post } from "@/utils/types";
 import { cn } from "@/utils/helper";
 
-const PostCard = ({
-  post,
-  isPostExpanded,
-  setExpandedCardId,
-  isInactive
-}: {
+type PostCardProps = {
   post: Post;
   isPostExpanded: boolean;
   isInactive: boolean;
+  tagArray: string[];
+  setTagArray: Dispatch<SetStateAction<string[]>>;
   setExpandedCardId: Dispatch<SetStateAction<string>>;
-}) => {
+};
+
+const PostCard = ({ post, isPostExpanded, setExpandedCardId, isInactive, tagArray, setTagArray }: PostCardProps) => {
   const { title, description, link, image, tags, id } = post;
   const [isExpanded, setIsExpanded] = useState(false);
   const postCardRef = useRef<HTMLDivElement | null>(null);
 
-  const clickHandler = () => {
+  const clickHandler = (e: MouseEvent<HTMLDivElement>) => {
+    const currentElement = e.target as HTMLElement;
+    // checking if the clicked element is a tag?
+    if (currentElement.id === "tag") {
+      // preventing duplicate tags in tagArray
+      if (!tagArray.includes(currentElement.innerText)) {
+        setTagArray((prev) => [currentElement.innerText, ...prev]);
+      }
+      return;
+    }
+
+    // setting other states
     setExpandedCardId(id);
     setIsExpanded((prev) => !prev);
+    // preventing overflow on the body due to DOM changes
     document.querySelector("body")?.classList.toggle("overflow-hidden");
 
     if (isExpanded) {
@@ -55,7 +66,7 @@ const PostCard = ({
         layout
         role={isExpanded ? "div" : "button"}
         title={title}
-        onClick={isExpanded ? () => null : clickHandler}
+        onClick={isExpanded ? () => null : (e) => clickHandler(e)}
         transition={{ duration: 0.5, ease: "anticipate" }}>
         {/* image wrapper */}
         <div className='card-image-wrapper relative isolate aspect-[1200/630] w-full'>
@@ -75,6 +86,7 @@ const PostCard = ({
           <FlexBox className='flex-wrap gap-8 overflow-x-hidden'>
             {tags.map((tag, index) => (
               <P
+                id='tag'
                 size='tiny'
                 weight='medium'
                 key={index}
