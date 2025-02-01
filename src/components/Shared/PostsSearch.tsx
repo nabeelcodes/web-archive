@@ -6,13 +6,15 @@ import LayoutContainer from "@/components/UI/LayoutContainer";
 import FlexBox from "@/components/UI/FlexBox";
 import Input from "@/components/UI/Input";
 import ListStylePicker from "@/components/Shared/ListStylePicker";
-import { Post } from "@/utils/types";
 import { Grid } from "@/components/UI/Grid";
 import PostCard from "@/components/Shared/PostCard";
 import Pagination from "@/components/Shared/Pagination";
+import { matches } from "@/utils/helper";
+import { Post } from "@/utils/types";
 
 const PostsSearch = ({ allPosts }: { allPosts: Post[] }) => {
   const [postStyle, setPostStyle] = useState<"grid" | "list">("grid");
+  const [expandedCardId, setExpandedCardId] = useState<string>("");
 
   return (
     <LayoutContainer className='py-2448'>
@@ -31,7 +33,15 @@ const PostsSearch = ({ allPosts }: { allPosts: Post[] }) => {
           lg: 3
         }}
         className='my-2440 gap-1624'>
-        {allPosts && allPosts.map((post) => <PostCard key={post.id} post={post} />)}
+        {allPosts &&
+          allPosts.map((post) => {
+            const isPostExpanded = matches(post.id, expandedCardId);
+            const isInactive = matches(expandedCardId, "");
+
+            return (
+              <PostCard key={post.id} post={post} isPostExpanded={isPostExpanded} setExpandedCardId={setExpandedCardId} isInactive={isInactive} />
+            );
+          })}
       </Grid>
 
       {/* pagination */}

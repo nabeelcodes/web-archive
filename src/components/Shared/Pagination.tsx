@@ -9,10 +9,10 @@ const Pagination = () => {
         <H5 className='font-geistMono'>1</H5>
       </FlexBox>
 
-      <FlexBox className='items-center gap-16'>
-        <Button>Previous</Button>
+      <FlexBox className='items-center gap-12'>
+        <Button className='min-w-28'>Previous</Button>
 
-        <Button>Next</Button>
+        <Button className='min-w-28'>Next</Button>
       </FlexBox>
     </FlexBox>
   );
