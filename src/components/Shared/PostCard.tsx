@@ -1,48 +1,52 @@
 import { Dispatch, SetStateAction, useRef, useState, MouseEvent } from "react";
 import { motion } from "motion/react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import FlexBox from "@/components/UI/FlexBox";
 import H5 from "@/components/UI/Typography/H5";
 import P from "@/components/UI/Typography/P";
 import { Post } from "@/utils/types";
 import { cn } from "@/utils/helper";
+import { TAGS_QUERY_KEY } from "@/data/globals";
 
 type PostCardProps = {
   post: Post;
   isPostExpanded: boolean;
   isInactive: boolean;
-  tagArray: string[];
-  setTagArray: Dispatch<SetStateAction<string[]>>;
   setExpandedCardId: Dispatch<SetStateAction<string>>;
 };
 
-const PostCard = ({ post, isPostExpanded, setExpandedCardId, isInactive, tagArray, setTagArray }: PostCardProps) => {
+const PostCard = ({ post, isPostExpanded, setExpandedCardId, isInactive }: PostCardProps) => {
   const { title, description, link, image, tags, id } = post;
   const [isExpanded, setIsExpanded] = useState(false);
   const postCardRef = useRef<HTMLDivElement | null>(null);
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
 
-  const clickHandler = (e: MouseEvent<HTMLDivElement>) => {
-    const currentElement = e.target as HTMLElement;
-    // checking if the clicked element is a tag?
-    if (currentElement.id === "tag") {
-      // preventing duplicate tags in tagArray
-      if (!tagArray.includes(currentElement.innerText)) {
-        setTagArray((prev) => [currentElement.innerText, ...prev]);
-      }
-      return;
-    }
-
-    // setting other states
+  const cardClickHandler = () => {
     setExpandedCardId(id);
     setIsExpanded((prev) => !prev);
     // preventing overflow on the body due to DOM changes
     document.querySelector("body")?.classList.toggle("overflow-hidden");
-
     if (isExpanded) {
       setTimeout(() => {
         setExpandedCardId("");
       }, 510);
     }
+  };
+
+  const tagClickHandler = (e: MouseEvent<HTMLParagraphElement>, tag: string) => {
+    // fetching current tags from url params and converting to array
+    const currentTags = searchParams.get(TAGS_QUERY_KEY)?.split(",") || [];
+    // removing duplicates using Set
+    const tagSet = new Set([...currentTags, tag]);
+    // updated tag list by converting from Set to array + converting to string + replacing all empty spaces with '+'
+    const updatedTagList = Array.from(tagSet).join(",").replaceAll(" ", "+");
+    // pushing updated params to url
+    router.push(`${pathname}?${TAGS_QUERY_KEY}=${updatedTagList}`, { scroll: false });
+    // to prevent PostCard expand through event propagation
+    e.stopPropagation();
   };
 
   return (
@@ -51,7 +55,7 @@ const PostCard = ({ post, isPostExpanded, setExpandedCardId, isInactive, tagArra
       {isExpanded ? <div style={{ width: `${postCardRef.current?.offsetWidth}px`, height: `${postCardRef.current?.offsetHeight}px` }} /> : null}
 
       {/* backdrop */}
-      {isExpanded ? <div className='fixed inset-0 z-40 bg-black/70 backdrop-blur-[2px]' onClick={clickHandler} /> : null}
+      {isExpanded ? <div className='fixed inset-0 z-40 bg-black/70 backdrop-blur-[2px]' onClick={cardClickHandler} /> : null}
 
       {/* PostCard component */}
       <motion.div
@@ -66,7 +70,7 @@ const PostCard = ({ post, isPostExpanded, setExpandedCardId, isInactive, tagArra
         layout
         role={isExpanded ? "div" : "button"}
         title={title}
-        onClick={isExpanded ? () => null : (e) => clickHandler(e)}
+        onClick={isExpanded ? () => null : cardClickHandler}
         transition={{ duration: 0.5, ease: "anticipate" }}>
         {/* image wrapper */}
         <div className='card-image-wrapper relative isolate aspect-[1200/630] w-full'>
@@ -83,13 +87,15 @@ const PostCard = ({ post, isPostExpanded, setExpandedCardId, isInactive, tagArra
           </div>
 
           {/* tags */}
-          <FlexBox className='flex-wrap gap-8 overflow-x-hidden'>
+          <FlexBox className={cn("flex-wrap gap-8 overflow-x-hidden", { "pointer-events-none": isExpanded })}>
             {tags.map((tag, index) => (
               <P
                 id='tag'
                 size='tiny'
                 weight='medium'
+                role='button'
                 key={index}
+                onClick={(e) => tagClickHandler(e, tag)}
                 className='min-w-12 text-nowrap rounded-full border border-neutral-400 bg-background px-10 py-6 text-center'>
                 {tag}
               </P>

@@ -1,41 +1,43 @@
-import { Dispatch, SetStateAction } from "react";
 import { X } from "lucide-react";
 import FlexBox from "@/components/UI/FlexBox";
 import P from "@/components/UI/Typography/P";
-import { cn } from "@/utils/helper";
+import { usePathname, useRouter } from "next/navigation";
+import { TAGS_QUERY_KEY } from "@/data/globals";
 
-type TagListProps = {
-  tagArray: string[];
-  setTagArray: Dispatch<SetStateAction<string[]>>;
-};
-
-const TagList = ({ tagArray, setTagArray }: TagListProps) => {
-  const tagArrayIsEmpty = tagArray.length === 0;
+const TagList = ({ tagArray }: { tagArray: string[] }) => {
+  const router = useRouter();
+  const pathname = usePathname();
 
   const handleTagClose = (currentTag: string) => {
-    const newTagArray = tagArray.filter((tag) => tag !== currentTag);
-    setTagArray(newTagArray);
+    const newTags = tagArray
+      .filter((tag) => tag !== currentTag)
+      .join(",")
+      .replaceAll(" ", "+");
+
+    if (newTags.trim().length === 0) {
+      // for no tags in url params
+      router.push(pathname, { scroll: false });
+    } else {
+      router.push(`${pathname}?${TAGS_QUERY_KEY}=${newTags}`, { scroll: false });
+    }
   };
 
   return (
-    <FlexBox
-      className={cn("my-2440 flex-wrap gap-8 overflow-x-hidden", {
-        "my-0": tagArrayIsEmpty
-      })}>
-      {!tagArrayIsEmpty &&
-        tagArray.map((currentTag, index) => (
-          <P
-            id='tag'
-            size='small'
-            weight='medium'
-            key={index}
-            tag={"button"}
-            className='flex min-w-12 items-center justify-between gap-8 text-nowrap rounded-full bg-neutral-900 px-16 py-6 text-center text-background'>
-            <span>{currentTag}</span>
+    <FlexBox className={"my-2440 flex-wrap gap-8 overflow-x-hidden"}>
+      {tagArray.map((currentTag, index) => (
+        <P
+          id='tag'
+          size='small'
+          weight='medium'
+          key={index}
+          tag={"button"}
+          onClick={() => handleTagClose(currentTag)}
+          className='flex min-w-12 items-center justify-between gap-8 text-nowrap rounded-full bg-neutral-900 px-16 py-8 text-center leading-5 text-background'>
+          {currentTag}
 
-            <X size={16} onClick={() => handleTagClose(currentTag)} />
-          </P>
-        ))}
+          <X size={16} />
+        </P>
+      ))}
     </FlexBox>
   );
 };
