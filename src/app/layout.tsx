@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
 import { Manrope, Geist_Mono } from "next/font/google";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
+import type { Metadata } from "next";
 import { siteConfig } from "@/data/globals";
 import "./globals.css";
 
@@ -25,7 +26,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={`${manrope.variable} ${geistMono.variable} bg-background font-manrope text-neutral-900`}>{children}</body>
+      <body className={`${manrope.variable} ${geistMono.variable} bg-background font-manrope text-neutral-900`}>
+        <NuqsAdapter>{children}</NuqsAdapter>
+      </body>
     </html>
   );
 }

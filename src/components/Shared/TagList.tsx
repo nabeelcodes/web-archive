@@ -1,12 +1,15 @@
 import { X } from "lucide-react";
 import FlexBox from "@/components/UI/FlexBox";
 import P from "@/components/UI/Typography/P";
-import { usePathname, useRouter } from "next/navigation";
-import { TAGS_QUERY_KEY } from "@/data/globals";
+import { Options } from "nuqs";
 
-const TagList = ({ tagArray }: { tagArray: string[] }) => {
-  const router = useRouter();
-  const pathname = usePathname();
+type TagListProps = {
+  tags: string;
+  setTags: (value: string | ((old: string) => string | null) | null, options?: Options) => Promise<URLSearchParams>;
+};
+
+const TagList = ({ tags, setTags }: TagListProps) => {
+  const tagArray = tags.split(",");
 
   const handleTagClose = (currentTag: string) => {
     const newTags = tagArray
@@ -14,12 +17,7 @@ const TagList = ({ tagArray }: { tagArray: string[] }) => {
       .join(",")
       .replaceAll(" ", "+");
 
-    if (newTags.trim().length === 0) {
-      // for no tags in url params
-      router.push(pathname, { scroll: false });
-    } else {
-      router.push(`${pathname}?${TAGS_QUERY_KEY}=${newTags}`, { scroll: false });
-    }
+    setTags(newTags);
   };
 
   return (

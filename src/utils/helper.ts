@@ -1,8 +1,8 @@
 import clsx, { ClassValue } from "clsx";
 import { extendTailwindMerge } from "tailwind-merge";
 import { tailwindFontSizeTokens } from "@/designSystem/tokens/typography";
-
 import { theme } from "@/designSystem/theme";
+import { SearchParams } from "nuqs";
 
 type FetchOptionsArgs = {
   method?: string;
@@ -71,4 +71,12 @@ export const cn = (...classNames: ClassValue[]) => {
 export const breakpointAsNumber = (breakpoint: keyof typeof theme.breakpoints) => {
   const breakpointValue = theme.breakpoints[breakpoint];
   return parseInt(breakpointValue.replace("px", ""));
+};
+
+export const getUrlQueryParams = async (searchParams: Promise<SearchParams>) => {
+  const { query, tags } = await searchParams;
+  if (Array.isArray(query) || Array.isArray(tags)) {
+    return {};
+  }
+  return { query, tags };
 };

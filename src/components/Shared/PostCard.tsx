@@ -1,28 +1,25 @@
 import { Dispatch, SetStateAction, useRef, useState, MouseEvent } from "react";
 import { motion } from "motion/react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import FlexBox from "@/components/UI/FlexBox";
 import H5 from "@/components/UI/Typography/H5";
 import P from "@/components/UI/Typography/P";
 import { Post } from "@/utils/types";
 import { cn } from "@/utils/helper";
-import { SEARCH_QUERY_KEY, TAGS_QUERY_KEY } from "@/data/globals";
+import { Options } from "nuqs";
 
 type PostCardProps = {
   post: Post;
   isPostExpanded: boolean;
   isInactive: boolean;
   setExpandedCardId: Dispatch<SetStateAction<string>>;
+  setTags: (value: string | ((old: string) => string | null) | null, options?: Options) => Promise<URLSearchParams>;
 };
 
-const PostCard = ({ post, isPostExpanded, setExpandedCardId, isInactive }: PostCardProps) => {
-  const { title, description, link, image, tags, id } = post;
+const PostCard = ({ post, isPostExpanded, setExpandedCardId, isInactive, setTags }: PostCardProps) => {
+  const { title, description, link, image, tags: tagList, id } = post;
   const [isExpanded, setIsExpanded] = useState(false);
   const postCardRef = useRef<HTMLDivElement | null>(null);
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const router = useRouter();
 
   const cardClickHandler = () => {
     setExpandedCardId(id);
@@ -36,39 +33,16 @@ const PostCard = ({ post, isPostExpanded, setExpandedCardId, isInactive }: PostC
     }
   };
 
-  const tagClickHandler = (e: MouseEvent<HTMLParagraphElement>, tag: string) => {
-    // getting searchQuery from url params
-    const searchQuery = searchParams.get(SEARCH_QUERY_KEY);
-    // checking if searchQuery is empty
-    const searchQueryIsEmpty = searchQuery === null || searchQuery.trim().length === 0;
-    // getting all active tags as string[]
-    const activeTags = searchParams.get(TAGS_QUERY_KEY)?.split(",") || [];
-    // removing duplicates using Set
-    const tagSet = new Set([...activeTags, tag]);
-    // updated tag list by converting from Set to array + converting to string + replacing all empty spaces with '+'
-    const updatedTagList = Array.from(tagSet).join(",").replaceAll(" ", "+");
-    // checking if tag list is empty
-    const noTags = updatedTagList.trim().length === 0;
-
-    if (searchQueryIsEmpty && noTags) {
-      console.log(`log from 1`);
-      // inputValue = empty, activeTags = empty
-      router.push(pathname);
-    } else if (searchQueryIsEmpty && !noTags) {
-      console.log(`log from 2`);
-      // inputValue = empty, activeTags = not empty
-      router.push(`${pathname}?${TAGS_QUERY_KEY}=${updatedTagList}`, { scroll: false });
-    } else if (!searchQueryIsEmpty && noTags) {
-      console.log(`log from 3`);
-      // inputValue = non empty, activeTags = empty
-      router.push(`${pathname}?${SEARCH_QUERY_KEY}=${searchQuery}`, { scroll: false });
-    } else {
-      console.log(`log from 4`);
-      // inputValue = non empty, activeTags = non empty
-      router.push(`${pathname}?${SEARCH_QUERY_KEY}=${searchQuery}&&${TAGS_QUERY_KEY}=${updatedTagList}`, { scroll: false });
-    }
+  const tagClickHandler = (event: MouseEvent<HTMLParagraphElement>, tag: string) => {
+    setTags((prev) => {
+      // skip adding delimiter for first tag
+      if (prev.trim().length === 0) {
+        return tag;
+      }
+      return `${prev},${tag}`;
+    });
     // to prevent PostCard expand through event propagation
-    e.stopPropagation();
+    event.stopPropagation();
   };
 
   return (
@@ -110,7 +84,7 @@ const PostCard = ({ post, isPostExpanded, setExpandedCardId, isInactive }: PostC
 
           {/* tags */}
           <FlexBox className={cn("flex-wrap gap-8 overflow-x-hidden", { "pointer-events-none": isExpanded })}>
-            {tags.map((tag, index) => (
+            {tagList.map((tag, index) => (
               <P
                 id='tag'
                 size='tiny'
