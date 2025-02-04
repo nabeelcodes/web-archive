@@ -13,10 +13,11 @@ type PostCardProps = {
   isPostExpanded: boolean;
   isInactive: boolean;
   setExpandedCardId: Dispatch<SetStateAction<string>>;
-  setTags: (value: string | ((old: string) => string | null) | null, options?: Options) => Promise<URLSearchParams>;
+  setTags: (value: string[] | ((old: string[]) => string[] | null) | null, options?: Options) => Promise<URLSearchParams>;
+  setPage: (value: string | ((old: string) => string | null) | null, options?: Options) => Promise<URLSearchParams>;
 };
 
-const PostCard = ({ post, isPostExpanded, setExpandedCardId, isInactive, setTags }: PostCardProps) => {
+const PostCard = ({ post, isPostExpanded, setExpandedCardId, isInactive, setTags, setPage }: PostCardProps) => {
   const { title, description, link, image, tags: tagList, id } = post;
   const [isExpanded, setIsExpanded] = useState(false);
   const postCardRef = useRef<HTMLDivElement | null>(null);
@@ -35,12 +36,12 @@ const PostCard = ({ post, isPostExpanded, setExpandedCardId, isInactive, setTags
 
   const tagClickHandler = (event: MouseEvent<HTMLParagraphElement>, tag: string) => {
     setTags((prev) => {
-      // skip adding delimiter for first tag
-      if (prev.trim().length === 0) {
-        return tag;
-      }
-      return `${prev},${tag}`;
+      if (prev.includes(tag)) return prev;
+      // skip everything if duplicate tag attempted
+      setPage("1");
+      return prev.concat(tag);
     });
+
     // to prevent PostCard expand through event propagation
     event.stopPropagation();
   };

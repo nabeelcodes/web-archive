@@ -10,11 +10,12 @@ type PageProps = {
 };
 
 export default async function Home({ searchParams }: PageProps) {
-  const { query, tags } = await getUrlQueryParams(searchParams);
+  const { query, tags, page } = await getUrlQueryParams(searchParams);
   const apiResponse = await fetch(
     apiEndpoints.posts.getPosts({
       query,
-      tags
+      tags,
+      page
     })
   );
   const allPosts: Post[] = await apiResponse.json();

@@ -1,18 +1,34 @@
 import Button from "@/components/UI/Button";
 import FlexBox from "@/components/UI/FlexBox";
 import H5 from "@/components/UI/Typography/H5";
+import { Options } from "nuqs";
 
-const Pagination = () => {
+type PaginationProps = {
+  page: string;
+  setPage: (value: string | ((old: string) => string | null) | null, options?: Options) => Promise<URLSearchParams>;
+};
+
+const Pagination = ({ page, setPage }: PaginationProps) => {
+  const gotoPreviousPage = () => setPage((currentPage) => String(+currentPage - 1));
+
+  const gotoNextPage = () => setPage((currentPage) => String(+currentPage + 1));
+
   return (
     <FlexBox className='items-center justify-between gap-32'>
       <FlexBox className='items-center gap-12'>
-        <H5 className='font-geistMono'>1</H5>
+        <H5 className='font-geistMono'>{+page}</H5>
       </FlexBox>
 
       <FlexBox className='items-center gap-12'>
-        <Button className='min-w-28'>Previous</Button>
+        {+page > 1 && (
+          <Button className='min-w-28' onClick={gotoPreviousPage}>
+            Previous
+          </Button>
+        )}
 
-        <Button className='min-w-28'>Next</Button>
+        <Button className='min-w-28' onClick={gotoNextPage}>
+          Next
+        </Button>
       </FlexBox>
     </FlexBox>
   );

@@ -4,25 +4,20 @@ import P from "@/components/UI/Typography/P";
 import { Options } from "nuqs";
 
 type TagListProps = {
-  tags: string;
-  setTags: (value: string | ((old: string) => string | null) | null, options?: Options) => Promise<URLSearchParams>;
+  tags: string[];
+  setTags: (value: string[] | ((old: string[]) => string[] | null) | null, options?: Options) => Promise<URLSearchParams>;
 };
 
 const TagList = ({ tags, setTags }: TagListProps) => {
-  const tagArray = tags.split(",");
-
   const handleTagClose = (currentTag: string) => {
-    const newTags = tagArray
-      .filter((tag) => tag !== currentTag)
-      .join(",")
-      .replaceAll(" ", "+");
+    const newTags = tags.filter((tag) => tag !== currentTag);
 
     setTags(newTags);
   };
 
   return (
     <FlexBox className={"my-2440 flex-wrap gap-8 overflow-x-hidden"}>
-      {tagArray.map((currentTag, index) => (
+      {tags.map((currentTag, index) => (
         <P
           id='tag'
           size='small'
