@@ -3,7 +3,7 @@ import PostsSearch from "@/components/Shared/PostsSearch";
 import apiEndpoints from "@/data/apiEndpoints";
 import { getUrlQueryParams } from "@/utils/helper";
 import type { SearchParams } from "nuqs/server";
-import { Post } from "@/utils/types";
+import { ApiResponse } from "@/utils/types";
 
 type PageProps = {
   searchParams: Promise<SearchParams>;
@@ -18,13 +18,13 @@ export default async function Home({ searchParams }: PageProps) {
       page
     })
   );
-  const allPosts: Post[] = await apiResponse.json();
+  const apiData: ApiResponse = await apiResponse.json();
 
   return (
     <main className='min-h-screen'>
       <Hero />
 
-      <PostsSearch allPosts={allPosts.reverse()} />
+      <PostsSearch apiData={apiData} />
     </main>
   );
 }

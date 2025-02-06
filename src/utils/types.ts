@@ -9,3 +9,10 @@ export type Post = {
   updatedAt: string; // Can be a Date object
   id: string;
 };
+
+export type ApiResponse = {
+  posts: Post[];
+  currentPage: number;
+  nextPageExists: boolean;
+  totalPages: number;
+};

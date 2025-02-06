@@ -5,10 +5,11 @@ import { Options } from "nuqs";
 
 type PaginationProps = {
   page: string;
+  nextPageExists: boolean;
   setPage: (value: string | ((old: string) => string | null) | null, options?: Options) => Promise<URLSearchParams>;
 };
 
-const Pagination = ({ page, setPage }: PaginationProps) => {
+const Pagination = ({ page, nextPageExists, setPage }: PaginationProps) => {
   const gotoPreviousPage = () => setPage((currentPage) => String(+currentPage - 1));
 
   const gotoNextPage = () => setPage((currentPage) => String(+currentPage + 1));
@@ -26,7 +27,7 @@ const Pagination = ({ page, setPage }: PaginationProps) => {
           </Button>
         )}
 
-        <Button className='min-w-28' onClick={gotoNextPage}>
+        <Button className='min-w-28' onClick={gotoNextPage} disabled={nextPageExists ? false : true}>
           Next
         </Button>
       </FlexBox>

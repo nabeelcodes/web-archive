@@ -1,24 +1,22 @@
 "use client";
 
 import { PAGE_QUERY_KEY, SEARCH_QUERY_KEY, TAGS_QUERY_KEY } from "@/data/globals";
-import { ChangeEvent, useState } from "react";
-import { Search } from "lucide-react";
+import { useState } from "react";
 import LayoutContainer from "@/components/UI/LayoutContainer";
 import FlexBox from "@/components/UI/FlexBox";
 import { Grid } from "@/components/UI/Grid";
-import Input from "@/components/UI/Input";
 import ListStylePicker from "@/components/Shared/ListStylePicker";
 import Pagination from "@/components/Shared/Pagination";
 import PostCard from "@/components/Shared/PostCard";
 import TagList from "@/components/Shared/TagList";
 import { matches } from "@/utils/helper";
-import { Post } from "@/utils/types";
+import { ApiResponse } from "@/utils/types";
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
+import SearchInput from "@/components/Shared/SearchInput";
 
-const PostsSearch = ({ allPosts }: { allPosts: Post[] }) => {
+const PostsSearch = ({ apiData }: { apiData: ApiResponse }) => {
   const [postStyle, setPostStyle] = useState<"grid" | "list">("grid");
   const [expandedCardId, setExpandedCardId] = useState<string>("");
-  // const [pageVal, setPageVal] = useState<string>("1");
   const [query, setQuery] = useQueryState(SEARCH_QUERY_KEY, {
     defaultValue: "",
     shallow: false,
@@ -34,33 +32,15 @@ const PostsSearch = ({ allPosts }: { allPosts: Post[] }) => {
     defaultValue: "1",
     shallow: false
   });
-
   const isSearchQueryEmpty = query.trim().length === 0;
   const isTagQueryEmpty = tags.length === 0;
-
-  const searchHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const inputValue = event.target.value;
-    const inputIsEmpty = inputValue.trim().length === 0;
-    if (inputIsEmpty) {
-      setQuery("");
-    } else {
-      setQuery(inputValue);
-      setPage("1");
-    }
-  };
+  const allPosts = apiData.posts;
 
   return (
     <LayoutContainer className='py-2448'>
       <FlexBox className='items-center gap-12'>
         {/* main search */}
-        <Input
-          fullWidth
-          shape='pill'
-          // value={query}
-          onChange={searchHandler}
-          placeholder='Search for articles'
-          suffix={<Search size={20} className='text-neutral-700' role='button' />}
-        />
+        <SearchInput isSearchQueryEmpty={isSearchQueryEmpty} setQuery={setQuery} setPage={setPage} />
 
         {/* grid vs list picker */}
         <ListStylePicker postStyle={postStyle} setPostStyle={setPostStyle} />
@@ -96,7 +76,7 @@ const PostsSearch = ({ allPosts }: { allPosts: Post[] }) => {
       </Grid>
 
       {/* pagination */}
-      {isSearchQueryEmpty && isTagQueryEmpty && <Pagination page={page} setPage={setPage} />}
+      {isSearchQueryEmpty && isTagQueryEmpty && <Pagination page={page} setPage={setPage} nextPageExists={apiData.nextPageExists} />}
     </LayoutContainer>
   );
 };
