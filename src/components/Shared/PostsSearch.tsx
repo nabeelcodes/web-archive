@@ -38,7 +38,7 @@ const PostsSearch = ({ apiData }: { apiData: ApiResponse }) => {
   const allPosts = apiData.posts;
 
   return (
-    <LayoutContainer className='py-2448'>
+    <LayoutContainer tag='main' className='pb-3264 pt-2448'>
       <FlexBox className='items-center gap-12'>
         {/* main search */}
         <SearchInput
@@ -61,7 +61,7 @@ const PostsSearch = ({ apiData }: { apiData: ApiResponse }) => {
             sm: 2,
             lg: 3
           }}
-          className='my-2440 gap-1624'>
+          className='mb-3264 mt-2440 gap-1624'>
           {allPosts.map((post) => {
             const isPostExpanded = matches(post.id, expandedCardId);
             const isInactive = matches(expandedCardId, "");
