@@ -9,7 +9,12 @@ const Select = SelectPrimitive.Root;
 const SelectGroup = SelectPrimitive.Group;
 const SelectValue = SelectPrimitive.Value;
 
-const SelectTrigger = ({ className, children, ref, ...props }: ComponentPropsWithRef<typeof SelectPrimitive.Trigger>) => (
+const SelectTrigger = ({
+  className,
+  children,
+  ref,
+  ...props
+}: ComponentPropsWithRef<typeof SelectPrimitive.Trigger>) => (
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
@@ -24,29 +29,47 @@ const SelectTrigger = ({ className, children, ref, ...props }: ComponentPropsWit
   </SelectPrimitive.Trigger>
 );
 
-const SelectScrollUpButton = ({ className, ref, ...props }: ComponentPropsWithRef<typeof SelectPrimitive.ScrollUpButton>) => (
-  <SelectPrimitive.ScrollUpButton ref={ref} className={cn("flex cursor-default items-center justify-center py-4", className)} {...props}>
+const SelectScrollUpButton = ({
+  className,
+  ref,
+  ...props
+}: ComponentPropsWithRef<typeof SelectPrimitive.ScrollUpButton>) => (
+  <SelectPrimitive.ScrollUpButton
+    ref={ref}
+    className={cn("flex cursor-default items-center justify-center py-4", className)}
+    {...props}>
     <ChevronUp className='h-4 w-4' />
   </SelectPrimitive.ScrollUpButton>
 );
 
-const SelectScrollDownButton = ({ className, ref, ...props }: ComponentPropsWithRef<typeof SelectPrimitive.ScrollDownButton>) => (
-  <SelectPrimitive.ScrollDownButton ref={ref} className={cn("flex cursor-default items-center justify-center py-4", className)} {...props}>
+const SelectScrollDownButton = ({
+  className,
+  ref,
+  ...props
+}: ComponentPropsWithRef<typeof SelectPrimitive.ScrollDownButton>) => (
+  <SelectPrimitive.ScrollDownButton
+    ref={ref}
+    className={cn("flex cursor-default items-center justify-center py-4", className)}
+    {...props}>
     <ChevronDown className='h-4 w-4' />
   </SelectPrimitive.ScrollDownButton>
 );
 
-const SelectContent = ({ className, children, position = "popper", ref, ...props }: ComponentPropsWithRef<typeof SelectPrimitive.Content>) => (
+const SelectContent = ({
+  className,
+  children,
+  position = "popper",
+  ref,
+  ...props
+}: ComponentPropsWithRef<typeof SelectPrimitive.Content>) => (
   <SelectPrimitive.Portal>
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
         "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative z-modal max-h-96 min-w-[8rem] overflow-hidden rounded-lg border border-neutral-500 bg-neutral-600 text-neutral-100 shadow-md",
         {
-          "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1": matches(
-            position,
-            "popper"
-          )
+          "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1":
+            matches(position, "popper")
         },
         className
       )}
@@ -55,7 +78,8 @@ const SelectContent = ({ className, children, position = "popper", ref, ...props
       <SelectScrollUpButton />
       <SelectPrimitive.Viewport
         className={cn("p-4", {
-          "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]": matches(position, "popper")
+          "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]":
+            matches(position, "popper")
         })}
         {...props}>
         {children}
@@ -65,11 +89,24 @@ const SelectContent = ({ className, children, position = "popper", ref, ...props
   </SelectPrimitive.Portal>
 );
 
-const SelectLabel = ({ className, ref, ...props }: React.ComponentPropsWithRef<typeof SelectPrimitive.Label>) => (
-  <SelectPrimitive.Label ref={ref} className={cn("text-sm py-6 pl-32 pr-2 font-semibold", className)} {...props} />
+const SelectLabel = ({
+  className,
+  ref,
+  ...props
+}: React.ComponentPropsWithRef<typeof SelectPrimitive.Label>) => (
+  <SelectPrimitive.Label
+    ref={ref}
+    className={cn("text-sm py-6 pl-32 pr-2 font-semibold", className)}
+    {...props}
+  />
 );
 
-const SelectItem = ({ className, children, ref, ...props }: React.ComponentPropsWithRef<typeof SelectPrimitive.Item>) => (
+const SelectItem = ({
+  className,
+  children,
+  ref,
+  ...props
+}: React.ComponentPropsWithRef<typeof SelectPrimitive.Item>) => (
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
@@ -87,8 +124,16 @@ const SelectItem = ({ className, children, ref, ...props }: React.ComponentProps
   </SelectPrimitive.Item>
 );
 
-const SelectSeparator = ({ className, ref, ...props }: React.ComponentPropsWithRef<typeof SelectPrimitive.Separator>) => (
-  <SelectPrimitive.Separator ref={ref} className={cn("-mx-4 my-4 h-px bg-neutral-700", className)} {...props} />
+const SelectSeparator = ({
+  className,
+  ref,
+  ...props
+}: React.ComponentPropsWithRef<typeof SelectPrimitive.Separator>) => (
+  <SelectPrimitive.Separator
+    ref={ref}
+    className={cn("-mx-4 my-4 h-px bg-neutral-700", className)}
+    {...props}
+  />
 );
 
 export {

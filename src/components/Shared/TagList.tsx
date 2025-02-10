@@ -1,11 +1,14 @@
 import { X } from "lucide-react";
 import FlexBox from "@/components/UI/FlexBox";
-import P from "@/components/UI/Typography/P";
+import Button from "@/components/UI/Button";
 import { Options } from "nuqs";
 
 type TagListProps = {
   tags: string[];
-  setTags: (value: string[] | ((old: string[]) => string[] | null) | null, options?: Options) => Promise<URLSearchParams>;
+  setTags: (
+    value: string[] | ((old: string[]) => string[] | null) | null,
+    options?: Options
+  ) => Promise<URLSearchParams>;
 };
 
 const TagList = ({ tags, setTags }: TagListProps) => {
@@ -16,21 +19,24 @@ const TagList = ({ tags, setTags }: TagListProps) => {
   };
 
   return (
-    <FlexBox className={"my-2440 flex-wrap gap-8 overflow-x-hidden"}>
+    <FlexBox className={"my-2440 flex-wrap items-center gap-10"}>
       {tags.map((currentTag, index) => (
-        <P
+        <Button
           id='tag'
-          size='small'
-          weight='medium'
           key={index}
-          tag={"button"}
+          weight='medium'
+          shape='rounded'
           onClick={() => handleTagClose(currentTag)}
-          className='flex min-w-12 items-center justify-between gap-8 text-nowrap rounded-full bg-neutral-900 px-16 py-8 text-center leading-5 text-background'>
+          className='flex min-w-12 items-center justify-between gap-8 text-nowrap rounded-full bg-neutral-900 text-center text-background'>
           {currentTag}
 
-          <X size={16} />
-        </P>
+          <X size={16} className='mt-2' />
+        </Button>
       ))}
+
+      <Button shape='circle' size='small' onClick={() => setTags([])}>
+        <X size={16} />
+      </Button>
     </FlexBox>
   );
 };

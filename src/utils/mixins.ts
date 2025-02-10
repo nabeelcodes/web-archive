@@ -1,4 +1,10 @@
-import { maxViewportWidth, minViewportWidth, pixelsPerRem, breakpoints, transitionTimings } from "../designSystem/tokens/misc";
+import {
+  maxViewportWidth,
+  minViewportWidth,
+  pixelsPerRem,
+  breakpoints,
+  transitionTimings
+} from "../designSystem/tokens/misc";
 
 type CssClampArgs = {
   minSize: number;
@@ -8,7 +14,12 @@ type CssClampArgs = {
 };
 
 // ---- css clamp ---- //
-export const cssClamp = ({ minSize, maxSize, minViewport = minViewportWidth, maxViewport = maxViewportWidth }: CssClampArgs) => {
+export const cssClamp = ({
+  minSize,
+  maxSize,
+  minViewport = minViewportWidth,
+  maxViewport = maxViewportWidth
+}: CssClampArgs) => {
   const rem = (value: number) => value / pixelsPerRem;
 
   const minScreenWidth = rem(minViewport);

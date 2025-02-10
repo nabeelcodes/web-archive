@@ -8,7 +8,15 @@ type InputProps = ComponentPropsWithRef<"input"> & {
   shape?: "pill" | "rounded";
 };
 
-const Input = ({ className, type, ref, suffix, fullWidth = false, shape = "rounded", ...props }: InputProps) => {
+const Input = ({
+  className,
+  type,
+  ref,
+  suffix,
+  fullWidth = false,
+  shape = "rounded",
+  ...props
+}: InputProps) => {
   return (
     <FlexBox className={cn("relative", { "w-full": fullWidth })}>
       <input
@@ -28,7 +36,9 @@ const Input = ({ className, type, ref, suffix, fullWidth = false, shape = "round
         {...props}
       />
 
-      {suffix && <div className='absolute right-0 top-0 flex h-full items-center px-16'>{suffix}</div>}
+      {suffix && (
+        <div className='absolute right-0 top-0 flex h-full items-center px-16'>{suffix}</div>
+      )}
     </FlexBox>
   );
 };
@@ -39,9 +49,16 @@ type InputLabelProps = ComponentPropsWithRef<"label"> & {
   required?: boolean;
 };
 
-export const InputLabel = ({ children, className, required = false, ...props }: InputLabelProps) => {
+export const InputLabel = ({
+  children,
+  className,
+  required = false,
+  ...props
+}: InputLabelProps) => {
   return (
-    <label className={cn("mb-6 inline-block text-p font-medium text-neutral-200", className)} {...props}>
+    <label
+      className={cn("mb-6 inline-block text-p font-medium text-neutral-200", className)}
+      {...props}>
       {children}
       {required && <span className='text-red-500'>*</span>}
     </label>

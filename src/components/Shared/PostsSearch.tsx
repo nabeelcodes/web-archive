@@ -13,6 +13,7 @@ import { matches } from "@/utils/helper";
 import { ApiResponse } from "@/utils/types";
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import SearchInput from "@/components/Shared/SearchInput";
+import H5 from "@/components/UI/Typography/H5";
 
 const PostsSearch = ({ apiData }: { apiData: ApiResponse }) => {
   const [postStyle, setPostStyle] = useState<"grid" | "list">("grid");
@@ -40,7 +41,11 @@ const PostsSearch = ({ apiData }: { apiData: ApiResponse }) => {
     <LayoutContainer className='py-2448'>
       <FlexBox className='items-center gap-12'>
         {/* main search */}
-        <SearchInput isSearchQueryEmpty={isSearchQueryEmpty} setQuery={setQuery} setPage={setPage} />
+        <SearchInput
+          isSearchQueryEmpty={isSearchQueryEmpty}
+          setQuery={setQuery}
+          setPage={setPage}
+        />
 
         {/* grid vs list picker */}
         <ListStylePicker postStyle={postStyle} setPostStyle={setPostStyle} />
@@ -50,14 +55,14 @@ const PostsSearch = ({ apiData }: { apiData: ApiResponse }) => {
       {isTagQueryEmpty ? null : <TagList tags={tags} setTags={setTags} />}
 
       {/* posts grid */}
-      <Grid
-        colConfig={{
-          sm: 2,
-          lg: 3
-        }}
-        className='my-2440 gap-1624'>
-        {allPosts &&
-          allPosts.map((post) => {
+      {allPosts?.length > 0 ? (
+        <Grid
+          colConfig={{
+            sm: 2,
+            lg: 3
+          }}
+          className='my-2440 gap-1624'>
+          {allPosts.map((post) => {
             const isPostExpanded = matches(post.id, expandedCardId);
             const isInactive = matches(expandedCardId, "");
 
@@ -73,10 +78,23 @@ const PostsSearch = ({ apiData }: { apiData: ApiResponse }) => {
               />
             );
           })}
-      </Grid>
+        </Grid>
+      ) : (
+        <H5
+          tag='p'
+          weight='semibold'
+          className='grid-center my-2440 h-32 text-center text-neutral-600'>
+          No relevant posts found.
+        </H5>
+      )}
 
       {/* pagination */}
-      {isSearchQueryEmpty && isTagQueryEmpty && <Pagination page={page} setPage={setPage} nextPageExists={apiData.nextPageExists} />}
+      <Pagination
+        page={page}
+        setPage={setPage}
+        nextPageExists={apiData.nextPageExists}
+        totalPages={apiData.totalPages}
+      />
     </LayoutContainer>
   );
 };

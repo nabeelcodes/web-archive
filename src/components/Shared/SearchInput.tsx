@@ -5,8 +5,14 @@ import Input from "@/components/UI/Input";
 
 type SearchInputProps = {
   isSearchQueryEmpty: boolean;
-  setQuery: (value: string | ((old: string) => string | null) | null, options?: Options) => Promise<URLSearchParams>;
-  setPage: (value: string | ((old: string) => string | null) | null, options?: Options) => Promise<URLSearchParams>;
+  setQuery: (
+    value: string | ((old: string) => string | null) | null,
+    options?: Options
+  ) => Promise<URLSearchParams>;
+  setPage: (
+    value: string | ((old: string) => string | null) | null,
+    options?: Options
+  ) => Promise<URLSearchParams>;
 };
 
 const SearchInput = ({ isSearchQueryEmpty, setQuery, setPage }: SearchInputProps) => {
@@ -37,6 +43,7 @@ const SearchInput = ({ isSearchQueryEmpty, setQuery, setPage }: SearchInputProps
       ref={searchInputRef}
       onChange={searchHandler}
       placeholder='Search for articles'
+      className={isSearchQueryEmpty ? "" : "border-2 border-neutral-700"}
       suffix={
         isSearchQueryEmpty ? (
           <Search size={20} className='text-neutral-700' role='button' />

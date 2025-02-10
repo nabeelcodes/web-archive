@@ -104,7 +104,14 @@ const staticFontSizeBuilder = ({ size, lineHeight, letterSpacing }: Record<strin
   ];
 };
 
-const responsiveFontSizeBuilder = ({ minSize, maxSize, minHeight, maxHeight, minSpacing, maxSpacing }: Record<string, number>) => {
+const responsiveFontSizeBuilder = ({
+  minSize,
+  maxSize,
+  minHeight,
+  maxHeight,
+  minSpacing,
+  maxSpacing
+}: Record<string, number>) => {
   // clamp(min, value, max)
   const fontSizeClamp = cssClamp({ minSize, maxSize });
   const lineHeightClamp = cssClamp({ minSize: minHeight, maxSize: maxHeight });
@@ -131,20 +138,37 @@ type FontConfig = {
 
 const tailwindFontSizeTokens: FontConfig = {
   ...Object.fromEntries(
-    fontSizes.static.map(({ key, size, lineHeight, letterSpacing }) => [[key], staticFontSizeBuilder({ size, lineHeight, letterSpacing })])
+    fontSizes.static.map(({ key, size, lineHeight, letterSpacing }) => [
+      [key],
+      staticFontSizeBuilder({ size, lineHeight, letterSpacing })
+    ])
   ),
 
   ...Object.fromEntries(
     fontSizes.responsive.map(
-      ({ key, size: { minSize, maxSize }, lineHeight: { minHeight, maxHeight }, letterSpacing: { minSpacing, maxSpacing } }) => [
+      ({
+        key,
+        size: { minSize, maxSize },
+        lineHeight: { minHeight, maxHeight },
+        letterSpacing: { minSpacing, maxSpacing }
+      }) => [
         [key],
-        responsiveFontSizeBuilder({ minSize, maxSize, minHeight, maxHeight, minSpacing, maxSpacing })
+        responsiveFontSizeBuilder({
+          minSize,
+          maxSize,
+          minHeight,
+          maxHeight,
+          minSpacing,
+          maxSpacing
+        })
       ]
     )
   )
 };
 
-const fontSizeTokens = Object.fromEntries(Object.entries(tailwindFontSizeTokens).map(([key, [size]]) => [key, size])) as Record<
+const fontSizeTokens = Object.fromEntries(
+  Object.entries(tailwindFontSizeTokens).map(([key, [size]]) => [key, size])
+) as Record<
   (typeof fontSizes.static)[number]["key"] | (typeof fontSizes.responsive)[number]["key"],
   string
 >;

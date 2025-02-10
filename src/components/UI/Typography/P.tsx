@@ -21,7 +21,15 @@ type PProps = ComponentPropsWithRef<"p"> & {
     | "micro-to-tiny";
 };
 
-const P = ({ className, children, tag: Element = "p", size = "default", weight = "normal", ref, ...props }: PProps) => (
+const P = ({
+  className,
+  children,
+  tag: Element = "p",
+  size = "default",
+  weight = "normal",
+  ref,
+  ...props
+}: PProps) => (
   <Element
     ref={ref}
     className={cn(

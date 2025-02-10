@@ -13,12 +13,22 @@ const ListStylePicker = ({ postStyle, setPostStyle }: ListStyleProps) => {
   return (
     <>
       {/* grid button */}
-      <Button size='small' variant='outline' shape='circle' className={listIsActive ? "" : "bg-neutral-900"} onClick={() => setPostStyle("grid")}>
+      <Button
+        size='small'
+        variant='outline'
+        shape='circle'
+        className={listIsActive ? "" : "bg-neutral-900"}
+        onClick={() => setPostStyle("grid")}>
         <LayoutGrid size={16} className={listIsActive ? "text-neutral-700" : "text-background"} />
       </Button>
 
       {/* list button */}
-      <Button size='small' variant='outline' shape='circle' className={listIsActive ? "bg-neutral-900" : ""} onClick={() => setPostStyle("list")}>
+      <Button
+        size='small'
+        variant='outline'
+        shape='circle'
+        className={listIsActive ? "bg-neutral-900" : ""}
+        onClick={() => setPostStyle("list")}>
         <List size={16} className={listIsActive ? "text-background" : "text-neutral-700"} />
       </Button>
     </>

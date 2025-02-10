@@ -49,10 +49,16 @@ const spacings = {
   ]
 } as const;
 
-const staticTokens = Object.fromEntries(spacings.static.map((s) => [s, `${s / 16}rem`])) as Record<(typeof spacings.static)[number], string>;
+const staticTokens = Object.fromEntries(spacings.static.map((s) => [s, `${s / 16}rem`])) as Record<
+  (typeof spacings.static)[number],
+  string
+>;
 
 const responsiveTokens = Object.fromEntries(
-  spacings.responsive.map(({ min, max }) => [`${min}${max}`, cssClamp({ minSize: min, maxSize: max })])
+  spacings.responsive.map(({ min, max }) => [
+    `${min}${max}`,
+    cssClamp({ minSize: min, maxSize: max })
+  ])
 ) as Record<`${(typeof spacings.responsive)[number]["key"]}`, string>;
 
 const tailwindSpacingTokens = {
@@ -60,9 +66,8 @@ const tailwindSpacingTokens = {
   ...responsiveTokens
 };
 
-const spacingTokens = Object.fromEntries(Object.entries(tailwindSpacingTokens).map(([key, value]) => [`spacing${key}`, value])) as Record<
-  `spacing${keyof typeof tailwindSpacingTokens}`,
-  string
->;
+const spacingTokens = Object.fromEntries(
+  Object.entries(tailwindSpacingTokens).map(([key, value]) => [`spacing${key}`, value])
+) as Record<`spacing${keyof typeof tailwindSpacingTokens}`, string>;
 
 export { tailwindSpacingTokens, spacingTokens };

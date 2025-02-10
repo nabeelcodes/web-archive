@@ -13,7 +13,16 @@ type ButtonProps = ComponentPropsWithRef<"button"> &
     shape?: "circle" | "rounded";
   };
 
-const Button = ({ children, className, variant = "pill", size = "default", weight = "medium", ref, shape = "rounded", ...props }: ButtonProps) => (
+const Button = ({
+  children,
+  className,
+  variant = "pill",
+  size = "default",
+  weight = "medium",
+  ref,
+  shape = "rounded",
+  ...props
+}: ButtonProps) => (
   <motion.button
     ref={ref}
     whileHover={{ scale: 1.05 }}
@@ -38,10 +47,8 @@ const Button = ({ children, className, variant = "pill", size = "default", weigh
       },
       {
         "rounded-full bg-neutral-900 text-background": matches(variant, "pill"),
-        "border border-neutral-400 text-neutral-900 disabled:border-neutral-600 disabled:bg-black disabled:text-neutral-400": matches(
-          variant,
-          "outline"
-        )
+        "border border-neutral-400 text-neutral-900 disabled:border-neutral-600 disabled:bg-black disabled:text-neutral-400":
+          matches(variant, "outline")
       },
       className
     )}

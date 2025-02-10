@@ -13,8 +13,9 @@ const Hero = () => {
         <H1 weight='bold'>Web Archive</H1>
 
         <P className='mt-16 text-neutral-700'>
-          Stay ahead in the ever-evolving world of web technologies. Browse a curated collection of in-depth articles covering frameworks, tools, best
-          practices, and emerging trends—everything you need to build, innovate, and stay inspired.
+          Stay ahead in the ever-evolving world of web technologies. Browse a curated collection of
+          in-depth articles covering frameworks, tools, best practices, and emerging
+          trends—everything you need to build, innovate, and stay inspired.
         </P>
       </div>
     </LayoutContainer>

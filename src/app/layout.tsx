@@ -26,7 +26,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={`${manrope.variable} ${geistMono.variable} bg-background font-manrope text-neutral-900`}>
+      <body
+        className={`${manrope.variable} ${geistMono.variable} bg-background font-manrope text-neutral-900`}>
         <NuqsAdapter>{children}</NuqsAdapter>
       </body>
     </html>

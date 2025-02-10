@@ -9,7 +9,14 @@ type H5Props = ComponentPropsWithRef<"h5"> & {
   weight?: "light" | "normal" | "medium" | "semibold" | "bold";
 };
 
-const H5 = ({ className, children, tag: Element = "h5", weight = "bold", ref, ...props }: H5Props) => (
+const H5 = ({
+  className,
+  children,
+  tag: Element = "h5",
+  weight = "bold",
+  ref,
+  ...props
+}: H5Props) => (
   <Element
     ref={ref}
     className={cn(

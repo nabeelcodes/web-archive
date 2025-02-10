@@ -9,7 +9,14 @@ type H6Props = ComponentPropsWithRef<"h6"> & {
   weight?: "light" | "normal" | "medium" | "semibold" | "bold";
 };
 
-const H6 = ({ className, children, tag: Element = "h6", weight = "bold", ref, ...props }: H6Props) => (
+const H6 = ({
+  className,
+  children,
+  tag: Element = "h6",
+  weight = "bold",
+  ref,
+  ...props
+}: H6Props) => (
   <Element
     ref={ref}
     className={cn(

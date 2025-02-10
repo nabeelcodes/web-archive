@@ -29,10 +29,25 @@ const getGridCols = ({ xxs, xs, sm, md, lg, xl, "2xl": twoXl }: ColumnCountProp)
   const colXlString = xl ? `xl:grid-cols-${xl}` : "";
   const col2xlString = twoXl ? `2xl:grid-cols-${twoXl}` : "";
 
-  return [colXxsString, colXsString, colSmString, colMdString, colLgString, colXlString, col2xlString].join(" ");
+  return [
+    colXxsString,
+    colXsString,
+    colSmString,
+    colMdString,
+    colLgString,
+    colXlString,
+    col2xlString
+  ].join(" ");
 };
 
-export const Grid = ({ children, className, colConfig, tag: Tag = "div", ref, ...props }: GridProps) => {
+export const Grid = ({
+  children,
+  className,
+  colConfig,
+  tag: Tag = "div",
+  ref,
+  ...props
+}: GridProps) => {
   const Element = Tag as React.ElementType;
 
   const colClasses = colConfig ? getGridCols(colConfig) : "grid-cols-12";
@@ -73,10 +88,25 @@ const getColSpan = ({ xxs, xs, sm, md, lg, xl, "2xl": twoXl }: ColSizeConfig) =>
   const colXlString = xl ? `xl:col-span-${xl}` : "";
   const col2xlString = twoXl ? `2xl:col-span-${twoXl}` : "";
 
-  return [colXxsString, colXsString, colSmString, colMdString, colLgString, colXlString, col2xlString].join(" ");
+  return [
+    colXxsString,
+    colXsString,
+    colSmString,
+    colMdString,
+    colLgString,
+    colXlString,
+    col2xlString
+  ].join(" ");
 };
 
-export const GridCol = ({ children, className, colSizeConfig, tag: Tag = "div", ref, ...props }: GridColProps) => {
+export const GridCol = ({
+  children,
+  className,
+  colSizeConfig,
+  tag: Tag = "div",
+  ref,
+  ...props
+}: GridColProps) => {
   const Element = Tag as React.ElementType;
 
   const colSpanClasses = colSizeConfig ? getColSpan(colSizeConfig) : null;

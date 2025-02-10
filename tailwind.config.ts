@@ -3,7 +3,12 @@ import plugin from "tailwindcss/plugin";
 import { colors } from "./src/designSystem/tokens/colors";
 import { tailwindSpacingTokens } from "./src/designSystem/tokens/spacings";
 import { tailwindFontSizeTokens } from "./src/designSystem/tokens/typography";
-import { borderRadiusTokens, breakpoints, transitionTimings, zIndexTokens } from "./src/designSystem/tokens/misc";
+import {
+  borderRadiusTokens,
+  breakpoints,
+  transitionTimings,
+  zIndexTokens
+} from "./src/designSystem/tokens/misc";
 
 const variants = Object.keys(breakpoints);
 
@@ -45,7 +50,10 @@ export default {
 
       // apply hover styles if the device has hover capabilities
       addVariant("can-hover", "@media (hover: hover) and (pointer: fine) { &:hover }");
-      addVariant("group-can-hover", "@media (hover: hover) and (pointer: fine) { :merge(.group):hover & }");
+      addVariant(
+        "group-can-hover",
+        "@media (hover: hover) and (pointer: fine) { :merge(.group):hover & }"
+      );
     })
   ]
 } satisfies Config;
