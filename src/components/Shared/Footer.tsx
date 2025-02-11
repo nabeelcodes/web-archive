@@ -1,13 +1,12 @@
+import { Figma, Github, Twitter } from "lucide-react";
 import LayoutContainer from "@/components/UI/LayoutContainer";
+import Contribute from "@/components/Shared/Contribute";
 import SocialLink from "@/components/Shared/SocialLink";
 import { Grid, GridCol } from "@/components/UI/Grid";
 import FlexBox from "@/components/UI/FlexBox";
 import H5 from "@/components/UI/Typography/H5";
 import H6 from "@/components/UI/Typography/H6";
 import P from "@/components/UI/Typography/P";
-import { Figma, Github, Twitter } from "lucide-react";
-
-import Button from "@/components/UI/Button";
 import { SOCIAL_LINKS } from "@/data/globals";
 
 const Footer = () => {
@@ -24,11 +23,13 @@ const Footer = () => {
               lg: 6
             }}>
             <H5>Web Archive</H5>
+
             <P size='small' className='mt-2 text-pretty text-neutral-700'>
               Stay ahead in the ever-evolving world of web technologies. Browse a curated collection
               of in-depth articles covering frameworks, tools, best practices, and emerging
               trends—everything you need to build, innovate, and stay inspired.
             </P>
+
             <P size='small' className='mt-20 text-neutral-500'>
               Website designed and developed by{" "}
               <a
@@ -73,12 +74,8 @@ const Footer = () => {
           <GridCol colSizeConfig={{ xxs: 12, sm: 4, lg: 3 }}>
             <div className='lg:ml-auto lg:w-fit'>
               <H6 className='text-p'>Contribute</H6>
-              <Button
-                variant='outline'
-                shape='rounded'
-                className='mt-10 rounded-full text-neutral-700'>
-                Submit an article
-              </Button>
+
+              <Contribute />
             </div>
           </GridCol>
         </Grid>

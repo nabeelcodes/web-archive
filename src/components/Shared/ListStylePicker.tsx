@@ -2,6 +2,8 @@ import { Dispatch, SetStateAction } from "react";
 import Button from "@/components/UI/Button";
 import { LayoutGrid, List } from "lucide-react";
 
+import { toast } from "sonner";
+
 type ListStyleProps = {
   postStyle: "grid" | "list";
   setPostStyle: Dispatch<SetStateAction<"grid" | "list">>;
@@ -30,6 +32,13 @@ const ListStylePicker = ({ postStyle, setPostStyle }: ListStyleProps) => {
         className={listIsActive ? "bg-neutral-900" : ""}
         onClick={() => setPostStyle("list")}>
         <List size={16} className={listIsActive ? "text-background" : "text-neutral-700"} />
+      </Button>
+
+      <Button
+        variant='outline'
+        className='rounded-full bg-background'
+        onClick={() => toast("Congratulations! You are logged in.")}>
+        sonner
       </Button>
     </>
   );

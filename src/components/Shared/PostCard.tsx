@@ -99,7 +99,7 @@ const PostCard = ({
           <Image src={image} alt='card-image' fill className='z-1 object-cover' />
         </div>
 
-        <FlexBox className='relative z-5 grow flex-col justify-between gap-16 p-16'>
+        <FlexBox className='relative grow flex-col justify-between gap-16 p-16'>
           {/* title and description */}
           <div className='max-h-36'>
             <H5 className='line-clamp-2 text-pretty'>{title}</H5>
