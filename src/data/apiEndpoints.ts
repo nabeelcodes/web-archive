@@ -6,7 +6,9 @@ const apiEndpoints = {
       `${API_URL}/api/posts?query=${query}&tags=${tags}&page=${page}`,
     getPost: ({ postId }: { postId: string }) => `${API_URL}/api/posts/${postId}`
   },
-  users: {}
+  users: {
+    login: () => `${API_URL}/api/users/login`
+  }
 } as const;
 
 export default apiEndpoints;

@@ -1,8 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
+import { useSession } from "next-auth/react";
 import Button from "@/components/UI/Button";
 import { LayoutGrid, List } from "lucide-react";
-
-import { toast } from "sonner";
 
 type ListStyleProps = {
   postStyle: "grid" | "list";
@@ -11,6 +10,7 @@ type ListStyleProps = {
 
 const ListStylePicker = ({ postStyle, setPostStyle }: ListStyleProps) => {
   const listIsActive = postStyle === "list";
+  const session = useSession();
 
   return (
     <>
@@ -34,12 +34,13 @@ const ListStylePicker = ({ postStyle, setPostStyle }: ListStyleProps) => {
         <List size={16} className={listIsActive ? "text-background" : "text-neutral-700"} />
       </Button>
 
-      <Button
-        variant='outline'
-        className='rounded-full bg-background'
-        onClick={() => toast("Congratulations! You are logged in.")}>
-        sonner
-      </Button>
+      {/* menu button */}
+      {session.status === "authenticated" && (
+        <Button className='rounded-full bg-neutral-900 text-small'>
+          {/* for logged-in admin only */}
+          Create
+        </Button>
+      )}
     </>
   );
 };

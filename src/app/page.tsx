@@ -1,9 +1,9 @@
-import Hero from "@/components/Shared/Hero";
-import PostsSearch from "@/components/Shared/PostsSearch";
-import Footer from "@/components/Shared/Footer";
+import Hero from "@/components/Hero";
+import PostsSearch from "@/components/PostsSearch";
+import Footer from "@/components/Footer";
 import apiEndpoints from "@/data/apiEndpoints";
 import { getUrlQueryParams } from "@/utils/helper";
-import { ApiResponse } from "@/utils/types";
+import { ApiResponsePost } from "@/utils/types";
 import type { SearchParams } from "nuqs/server";
 
 type PageProps = {
@@ -19,7 +19,7 @@ export default async function Home({ searchParams }: PageProps) {
       page
     })
   );
-  const apiData: ApiResponse = await apiResponse.json();
+  const apiData: ApiResponsePost = await apiResponse.json();
 
   return (
     <>

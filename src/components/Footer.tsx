@@ -1,11 +1,10 @@
 import { Figma, Github, Twitter } from "lucide-react";
 import LayoutContainer from "@/components/UI/LayoutContainer";
-import Contribute from "@/components/Shared/Contribute";
-import SocialLink from "@/components/Shared/SocialLink";
+import SocialLink from "@/components/SocialLink";
+import AdminLogin from "@/components/AdminLogin";
 import { Grid, GridCol } from "@/components/UI/Grid";
 import FlexBox from "@/components/UI/FlexBox";
 import H5 from "@/components/UI/Typography/H5";
-import H6 from "@/components/UI/Typography/H6";
 import P from "@/components/UI/Typography/P";
 import { SOCIAL_LINKS } from "@/data/globals";
 
@@ -44,16 +43,40 @@ const Footer = () => {
                 target='_blank'
                 className='font-semibold text-neutral-900 underline underline-offset-2 can-hover:no-underline'>
                 Mohit Kumar
-              </a>{" "}
-              <br />
-              Copyright © {new Date().getFullYear()}, Web Archive. All rights reserved.
+              </a>
             </P>
           </GridCol>
 
           {/* Follow / Socials */}
           <GridCol colSizeConfig={{ xs: 12, sm: 4, lg: 3 }}>
-            <div className='lg:mx-auto lg:w-fit'>
-              <H6 className='text-p'>Follow</H6>
+            <div>
+              <P tag='h6' weight='bold'>
+                Follow
+              </P>
+              <FlexBox className='mt-10 gap-12'>
+                <SocialLink url={SOCIAL_LINKS.site.github} title='Github'>
+                  <Github size={16} className='text-background' />
+                </SocialLink>
+
+                <SocialLink url={SOCIAL_LINKS.site.figma} title='Figma'>
+                  <Figma size={16} className='text-background' />
+                </SocialLink>
+
+                <SocialLink url={SOCIAL_LINKS.site.twitter} title='Twitter'>
+                  <Twitter size={16} className='text-background' />
+                </SocialLink>
+              </FlexBox>
+            </div>
+          </GridCol>
+
+          {/* Tech Stack */}
+          <GridCol colSizeConfig={{ xxs: 12, sm: 4, lg: 3 }}>
+            <div>
+              <P tag='h6' weight='bold'>
+                Tech Stack
+              </P>
+
+              {/* TODO: make these hollow non-clickable button */}
               <FlexBox className='mt-10 gap-12'>
                 <SocialLink url={SOCIAL_LINKS.site.github} title='Github'>
                   <Github size={16} />
@@ -66,20 +89,29 @@ const Footer = () => {
                 <SocialLink url={SOCIAL_LINKS.site.twitter} title='Twitter'>
                   <Twitter size={16} />
                 </SocialLink>
+
+                <SocialLink url={SOCIAL_LINKS.site.twitter} title='Twitter'>
+                  <Twitter size={16} />
+                </SocialLink>
               </FlexBox>
-            </div>
-          </GridCol>
-
-          {/* Contribute */}
-          <GridCol colSizeConfig={{ xxs: 12, sm: 4, lg: 3 }}>
-            <div className='lg:ml-auto lg:w-fit'>
-              <H6 className='text-p'>Contribute</H6>
-
-              <Contribute />
             </div>
           </GridCol>
         </Grid>
       </LayoutContainer>
+
+      {/* banner */}
+      <section className='bg-neutral-900'>
+        <LayoutContainer className='py-10'>
+          <FlexBox className='items-center justify-between gap-48'>
+            <P className='text-background' size='small'>
+              Copyright © {new Date().getFullYear()}, Web Archive. All rights reserved.
+            </P>
+
+            {/* admin login */}
+            <AdminLogin />
+          </FlexBox>
+        </LayoutContainer>
+      </section>
     </footer>
   );
 };

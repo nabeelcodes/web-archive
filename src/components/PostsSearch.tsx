@@ -5,17 +5,17 @@ import { useState } from "react";
 import LayoutContainer from "@/components/UI/LayoutContainer";
 import FlexBox from "@/components/UI/FlexBox";
 import { Grid } from "@/components/UI/Grid";
-import ListStylePicker from "@/components/Shared/ListStylePicker";
-import Pagination from "@/components/Shared/Pagination";
-import PostCard from "@/components/Shared/PostCard";
-import TagList from "@/components/Shared/TagList";
+import ListStylePicker from "@/components/ListStylePicker";
+import Pagination from "@/components/Pagination";
+import PostCard from "@/components/PostCard";
+import TagList from "@/components/TagList";
 import { matches } from "@/utils/helper";
-import { ApiResponse } from "@/utils/types";
+import { ApiResponsePost } from "@/utils/types";
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
-import SearchInput from "@/components/Shared/SearchInput";
+import SearchInput from "@/components/SearchInput";
 import H5 from "@/components/UI/Typography/H5";
 
-const PostsSearch = ({ apiData }: { apiData: ApiResponse }) => {
+const PostsSearch = ({ apiData }: { apiData: ApiResponsePost }) => {
   const [postStyle, setPostStyle] = useState<"grid" | "list">("grid");
   const [expandedCardId, setExpandedCardId] = useState<string>("");
   const [query, setQuery] = useQueryState(SEARCH_QUERY_KEY, {

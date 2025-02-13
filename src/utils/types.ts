@@ -22,9 +22,19 @@ export type Post = {
   id: string;
 };
 
-export type ApiResponse = {
+export type ApiResponsePost = {
   posts: Post[];
   currentPage: number;
   nextPageExists: boolean;
   totalPages: number;
+};
+
+export type User = {
+  username: string;
+  email: string;
+};
+
+export type ApiResponseUser = {
+  user: User;
+  accessToken: string;
 };
