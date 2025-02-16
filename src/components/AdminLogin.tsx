@@ -1,9 +1,10 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { useState } from "react";
+import { useSession, signOut } from "next-auth/react";
 import { MoveRight } from "lucide-react";
 import LoginForm from "@/components/LoginForm";
+import FlexBox from "@/components/UI/FlexBox";
 import P from "@/components/UI/Typography/P";
 import {
   Dialog,
@@ -13,17 +14,26 @@ import {
   DialogTitle,
   DialogDescription
 } from "@/components/UI/Modal";
-import { signOut } from "next-auth/react";
 
 const AdminLogin = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const session = useSession();
 
+  // return if no session
   if (session.status === "loading") return;
 
+  // authenticated and session exists
   if (session.status === "authenticated") {
+    const adminName = session.data.user.username;
+
     return (
-      <>
+      <FlexBox className='items-center gap-10'>
+        <P size='small' className='shrink-0 whitespace-nowrap text-background'>
+          Welcome, {adminName}
+        </P>
+
+        <P className='text-background'>&#8226;</P>
+
         <P
           tag='button'
           size='small'
@@ -31,10 +41,11 @@ const AdminLogin = () => {
           className='shrink-0 whitespace-nowrap text-background underline underline-offset-2 can-hover:no-underline'>
           SignOut
         </P>
-      </>
+      </FlexBox>
     );
   }
 
+  // DEFAULT : no session (user not signed in)
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <DialogTrigger asChild>

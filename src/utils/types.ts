@@ -1,15 +1,5 @@
 import { z } from "zod";
 
-export const loginSchema = z.object({
-  email: z
-    .string()
-    .nonempty("Email is required") // Ensures email is not empty
-    .email("Invalid email format"), // Ensures email has a valid format
-  password: z.string().nonempty("Password is required") // Ensures password is not empty
-});
-
-export type LoginSchemaType = z.infer<typeof loginSchema>;
-
 export type Post = {
   user_id: string;
   title: string;
@@ -35,6 +25,33 @@ export type User = {
 };
 
 export type ApiResponseUser = {
-  user: User;
+  userData: User;
   accessToken: string;
 };
+
+export const loginSchema = z.object({
+  email: z.string().nonempty("Email is required").email("Invalid email format"),
+  password: z.string().nonempty("Password is required")
+});
+
+export type LoginSchemaType = z.infer<typeof loginSchema>;
+
+export const postSchema = z.object({
+  title: z.string().min(1, "Please add a title!"),
+  description: z.string().optional(),
+  link: z
+    .string()
+    .nonempty("Please add a link for the article!")
+    .refine((value) => /^(https?):\/\/(?=.*\.[a-z]{2,})[^\s$.?#].[^\s]*$/i.test(value), {
+      message: "Please enter a valid URL"
+    }),
+  image: z
+    .string()
+    .nonempty("Please add an image for the article!")
+    .refine((value) => /^(https?):\/\/(?=.*\.[a-z]{2,})[^\s$.?#].[^\s]*$/i.test(value), {
+      message: "Please enter a valid URL"
+    }),
+  tags: z.string().nonempty("Please provide one or more tags to identify this article!")
+});
+
+export type PostSchemaType = z.infer<typeof postSchema>;

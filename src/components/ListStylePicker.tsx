@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import { useSession } from "next-auth/react";
 import Button from "@/components/UI/Button";
 import { LayoutGrid, List } from "lucide-react";
+import CreatePost from "@/components/CreatePost";
 
 type ListStyleProps = {
   postStyle: "grid" | "list";
@@ -34,13 +35,8 @@ const ListStylePicker = ({ postStyle, setPostStyle }: ListStyleProps) => {
         <List size={16} className={listIsActive ? "text-background" : "text-neutral-700"} />
       </Button>
 
-      {/* menu button */}
-      {session.status === "authenticated" && (
-        <Button className='rounded-full bg-neutral-900 text-small'>
-          {/* for logged-in admin only */}
-          Create
-        </Button>
-      )}
+      {/* create new post button : for logged-in admin only */}
+      {session.status === "authenticated" && <CreatePost />}
     </>
   );
 };

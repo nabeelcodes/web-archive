@@ -1,13 +1,14 @@
-const API_URL = process.env.API_URL;
+const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const apiEndpoints = {
   posts: {
     getPosts: ({ query = "", tags = "", page = "1" }) =>
-      `${API_URL}/api/posts?query=${query}&tags=${tags}&page=${page}`,
-    getPost: ({ postId }: { postId: string }) => `${API_URL}/api/posts/${postId}`
+      `${NEXT_PUBLIC_API_URL}/api/posts?query=${query}&tags=${tags}&page=${page}`,
+    getPost: ({ postId }: { postId: string }) => `${NEXT_PUBLIC_API_URL}/api/posts/${postId}`,
+    createPost: () => `${NEXT_PUBLIC_API_URL}/api/posts`
   },
   users: {
-    login: () => `${API_URL}/api/users/login`
+    login: () => `${NEXT_PUBLIC_API_URL}/api/users/login`
   }
 } as const;
 

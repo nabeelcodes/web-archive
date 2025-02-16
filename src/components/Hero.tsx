@@ -9,7 +9,12 @@ const Hero = () => {
     <LayoutContainer
       tag={"header"}
       className='relative flex min-h-[380px] items-end justify-center text-balance py-2448'>
-      <Image src={heroImage} alt='hero-section-image' className='absolute -top-20 bottom-0 -z-1' />
+      <Image
+        priority
+        src={heroImage}
+        alt='hero-section-image'
+        className='absolute -top-20 bottom-0 -z-1'
+      />
 
       <div className='max-w-screen-md text-center'>
         <H1 weight='bold'>Web Archive</H1>

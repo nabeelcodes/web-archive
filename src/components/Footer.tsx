@@ -1,12 +1,17 @@
 import { Figma, Github, Twitter } from "lucide-react";
 import LayoutContainer from "@/components/UI/LayoutContainer";
-import SocialLink from "@/components/SocialLink";
-import AdminLogin from "@/components/AdminLogin";
 import { Grid, GridCol } from "@/components/UI/Grid";
 import FlexBox from "@/components/UI/FlexBox";
-import H5 from "@/components/UI/Typography/H5";
 import P from "@/components/UI/Typography/P";
+import H5 from "@/components/UI/Typography/H5";
+import Tailwindcss from "@/components/SVG/Tailwindcss";
+import Nextjs from "@/components/SVG/Nextjs";
+import SocialLink from "@/components/SocialLink";
+import AdminLogin from "@/components/AdminLogin";
 import { SOCIAL_LINKS } from "@/data/globals";
+import Typescript from "@/components/SVG/Typescript";
+import Express from "@/components/SVG/Express";
+import Mongodb from "@/components/SVG/Mongodb";
 
 const Footer = () => {
   return (
@@ -49,7 +54,7 @@ const Footer = () => {
 
           {/* Follow / Socials */}
           <GridCol colSizeConfig={{ xs: 12, sm: 4, lg: 3 }}>
-            <div>
+            <section>
               <P tag='h6' weight='bold'>
                 Follow
               </P>
@@ -66,35 +71,24 @@ const Footer = () => {
                   <Twitter size={16} className='text-background' />
                 </SocialLink>
               </FlexBox>
-            </div>
+            </section>
           </GridCol>
 
           {/* Tech Stack */}
           <GridCol colSizeConfig={{ xxs: 12, sm: 4, lg: 3 }}>
-            <div>
+            <section>
               <P tag='h6' weight='bold'>
                 Tech Stack
               </P>
 
-              {/* TODO: make these hollow non-clickable button */}
-              <FlexBox className='mt-10 gap-12'>
-                <SocialLink url={SOCIAL_LINKS.site.github} title='Github'>
-                  <Github size={16} />
-                </SocialLink>
-
-                <SocialLink url={SOCIAL_LINKS.site.figma} title='Figma'>
-                  <Figma size={16} />
-                </SocialLink>
-
-                <SocialLink url={SOCIAL_LINKS.site.twitter} title='Twitter'>
-                  <Twitter size={16} />
-                </SocialLink>
-
-                <SocialLink url={SOCIAL_LINKS.site.twitter} title='Twitter'>
-                  <Twitter size={16} />
-                </SocialLink>
+              <FlexBox className='mt-10 flex-wrap gap-12'>
+                <Nextjs />
+                <Typescript />
+                <Tailwindcss />
+                <Express />
+                <Mongodb />
               </FlexBox>
-            </div>
+            </section>
           </GridCol>
         </Grid>
       </LayoutContainer>
@@ -102,7 +96,7 @@ const Footer = () => {
       {/* banner */}
       <section className='bg-neutral-900'>
         <LayoutContainer className='py-10'>
-          <FlexBox className='items-center justify-between gap-48'>
+          <FlexBox className='flex-col justify-between gap-10 md:flex-row md:items-center'>
             <P className='text-background' size='small'>
               Copyright © {new Date().getFullYear()}, Web Archive. All rights reserved.
             </P>

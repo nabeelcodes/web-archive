@@ -2,9 +2,10 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import apiEndpoints from "@/data/apiEndpoints";
 
+// declaring custom types for next-auth
 declare module "next-auth" {
   interface User {
-    user: {
+    userData: {
       username: string;
       email: string;
     };
@@ -53,8 +54,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         // Store JWT token from Express API
-        token.username = user.user.username;
-        token.email = user.user.email;
+        token.username = user.userData.username;
+        token.email = user.userData.email;
         token.accessToken = user.accessToken;
       }
       return token;

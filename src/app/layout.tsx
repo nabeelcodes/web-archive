@@ -33,9 +33,12 @@ export default async function RootLayout({
     <html lang='en'>
       <body
         className={`${manrope.variable} ${geistMono.variable} min-h-screen bg-background font-manrope text-neutral-900`}>
+        {/* Next-auth sessions provider + NUQS query params provider */}
         <SessionProvider session={sessionContext} refetchOnWindowFocus={false}>
           <NuqsAdapter>{children}</NuqsAdapter>
         </SessionProvider>
+
+        {/* Sonner Toaster component */}
         <Toaster position='top-center' duration={5000} richColors closeButton />
       </body>
     </html>
