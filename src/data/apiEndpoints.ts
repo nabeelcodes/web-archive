@@ -8,7 +8,8 @@ const apiEndpoints = {
     createPost: () => `${NEXT_PUBLIC_API_URL}/api/posts`
   },
   users: {
-    login: () => `${NEXT_PUBLIC_API_URL}/api/users/login`
+    login: () => `${NEXT_PUBLIC_API_URL}/api/users/login`,
+    fetchCurrentUser: () => `${NEXT_PUBLIC_API_URL}/api/users/current`
   }
 } as const;
 

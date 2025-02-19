@@ -1,8 +1,11 @@
+import { MouseEvent } from "react";
 import { signOut } from "next-auth/react";
 import { toast } from "sonner";
+import { Pencil } from "lucide-react";
 import { useVerifyToken } from "@/apiRoutes/auth-routes";
-import PostForm from "@/components/PostForm";
+import EditForm from "@/components/EditForm";
 import Button from "@/components/UI/Button";
+import { Post } from "@/utils/types";
 import {
   Dialog,
   DialogTrigger,
@@ -12,10 +15,15 @@ import {
   DialogDescription
 } from "@/components/UI/Modal";
 
-const CreatePost = () => {
+type EditPostProps = {
+  postDetails: Post;
+};
+
+const EditPost = ({ postDetails }: EditPostProps) => {
   const { verifyToken } = useVerifyToken();
 
-  const loginChecker = async () => {
+  const loginChecker = async (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     const { success } = await verifyToken();
     // Do nothing if user logged in
     if (!success) {
@@ -32,22 +40,24 @@ const CreatePost = () => {
       <DialogTrigger asChild>
         <Button
           size='small'
-          className='h-[41.6px] rounded-full bg-neutral-900 px-1620 text-small'
+          variant='pill'
+          shape='circle'
+          className='absolute right-2 top-2 z-1'
           onClick={loginChecker}>
-          Create
+          <Pencil size={12} />
         </Button>
       </DialogTrigger>
 
       <DialogContent className='max-h-[90vh] overflow-y-scroll'>
         <DialogHeader>
-          <DialogTitle>New Article</DialogTitle>
-          <DialogDescription>Enter details for a new article</DialogDescription>
+          <DialogTitle>Edit Article</DialogTitle>
+          <DialogDescription>Update details for this article</DialogDescription>
         </DialogHeader>
 
-        <PostForm />
+        <EditForm postDetails={postDetails} />
       </DialogContent>
     </Dialog>
   );
 };
 
-export default CreatePost;
+export default EditPost;

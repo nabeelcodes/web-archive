@@ -1,13 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useSession } from "next-auth/react";
-import { postSchema, PostSchemaType } from "@/utils/types";
+import { toast } from "sonner";
+import { signOut, useSession } from "next-auth/react";
 import Input, { InputLabel } from "@/components/UI/Input";
 import P from "@/components/UI/Typography/P";
 import Button from "@/components/UI/Button";
-import apiEndpoints from "@/data/apiEndpoints";
-import { toast } from "sonner";
-import { CustomError } from "@/utils/customError";
+import { useVerifyToken } from "@/apiRoutes/auth-routes";
+import { createPost } from "@/apiRoutes/admin-routes";
+import { postSchema, PostSchemaType } from "@/utils/types";
 
 const PostForm = () => {
   const {
@@ -16,62 +16,27 @@ const PostForm = () => {
     handleSubmit,
     formState: { errors, isSubmitting }
   } = useForm<PostSchemaType>({ resolver: zodResolver(postSchema) });
+  const { verifyToken } = useVerifyToken();
   const session = useSession();
-  const token = session?.data?.accessToken;
+  const accessToken = session?.data?.accessToken;
 
-  // return if no session
-  if (session.status === "unauthenticated" || !token) return;
+  const loginChecker = async () => {
+    const { success } = await verifyToken();
+    // Do nothing if user logged in
+    if (!success) {
+      // user NOT logged in
+      toast.error("Please login again", {
+        description: "User timed out!"
+      });
+      reset();
+      // TODO : close modal
+      signOut({ redirect: false });
+    }
+  };
 
   const PostFormHandler = async (formData: PostSchemaType) => {
-    try {
-      const { title, description, link, image, tags } = formData;
-      const tagsArray = tags.split(",");
-      const postData = {
-        title,
-        description,
-        link,
-        image,
-        tags: tagsArray
-      };
-
-      const apiResponse = await fetch(apiEndpoints.posts.createPost(), {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify(postData)
-      });
-
-      // Check if the response status is OK (2xx status codes)
-      if (!apiResponse.ok) {
-        // Parse the error response if available
-        const errorData = await apiResponse.json();
-        const errorTitle = errorData.error.title;
-        const errorMessage = errorData.error.message;
-        throw new CustomError(
-          errorTitle || "Oops! an error occurred",
-          errorMessage || "Something went wrong on the server."
-        );
-      }
-
-      // Handle the successful response
-      // const responseData = await apiResponse.json();
-      toast.success("New article added!");
-      reset();
-    } catch (error) {
-      // Catch network errors and other exceptions
-      if (error instanceof CustomError) {
-        toast.error(error.title, {
-          description: error.message
-        });
-      } else {
-        // In case the error is not an instance of Error (for unexpected issues)
-        toast.error("Something went wrong!", {
-          description: "An unknown error occurred"
-        });
-      }
-    }
+    await loginChecker();
+    await createPost({ formData, accessToken, reset });
   };
 
   return (

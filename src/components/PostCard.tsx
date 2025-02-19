@@ -1,12 +1,14 @@
 import { Dispatch, SetStateAction, useRef, useState, MouseEvent } from "react";
 import { motion } from "motion/react";
+import { useSession } from "next-auth/react";
+import { Options } from "nuqs";
 import Image from "next/image";
+import EditPost from "@/components/EditPost";
 import FlexBox from "@/components/UI/FlexBox";
 import H5 from "@/components/UI/Typography/H5";
 import P from "@/components/UI/Typography/P";
 import { Post } from "@/utils/types";
 import { cn } from "@/utils/helper";
-import { Options } from "nuqs";
 
 type PostCardProps = {
   post: Post;
@@ -34,6 +36,7 @@ const PostCard = ({
   const { title, description, link, image, tags: tagList, id } = post;
   const [isExpanded, setIsExpanded] = useState(false);
   const postCardRef = useRef<HTMLDivElement | null>(null);
+  const session = useSession();
 
   const cardClickHandler = () => {
     setExpandedCardId(id);
@@ -83,7 +86,7 @@ const PostCard = ({
       <motion.div
         ref={postCardRef}
         className={cn(
-          "flex flex-col justify-between overflow-hidden rounded-lg border border-neutral-400 bg-background",
+          "relative flex flex-col justify-between overflow-hidden rounded-lg border border-neutral-400 bg-background",
           { "fixed inset-0 z-modal m-auto h-fit w-[90%] max-w-[650px]": isExpanded },
           { "pointer-events-none": !isExpanded },
           { "z-50": isPostExpanded },
@@ -94,6 +97,9 @@ const PostCard = ({
         title={title}
         onClick={isExpanded ? () => null : cardClickHandler}
         transition={{ duration: 0.5, ease: "anticipate" }}>
+        {/* Edit Button */}
+        {session.status === "authenticated" && !isExpanded && <EditPost postDetails={post} />}
+
         {/* image wrapper */}
         <div className='card-image-wrapper relative isolate aspect-[1200/630] w-full'>
           <Image src={image} alt='card-image' fill className='z-1 object-cover' />

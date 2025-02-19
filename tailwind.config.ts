@@ -29,8 +29,8 @@ export default {
     fontSize: tailwindFontSizeTokens,
     borderRadius: borderRadiusTokens,
     screens: breakpoints,
-    transitionDuration: transitionTimings,
     zIndex: zIndexTokens,
+    transitionTimingFunction: transitionTimings,
     fontFamily: {
       manrope: "var(--font-manrope)",
       geistMono: "var(--font-geist-mono)"
@@ -42,6 +42,7 @@ export default {
     }
   },
   plugins: [
+    require("tailwindcss-animate"),
     // ref: https://github.com/tailwindlabs/tailwindcss/discussions/1739#discussioncomment-9914554
     plugin(({ addVariant }) => {
       // detect hover
@@ -54,7 +55,6 @@ export default {
         "group-can-hover",
         "@media (hover: hover) and (pointer: fine) { :merge(.group):hover & }"
       );
-    }),
-    require("tailwindcss-animate")
+    })
   ]
 } satisfies Config;

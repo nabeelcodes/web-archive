@@ -7,11 +7,11 @@ import { ApiResponsePost } from "@/utils/types";
 import type { SearchParams } from "nuqs/server";
 
 type PageProps = {
-  searchParams: Promise<SearchParams>;
+  urlParams: Promise<SearchParams>;
 };
 
-export default async function Home({ searchParams }: PageProps) {
-  const { query, tags, page } = await getUrlQueryParams(searchParams);
+export default async function Home({ urlParams }: PageProps) {
+  const { query, tags, page } = await getUrlQueryParams(urlParams);
   const apiResponse = await fetch(
     apiEndpoints.posts.getPosts({
       query,
