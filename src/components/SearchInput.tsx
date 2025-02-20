@@ -42,6 +42,7 @@ const SearchInput = ({ isSearchQueryEmpty, setQuery, setPage }: SearchInputProps
       shape='pill'
       ref={searchInputRef}
       onChange={searchHandler}
+      name='global search'
       placeholder='Search for articles'
       className={isSearchQueryEmpty ? "" : "border-2 border-neutral-700"}
       suffix={

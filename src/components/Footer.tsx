@@ -81,7 +81,7 @@ const Footer = () => {
                 Tech Stack
               </P>
 
-              <FlexBox className='mt-10 flex-wrap gap-12'>
+              <FlexBox className='mt-10 gap-12 lg:flex-wrap'>
                 <Nextjs />
                 <Typescript />
                 <Tailwindcss />
@@ -96,7 +96,7 @@ const Footer = () => {
       {/* banner */}
       <section className='bg-neutral-900'>
         <LayoutContainer className='py-10'>
-          <FlexBox className='flex-col justify-between gap-10 md:flex-row md:items-center'>
+          <FlexBox className='flex-col items-start gap-10 md:flex-row md:items-center md:justify-between'>
             <P className='text-background' size='small'>
               Copyright © {new Date().getFullYear()}, Web Archive. All rights reserved.
             </P>

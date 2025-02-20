@@ -7,11 +7,11 @@ import { ApiResponsePost } from "@/utils/types";
 import type { SearchParams } from "nuqs/server";
 
 type PageProps = {
-  urlParams: Promise<SearchParams>;
+  searchParams: Promise<SearchParams>;
 };
 
-export default async function Home({ urlParams }: PageProps) {
-  const { query, tags, page } = await getUrlQueryParams(urlParams);
+export default async function Home({ searchParams }: PageProps) {
+  const { query, tags, page, timedOut } = await getUrlQueryParams(searchParams);
   const apiResponse = await fetch(
     apiEndpoints.posts.getPosts({
       query,
@@ -25,7 +25,7 @@ export default async function Home({ urlParams }: PageProps) {
     <>
       <Hero />
 
-      <PostsSearch apiData={apiData} />
+      <PostsSearch apiData={apiData} timedOut={timedOut} />
 
       <Footer />
     </>

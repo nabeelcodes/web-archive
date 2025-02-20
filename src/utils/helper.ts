@@ -74,10 +74,10 @@ export const breakpointAsNumber = (breakpoint: keyof typeof theme.breakpoints) =
 };
 
 export const getUrlQueryParams = async (searchParams: Promise<SearchParams>) => {
-  const { query, tags, page } = await searchParams;
+  const { query, tags, page, timedOut } = await searchParams;
   if (Array.isArray(query) || Array.isArray(tags) || Array.isArray(page)) {
     return {};
   }
 
-  return { query, tags, page };
+  return { query, tags, page, timedOut };
 };

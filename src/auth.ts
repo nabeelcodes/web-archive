@@ -20,7 +20,7 @@ declare module "next-auth" {
   }
 }
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+const authjsConfig = NextAuth({
   providers: [
     Credentials({
       credentials: {
@@ -72,3 +72,5 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   secret: process.env.AUTH_SECRET
 });
+
+export const { handlers, signIn, signOut, auth } = authjsConfig;

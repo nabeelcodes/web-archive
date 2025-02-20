@@ -1,12 +1,12 @@
+import { Dispatch, SetStateAction } from "react";
 import { Post } from "@/utils/types";
 
 type EditFormProps = {
   postDetails: Post;
+  modalHandler: Dispatch<SetStateAction<boolean>>;
 };
 
-const EditForm = ({ postDetails }: EditFormProps) => {
-  console.log({ postDetails });
-
+const EditForm = ({}: EditFormProps) => {
   return <></>;
 };
 

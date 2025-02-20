@@ -1,4 +1,4 @@
-import { MouseEvent } from "react";
+import { Dispatch, MouseEvent, SetStateAction } from "react";
 import { signOut } from "next-auth/react";
 import { toast } from "sonner";
 import { Pencil } from "lucide-react";
@@ -17,13 +17,14 @@ import {
 
 type EditPostProps = {
   postDetails: Post;
+  editModalOpen: boolean;
+  setEditModalOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-const EditPost = ({ postDetails }: EditPostProps) => {
+const EditPost = ({ postDetails, editModalOpen, setEditModalOpen }: EditPostProps) => {
   const { verifyToken } = useVerifyToken();
 
-  const loginChecker = async (event: MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
+  const loginChecker = async () => {
     const { success } = await verifyToken();
     // Do nothing if user logged in
     if (!success) {
@@ -35,15 +36,20 @@ const EditPost = ({ postDetails }: EditPostProps) => {
     }
   };
 
+  const modalHandler = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    loginChecker();
+  };
+
   return (
-    <Dialog>
+    <Dialog open={editModalOpen} onOpenChange={setEditModalOpen}>
       <DialogTrigger asChild>
         <Button
           size='small'
           variant='pill'
           shape='circle'
           className='absolute right-2 top-2 z-1'
-          onClick={loginChecker}>
+          onClick={modalHandler}>
           <Pencil size={12} />
         </Button>
       </DialogTrigger>
@@ -54,7 +60,7 @@ const EditPost = ({ postDetails }: EditPostProps) => {
           <DialogDescription>Update details for this article</DialogDescription>
         </DialogHeader>
 
-        <EditForm postDetails={postDetails} />
+        <EditForm postDetails={postDetails} modalHandler={setEditModalOpen} />
       </DialogContent>
     </Dialog>
   );

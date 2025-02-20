@@ -1,11 +1,17 @@
+// Middleware to check for an active auth session
+// If session not-found, redirect to home page(login page)
+// and update url query params with "/?timedOut=true" param
 import { NextResponse } from "next/server";
-import apiEndpoints from "@/data/apiEndpoints";
 import { auth } from "@/auth";
+import apiEndpoints from "@/data/apiEndpoints";
 
 export default auth(async (req) => {
-  const isAuthenticated = !!req?.auth;
+  const isAuthenticated = Boolean(req?.auth);
   const jwt = req?.auth?.accessToken;
-  const { nextUrl } = req;
+  const currentUrl = req.nextUrl.origin;
+
+  // just exit if user is NOT authenticated or session token is missing
+  if (!isAuthenticated || !jwt) return;
 
   if (isAuthenticated && jwt) {
     // token validity check with backend
@@ -18,7 +24,8 @@ export default auth(async (req) => {
     });
     // if token(jwt) is expired
     if (!apiResponse.ok) {
-      return NextResponse.rewrite(new URL("/?logout=true", nextUrl));
+      const newUrl = new URL("/?timedOut=true", currentUrl);
+      return NextResponse.rewrite(newUrl);
     }
   }
 });

@@ -35,10 +35,14 @@ const PostCard = ({
 }: PostCardProps) => {
   const { title, description, link, image, tags: tagList, id } = post;
   const [isExpanded, setIsExpanded] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
   const postCardRef = useRef<HTMLDivElement | null>(null);
   const session = useSession();
 
   const cardClickHandler = () => {
+    // Do not run when Post is being edited
+    if (editModalOpen) return;
+
     setExpandedCardId(id);
     setIsExpanded((prev) => !prev);
     // preventing overflow on the body due to DOM changes
@@ -97,14 +101,12 @@ const PostCard = ({
         title={title}
         onClick={isExpanded ? () => null : cardClickHandler}
         transition={{ duration: 0.5, ease: "anticipate" }}>
-        {/* Edit Button */}
-        {session.status === "authenticated" && !isExpanded && <EditPost postDetails={post} />}
-
         {/* image wrapper */}
         <div className='card-image-wrapper relative isolate aspect-[1200/630] w-full'>
           <Image src={image} alt='card-image' fill className='z-1 object-cover' />
         </div>
 
+        {/* Textual data and Tags */}
         <FlexBox className='relative grow flex-col justify-between gap-16 p-16'>
           {/* title and description */}
           <div className='max-h-36'>
@@ -150,6 +152,15 @@ const PostCard = ({
             </motion.a>
           )}
         </FlexBox>
+
+        {/* Edit Button */}
+        {session.status === "authenticated" && !isExpanded && (
+          <EditPost
+            postDetails={post}
+            editModalOpen={editModalOpen}
+            setEditModalOpen={setEditModalOpen}
+          />
+        )}
       </motion.div>
     </>
   );

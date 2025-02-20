@@ -1,21 +1,35 @@
 "use client";
 
 import { PAGE_QUERY_KEY, SEARCH_QUERY_KEY, TAGS_QUERY_KEY } from "@/data/globals";
-import { useState } from "react";
-import LayoutContainer from "@/components/UI/LayoutContainer";
-import FlexBox from "@/components/UI/FlexBox";
-import { Grid } from "@/components/UI/Grid";
+import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
+import { useEffect, useState } from "react";
+import { signOut } from "next-auth/react";
 import ListStylePicker from "@/components/ListStylePicker";
 import Pagination from "@/components/Pagination";
 import PostCard from "@/components/PostCard";
 import TagList from "@/components/TagList";
+import SearchInput from "@/components/SearchInput";
+import LayoutContainer from "@/components/UI/LayoutContainer";
+import FlexBox from "@/components/UI/FlexBox";
+import { Grid } from "@/components/UI/Grid";
+import H5 from "@/components/UI/Typography/H5";
 import { matches } from "@/utils/helper";
 import { ApiResponsePost } from "@/utils/types";
-import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
-import SearchInput from "@/components/SearchInput";
-import H5 from "@/components/UI/Typography/H5";
 
-const PostsSearch = ({ apiData }: { apiData: ApiResponsePost }) => {
+type PostsSearchType = {
+  apiData: ApiResponsePost;
+  timedOut: string | string[] | undefined;
+};
+
+const PostsSearch = ({ apiData, timedOut }: PostsSearchType) => {
+  useEffect(() => {
+    // If current auth session expired, logout user
+    if (timedOut && timedOut === "true") {
+      // toast won't work since it's a manual refresh by user
+      signOut({ redirect: false });
+    }
+  }, []);
+
   const [postStyle, setPostStyle] = useState<"grid" | "list">("grid");
   const [expandedCardId, setExpandedCardId] = useState<string>("");
   const [query, setQuery] = useQueryState(SEARCH_QUERY_KEY, {
