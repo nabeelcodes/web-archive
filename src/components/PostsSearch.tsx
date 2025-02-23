@@ -28,7 +28,7 @@ const PostsSearch = ({ apiData, timedOut }: PostsSearchType) => {
       // toast won't work since it's a manual refresh by user
       signOut({ redirect: false });
     }
-  }, []);
+  }, [timedOut]);
 
   const [postStyle, setPostStyle] = useState<"grid" | "list">("grid");
   const [expandedCardId, setExpandedCardId] = useState<string>("");

@@ -1,11 +1,11 @@
 import { Dispatch, MouseEvent, SetStateAction } from "react";
-import { signOut } from "next-auth/react";
 import { toast } from "sonner";
 import { Pencil } from "lucide-react";
+import { signOut } from "next-auth/react";
 import { useVerifyToken } from "@/apiRoutes/auth-routes";
+import { Post } from "@/utils/types";
 import EditForm from "@/components/EditForm";
 import Button from "@/components/UI/Button";
-import { Post } from "@/utils/types";
 import {
   Dialog,
   DialogTrigger,
@@ -36,9 +36,9 @@ const EditPost = ({ postDetails, editModalOpen, setEditModalOpen }: EditPostProp
     }
   };
 
-  const modalHandler = (event: MouseEvent<HTMLButtonElement>) => {
+  const modalHandler = async (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
-    loginChecker();
+    await loginChecker();
   };
 
   return (
@@ -60,7 +60,7 @@ const EditPost = ({ postDetails, editModalOpen, setEditModalOpen }: EditPostProp
           <DialogDescription>Update details for this article</DialogDescription>
         </DialogHeader>
 
-        <EditForm postDetails={postDetails} modalHandler={setEditModalOpen} />
+        <EditForm postDetails={postDetails} setEditModalOpen={setEditModalOpen} />
       </DialogContent>
     </Dialog>
   );

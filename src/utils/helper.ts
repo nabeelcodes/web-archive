@@ -1,8 +1,8 @@
-import clsx, { ClassValue } from "clsx";
 import { extendTailwindMerge } from "tailwind-merge";
+import clsx, { ClassValue } from "clsx";
+import { SearchParams } from "nuqs";
 import { tailwindFontSizeTokens } from "@/designSystem/tokens/typography";
 import { theme } from "@/designSystem/theme";
-import { SearchParams } from "nuqs";
 
 type FetchOptionsArgs = {
   method?: string;
@@ -73,6 +73,14 @@ export const breakpointAsNumber = (breakpoint: keyof typeof theme.breakpoints) =
   return parseInt(breakpointValue.replace("px", ""));
 };
 
+export const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: "smooth"
+  });
+};
+
 export const getUrlQueryParams = async (searchParams: Promise<SearchParams>) => {
   const { query, tags, page, timedOut } = await searchParams;
   if (Array.isArray(query) || Array.isArray(tags) || Array.isArray(page)) {
@@ -81,3 +89,24 @@ export const getUrlQueryParams = async (searchParams: Promise<SearchParams>) => 
 
   return { query, tags, page, timedOut };
 };
+
+// TODO: Export "loginChecker" from here
+// export const loginChecker = async ({
+//   verifyToken
+// }: {
+//   verifyToken: () => Promise<{
+//     success: boolean;
+//   }>;
+// }) => {
+//   const { success } = await verifyToken();
+//   // Do nothing if user logged in
+//   if (!success) {
+//     // user NOT logged in
+//     toast.error("Please login again", {
+//       description: "User timed out!"
+//     });
+//     reset();
+//     // TODO : close modal
+//     signOut({ redirect: false });
+//   }
+// };

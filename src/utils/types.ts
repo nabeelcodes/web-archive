@@ -6,7 +6,7 @@ export type Post = {
   description: string;
   link: string;
   image: string;
-  tags: string[];
+  tags: string;
   createdAt: string; // Can be a Date object
   updatedAt: string; // Can be a Date object
   id: string;

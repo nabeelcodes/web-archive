@@ -1,5 +1,7 @@
+import { Dispatch, SetStateAction } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { signOut, useSession } from "next-auth/react";
 import Input, { InputLabel } from "@/components/UI/Input";
@@ -7,9 +9,14 @@ import P from "@/components/UI/Typography/P";
 import Button from "@/components/UI/Button";
 import { useVerifyToken } from "@/apiRoutes/auth-routes";
 import { createPost } from "@/apiRoutes/admin-routes";
+import { CustomError } from "@/utils/customError";
 import { postSchema, PostSchemaType } from "@/utils/types";
 
-const PostForm = () => {
+type PostFormType = {
+  setIsModalOpen: Dispatch<SetStateAction<boolean>>;
+};
+
+const PostForm = ({ setIsModalOpen }: PostFormType) => {
   const {
     reset,
     register,
@@ -17,6 +24,7 @@ const PostForm = () => {
     formState: { errors, isSubmitting }
   } = useForm<PostSchemaType>({ resolver: zodResolver(postSchema) });
   const { verifyToken } = useVerifyToken();
+  const router = useRouter();
   const session = useSession();
   const accessToken = session?.data?.accessToken;
 
@@ -28,21 +36,56 @@ const PostForm = () => {
       toast.error("Please login again", {
         description: "User timed out!"
       });
-      reset();
-      // TODO : close modal
       signOut({ redirect: false });
     }
   };
 
-  const PostFormHandler = async (formData: PostSchemaType) => {
-    await loginChecker();
-    await createPost({ formData, accessToken, reset });
+  const postFormHandler = async (formData: PostSchemaType) => {
+    try {
+      // Check for user authentication
+      await loginChecker();
+
+      // Attempting post creation
+      const { success, errorData } = await createPost({
+        formData,
+        accessToken
+      });
+
+      // Post creation : FAILED
+      if (!success) {
+        // Parse the error response if available
+        const errorTitle = errorData.error.title;
+        const errorMessage = errorData.error.message;
+        throw new CustomError(
+          errorTitle || "Oops! an error occurred",
+          errorMessage || "Something went wrong on the server."
+        );
+      }
+
+      // Post creation : SUCCEEDED
+      toast.success("New article added!");
+      reset();
+      setIsModalOpen(false);
+      router.refresh();
+    } catch (error) {
+      // Catch network errors and other exceptions
+      if (error instanceof CustomError) {
+        toast.error(error.title, {
+          description: error.message
+        });
+      } else {
+        // In case the error is not an instance of Error (for unexpected issues)
+        toast.error("Something went wrong!", {
+          description: "An unknown error occurred"
+        });
+      }
+    }
   };
 
   return (
     <form
       className='mt-16 flex flex-col justify-between gap-16'
-      onSubmit={handleSubmit(PostFormHandler)}>
+      onSubmit={handleSubmit(postFormHandler)}>
       {/* Modal - Form */}
       <div>
         {/* Title */}

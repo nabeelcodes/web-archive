@@ -8,7 +8,7 @@ import P from "@/components/UI/Typography/P";
 import { loginSchema, LoginSchemaType } from "@/utils/types";
 import { toast } from "sonner";
 
-const LoginForm = ({ modalHandler }: { modalHandler: Dispatch<SetStateAction<boolean>> }) => {
+const LoginForm = ({ setIsModalOpen }: { setIsModalOpen: Dispatch<SetStateAction<boolean>> }) => {
   const {
     reset,
     register,
@@ -19,14 +19,16 @@ const LoginForm = ({ modalHandler }: { modalHandler: Dispatch<SetStateAction<boo
   const loginFormHandler = async (formData: LoginSchemaType) => {
     const { email, password } = formData;
 
-    const res = await signIn("credentials", {
+    // Attempting signIn
+    const apiResponse = await signIn("credentials", {
       email,
       password,
       redirect: false
     });
 
-    if (res?.error) {
-      switch (res.error) {
+    // signIn Failed
+    if (apiResponse?.error) {
+      switch (apiResponse.error) {
         case "CredentialsSignin":
           toast.error("Invalid Credentials", {
             description: "Please check your login credentials and try again"
@@ -34,12 +36,14 @@ const LoginForm = ({ modalHandler }: { modalHandler: Dispatch<SetStateAction<boo
           return;
         default:
           toast.error("Something went wrong!, Please try again");
+          return;
       }
-    } else {
-      toast.success("Logged in successfully");
-      modalHandler(false);
-      reset();
     }
+
+    // signIn Succeeded
+    toast.success("Logged in successfully");
+    reset();
+    setIsModalOpen(false);
   };
 
   return (

@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useSession, signOut } from "next-auth/react";
+import { toast } from "sonner";
 import { MoveRight } from "lucide-react";
+import { useSession, signOut } from "next-auth/react";
+import { scrollToTop } from "@/utils/helper";
 import LoginForm from "@/components/LoginForm";
 import FlexBox from "@/components/UI/FlexBox";
 import P from "@/components/UI/Typography/P";
@@ -37,7 +39,11 @@ const AdminLogin = () => {
         <P
           tag='button'
           size='small'
-          onClick={() => signOut()}
+          onClick={() => {
+            signOut({ redirect: false });
+            toast.success("User signed out successfully!");
+            scrollToTop();
+          }}
           className='shrink-0 whitespace-nowrap text-background underline underline-offset-2 can-hover:no-underline'>
           SignOut
         </P>
@@ -63,7 +69,7 @@ const AdminLogin = () => {
           <DialogDescription>Enter your credentials</DialogDescription>
         </DialogHeader>
 
-        <LoginForm modalHandler={setIsModalOpen} />
+        <LoginForm setIsModalOpen={setIsModalOpen} />
       </DialogContent>
     </Dialog>
   );
