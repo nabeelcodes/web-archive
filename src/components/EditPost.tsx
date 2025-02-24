@@ -56,7 +56,7 @@ const EditPost = ({ postDetails, editModalOpen, setEditModalOpen }: EditPostProp
 
       <DialogContent className='max-h-[90vh] overflow-y-scroll'>
         <DialogHeader>
-          <DialogTitle>Edit Article</DialogTitle>
+          <DialogTitle>Make Changes</DialogTitle>
           <DialogDescription>Update details for this article</DialogDescription>
         </DialogHeader>
 

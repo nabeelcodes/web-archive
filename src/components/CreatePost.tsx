@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { signOut } from "next-auth/react";
 import { toast } from "sonner";
+import { Plus } from "lucide-react";
+import { signOut } from "next-auth/react";
 import { useVerifyToken } from "@/apiRoutes/auth-routes";
 import PostForm from "@/components/PostForm";
 import Button from "@/components/UI/Button";
@@ -37,10 +38,9 @@ const CreatePost = () => {
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <DialogTrigger asChild>
         <Button
-          size='small'
-          className='h-[41.6px] rounded-full bg-neutral-900 px-1620 text-small'
+          className='h-[41.6px] gap-6 rounded-full bg-neutral-900 px-1620 text-small'
           onClick={modalHandler}>
-          Create
+          <Plus size={16} absoluteStrokeWidth /> Create
         </Button>
       </DialogTrigger>
 

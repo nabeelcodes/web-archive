@@ -4,12 +4,13 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { signOut, useSession } from "next-auth/react";
+import DeletePost from "@/components/DeletePost";
 import Input, { InputLabel } from "@/components/UI/Input";
 import FlexBox from "@/components/UI/FlexBox";
 import P from "@/components/UI/Typography/P";
 import Button from "@/components/UI/Button";
 import { useVerifyToken } from "@/apiRoutes/auth-routes";
-import { updatePost, deletePost } from "@/apiRoutes/admin-routes";
+import { updatePost } from "@/apiRoutes/admin-routes";
 import { CustomError } from "@/utils/customError";
 import { Post, postSchema, PostSchemaType } from "@/utils/types";
 
@@ -73,48 +74,6 @@ const EditForm = ({ postDetails, setEditModalOpen }: EditFormProps) => {
 
       // Post update : SUCCEEDED
       toast.success("Article has been updated!");
-      reset();
-      setEditModalOpen(false);
-      router.refresh();
-    } catch (error) {
-      // Catch network errors and other exceptions
-      if (error instanceof CustomError) {
-        toast.error(error.title, {
-          description: error.message
-        });
-      } else {
-        // In case the error is not an instance of Error (for unexpected issues)
-        toast.error("Something went wrong!", {
-          description: "An unknown error occurred"
-        });
-      }
-    }
-  };
-
-  const deletePostHandler = async () => {
-    try {
-      // Check for user authentication
-      await loginChecker();
-
-      // Attempting post deletion
-      const { success, errorData } = await deletePost({
-        postId: postDetails.id,
-        accessToken
-      });
-
-      // Post deletion : FAILED
-      if (!success) {
-        // Parse the error response if available
-        const errorTitle = errorData.error.title;
-        const errorMessage = errorData.error.message;
-        throw new CustomError(
-          errorTitle || "Oops! an error occurred",
-          errorMessage || "Something went wrong on the server."
-        );
-      }
-
-      // Post deletion : SUCCEEDED
-      toast.success("Article has been deleted!");
       reset();
       setEditModalOpen(false);
       router.refresh();
@@ -249,17 +208,7 @@ const EditForm = ({ postDetails, setEditModalOpen }: EditFormProps) => {
         </Button>
 
         {/* Delete Button */}
-        <Button
-          size='small'
-          shape='rounded'
-          disabled={isSubmitting}
-          onClick={(event) => {
-            event.preventDefault();
-            deletePostHandler();
-          }}
-          className='w-full select-none rounded-full bg-red-600 text-background focus-visible:outline-2'>
-          Delete
-        </Button>
+        <DeletePost reset={reset} isSubmitting={isSubmitting} postDetails={postDetails} />
       </FlexBox>
     </form>
   );

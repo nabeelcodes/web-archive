@@ -1,12 +1,13 @@
 import { Dispatch, SetStateAction } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { signIn } from "next-auth/react";
 import Input, { InputLabel } from "@/components/UI/Input";
 import Button from "@/components/UI/Button";
 import P from "@/components/UI/Typography/P";
+import { scrollToTop } from "@/utils/helper";
 import { loginSchema, LoginSchemaType } from "@/utils/types";
-import { toast } from "sonner";
 
 const LoginForm = ({ setIsModalOpen }: { setIsModalOpen: Dispatch<SetStateAction<boolean>> }) => {
   const {
@@ -44,6 +45,7 @@ const LoginForm = ({ setIsModalOpen }: { setIsModalOpen: Dispatch<SetStateAction
     toast.success("Logged in successfully");
     reset();
     setIsModalOpen(false);
+    scrollToTop();
   };
 
   return (

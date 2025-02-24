@@ -28,7 +28,7 @@ const Button = ({
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
     className={cn(
-      "grid place-items-center",
+      "flex items-center justify-center",
       "disabled:pointer-events-none disabled:bg-neutral-700 disabled:text-neutral-400",
       "transition-colors ease-in-out",
       {
