@@ -1,8 +1,9 @@
 import { Dispatch, SetStateAction } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import CreatableSelect from "react-select/creatable";
+import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import Input, { InputLabel } from "@/components/UI/Input";
 import P from "@/components/UI/Typography/P";
@@ -13,12 +14,14 @@ import { CustomError } from "@/utils/customError";
 import { postSchema, PostSchemaType } from "@/utils/types";
 
 type PostFormType = {
+  allTags: string[];
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-const PostForm = ({ setIsModalOpen }: PostFormType) => {
+const PostForm = ({ allTags, setIsModalOpen }: PostFormType) => {
   const {
     reset,
+    control,
     register,
     handleSubmit,
     formState: { errors, isSubmitting }
@@ -27,6 +30,12 @@ const PostForm = ({ setIsModalOpen }: PostFormType) => {
   const router = useRouter();
   const session = useSession();
   const accessToken = session?.data?.accessToken;
+  const selectOptions = allTags.map((tag) => {
+    return {
+      value: tag.toLowerCase(),
+      label: tag
+    };
+  });
 
   const loginChecker = async () => {
     const { success } = await verifyToken();
@@ -170,11 +179,25 @@ const PostForm = ({ setIsModalOpen }: PostFormType) => {
           <InputLabel required htmlFor='tags'>
             Tags
           </InputLabel>
-          <Input
-            {...register("tags")}
-            id='tags'
-            placeholder='Enter one or more tags associated with the article'
-            fullWidth
+
+          <Controller
+            name='tags'
+            control={control}
+            render={({ field: { onChange, onBlur } }) => (
+              <CreatableSelect
+                isMulti
+                id='tags'
+                menuPlacement='top'
+                onBlur={onBlur}
+                options={selectOptions}
+                onChange={(selectedOptions) => {
+                  // Convert the selectedOptions(resembles selectOptions) to a string[]
+                  const tags = selectedOptions ? selectedOptions.map((option) => option.value) : [];
+                  onChange(tags);
+                }}
+                placeholder='Enter one or more tags associated with the article'
+              />
+            )}
           />
         </fieldset>
 

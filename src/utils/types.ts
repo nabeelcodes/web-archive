@@ -6,7 +6,7 @@ export type Post = {
   description: string;
   link: string;
   image: string;
-  tags: string;
+  tags: string[];
   createdAt: string; // Can be a Date object
   updatedAt: string; // Can be a Date object
   id: string;
@@ -17,6 +17,10 @@ export type ApiResponsePost = {
   currentPage: number;
   nextPageExists: boolean;
   totalPages: number;
+};
+
+export type ApiResponseTags = {
+  allTags: string[];
 };
 
 export type User = {
@@ -51,7 +55,7 @@ export const postSchema = z.object({
     .refine((value) => /^(https?):\/\/(?=.*\.[a-z]{2,})[^\s$.?#].[^\s]*$/i.test(value), {
       message: "Please enter a valid URL"
     }),
-  tags: z.string().nonempty("Please provide one or more tags to identify this article!")
+  tags: z.array(z.string()).nonempty("Please provide one or more tags to identify this article!")
 });
 
 export type PostSchemaType = z.infer<typeof postSchema>;

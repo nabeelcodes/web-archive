@@ -6,10 +6,11 @@ import CreatePost from "@/components/CreatePost";
 
 type ListStyleProps = {
   postStyle: "grid" | "list";
+  allTags: string[];
   setPostStyle: Dispatch<SetStateAction<"grid" | "list">>;
 };
 
-const ListStylePicker = ({ postStyle, setPostStyle }: ListStyleProps) => {
+const ListStylePicker = ({ postStyle, allTags, setPostStyle }: ListStyleProps) => {
   const listIsActive = postStyle === "list";
   const session = useSession();
 
@@ -36,7 +37,7 @@ const ListStylePicker = ({ postStyle, setPostStyle }: ListStyleProps) => {
       </Button>
 
       {/* create new post button : for logged-in admin only */}
-      {session.status === "authenticated" && <CreatePost />}
+      {session.status === "authenticated" && <CreatePost allTags={allTags} />}
     </>
   );
 };

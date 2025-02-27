@@ -18,10 +18,11 @@ import { ApiResponsePost } from "@/utils/types";
 
 type PostsSearchType = {
   apiData: ApiResponsePost;
+  allTags: string[];
   timedOut: string | string[] | undefined;
 };
 
-const PostsSearch = ({ apiData, timedOut }: PostsSearchType) => {
+const PostsSearch = ({ apiData, allTags, timedOut }: PostsSearchType) => {
   useEffect(() => {
     // If current auth session expired, logout user
     if (timedOut && timedOut === "true") {
@@ -61,8 +62,8 @@ const PostsSearch = ({ apiData, timedOut }: PostsSearchType) => {
           setPage={setPage}
         />
 
-        {/* grid vs list picker */}
-        <ListStylePicker postStyle={postStyle} setPostStyle={setPostStyle} />
+        {/* grid/list picker & createPost */}
+        <ListStylePicker postStyle={postStyle} allTags={allTags} setPostStyle={setPostStyle} />
       </FlexBox>
 
       {/* clicked tags list */}

@@ -1,8 +1,9 @@
 import { Dispatch, SetStateAction } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import CreatableSelect from "react-select/creatable";
+import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import DeletePost from "@/components/DeletePost";
 import Input, { InputLabel } from "@/components/UI/Input";
@@ -15,13 +16,15 @@ import { CustomError } from "@/utils/customError";
 import { Post, postSchema, PostSchemaType } from "@/utils/types";
 
 type EditFormProps = {
+  allTags: string[];
   postDetails: Post;
   setEditModalOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-const EditForm = ({ postDetails, setEditModalOpen }: EditFormProps) => {
+const EditForm = ({ allTags, postDetails, setEditModalOpen }: EditFormProps) => {
   const {
     reset,
+    control,
     register,
     handleSubmit,
     formState: { errors, isDirty, isSubmitting }
@@ -29,13 +32,19 @@ const EditForm = ({ postDetails, setEditModalOpen }: EditFormProps) => {
     resolver: zodResolver(postSchema),
     defaultValues: {
       ...postDetails,
-      tags: postDetails.tags.toString()
+      tags: postDetails.tags
     }
   });
   const { verifyToken } = useVerifyToken();
   const router = useRouter();
   const session = useSession();
   const accessToken = session?.data?.accessToken;
+  const selectOptions = allTags.map((tag) => {
+    return {
+      value: tag.toLowerCase(),
+      label: tag
+    };
+  });
 
   const loginChecker = async () => {
     const { success } = await verifyToken();
@@ -180,11 +189,25 @@ const EditForm = ({ postDetails, setEditModalOpen }: EditFormProps) => {
           <InputLabel required htmlFor='tags'>
             Tags
           </InputLabel>
-          <Input
-            {...register("tags")}
-            id='tags'
-            placeholder='Enter one or more tags associated with the article'
-            fullWidth
+
+          <Controller
+            name='tags'
+            control={control}
+            render={({ field: { onChange, onBlur } }) => (
+              <CreatableSelect
+                isMulti
+                id='tags'
+                menuPlacement='top'
+                onBlur={onBlur}
+                options={selectOptions}
+                onChange={(selectedOptions) => {
+                  // Convert the selectedOptions(resembles selectOptions) to a string[]
+                  const tags = selectedOptions ? selectedOptions.map((option) => option.value) : [];
+                  onChange(tags);
+                }}
+                placeholder='Enter one or more tags associated with the article'
+              />
+            )}
           />
         </fieldset>
 

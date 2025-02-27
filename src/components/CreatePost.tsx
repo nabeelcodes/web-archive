@@ -14,7 +14,7 @@ import {
   DialogDescription
 } from "@/components/UI/Modal";
 
-const CreatePost = () => {
+const CreatePost = ({ allTags }: { allTags: string[] }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { verifyToken } = useVerifyToken();
 
@@ -50,7 +50,7 @@ const CreatePost = () => {
           <DialogDescription>Enter details for a new article</DialogDescription>
         </DialogHeader>
 
-        <PostForm setIsModalOpen={setIsModalOpen} />
+        <PostForm allTags={allTags} setIsModalOpen={setIsModalOpen} />
       </DialogContent>
     </Dialog>
   );

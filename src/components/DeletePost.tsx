@@ -25,10 +25,10 @@ type DeletePostProps = {
   isSubmitting: boolean;
   postDetails: Post;
   reset: UseFormReset<{
-    link: string;
     title: string;
+    link: string;
     image: string;
-    tags: string;
+    tags: [string, ...string[]];
     description?: string | undefined;
   }>;
 };

@@ -3,7 +3,7 @@ import PostsSearch from "@/components/PostsSearch";
 import Footer from "@/components/Footer";
 import apiEndpoints from "@/data/apiEndpoints";
 import { getUrlQueryParams } from "@/utils/helper";
-import { ApiResponsePost } from "@/utils/types";
+import { ApiResponsePost, ApiResponseTags } from "@/utils/types";
 import type { SearchParams } from "nuqs/server";
 
 type PageProps = {
@@ -12,20 +12,24 @@ type PageProps = {
 
 export default async function Home({ searchParams }: PageProps) {
   const { query, tags, page, timedOut } = await getUrlQueryParams(searchParams);
-  const apiResponse = await fetch(
+  // Fetching all posts
+  const apiResponsePosts = await fetch(
     apiEndpoints.posts.getPosts({
       query,
       tags,
       page
     })
   );
-  const apiData: ApiResponsePost = await apiResponse.json();
+  const apiDataPosts: ApiResponsePost = await apiResponsePosts.json();
+  // Fetching all tags
+  const apiResponseTags = await fetch(apiEndpoints.tags.getAllTags());
+  const apiDataTags: ApiResponseTags = await apiResponseTags.json();
 
   return (
     <>
       <Hero />
 
-      <PostsSearch apiData={apiData} timedOut={timedOut} />
+      <PostsSearch apiData={apiDataPosts} allTags={apiDataTags.allTags} timedOut={timedOut} />
 
       <Footer />
     </>

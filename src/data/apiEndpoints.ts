@@ -9,6 +9,9 @@ const apiEndpoints = {
     updatePost: (postId: string) => `${NEXT_PUBLIC_API_URL}/api/posts/${postId}`,
     deletePost: (postId: string) => `${NEXT_PUBLIC_API_URL}/api/posts/${postId}`
   },
+  tags: {
+    getAllTags: () => `${NEXT_PUBLIC_API_URL}/api/tags`
+  },
   users: {
     login: () => `${NEXT_PUBLIC_API_URL}/api/users/login`,
     fetchCurrentUser: () => `${NEXT_PUBLIC_API_URL}/api/users/current`

@@ -10,7 +10,8 @@ export const createPost = async ({
   accessToken: string | undefined;
 }) => {
   const { title, description, link, image, tags } = formData;
-  const tagsArray = tags.split(",");
+  // creating tags array with only unique values
+  const tagsArray = [...new Set(tags)];
   const postData = {
     title,
     description,
@@ -47,13 +48,12 @@ export const updatePost = async ({
   accessToken: string | undefined;
 }) => {
   const { title, description, link, image, tags } = updatedFormData;
-  const tagsArray = tags.split(",");
   const updatedPostData = {
     title,
     description,
     link,
     image,
-    tags: tagsArray
+    tags
   };
 
   const apiResponse = await fetch(apiEndpoints.posts.updatePost(postId), {

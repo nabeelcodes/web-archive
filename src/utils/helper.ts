@@ -83,6 +83,7 @@ export const scrollToTop = () => {
 
 export const getUrlQueryParams = async (searchParams: Promise<SearchParams>) => {
   const { query, tags, page, timedOut } = await searchParams;
+
   if (Array.isArray(query) || Array.isArray(tags) || Array.isArray(page)) {
     return {};
   }
