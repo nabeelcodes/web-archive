@@ -34,9 +34,11 @@ const TagList = ({ tags, setTags }: TagListProps) => {
         </Button>
       ))}
 
-      <Button shape='circle' size='small' onClick={() => setTags([])}>
-        <X size={16} />
-      </Button>
+      {tags.length > 1 && (
+        <Button shape='circle' size='small' onClick={() => setTags([])}>
+          <X size={16} />
+        </Button>
+      )}
     </FlexBox>
   );
 };

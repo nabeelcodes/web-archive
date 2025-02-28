@@ -85,9 +85,10 @@ const PostsSearch = ({ apiData, allTags, timedOut }: PostsSearchType) => {
               <PostCard
                 key={post.id}
                 post={post}
+                allTags={allTags}
+                isInactive={isInactive}
                 isPostExpanded={isPostExpanded}
                 setExpandedCardId={setExpandedCardId}
-                isInactive={isInactive}
                 setTags={setTags}
                 setPage={setPage}
               />

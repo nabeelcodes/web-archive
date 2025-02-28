@@ -12,8 +12,9 @@ import P from "@/components/UI/Typography/P";
 import Button from "@/components/UI/Button";
 import { useVerifyToken } from "@/apiRoutes/auth-routes";
 import { updatePost } from "@/apiRoutes/admin-routes";
-import { CustomError } from "@/utils/customError";
 import { Post, postSchema, PostSchemaType } from "@/utils/types";
+import { CustomError } from "@/utils/customError";
+import { cn } from "@/utils/helper";
 
 type EditFormProps = {
   allTags: string[];
@@ -22,6 +23,10 @@ type EditFormProps = {
 };
 
 const EditForm = ({ allTags, postDetails, setEditModalOpen }: EditFormProps) => {
+  const router = useRouter();
+  const session = useSession();
+  const { verifyToken } = useVerifyToken();
+  const accessToken = session?.data?.accessToken;
   const {
     reset,
     control,
@@ -30,21 +35,12 @@ const EditForm = ({ allTags, postDetails, setEditModalOpen }: EditFormProps) => 
     formState: { errors, isDirty, isSubmitting }
   } = useForm<PostSchemaType>({
     resolver: zodResolver(postSchema),
-    defaultValues: {
-      ...postDetails,
-      tags: postDetails.tags
-    }
+    defaultValues: postDetails
   });
-  const { verifyToken } = useVerifyToken();
-  const router = useRouter();
-  const session = useSession();
-  const accessToken = session?.data?.accessToken;
-  const selectOptions = allTags.map((tag) => {
-    return {
-      value: tag.toLowerCase(),
-      label: tag
-    };
-  });
+  const selectOptions = allTags.map((tag) => ({
+    value: tag.toLowerCase(),
+    label: tag
+  }));
 
   const loginChecker = async () => {
     const { success } = await verifyToken();
@@ -59,6 +55,11 @@ const EditForm = ({ allTags, postDetails, setEditModalOpen }: EditFormProps) => 
   };
 
   const editFormHandler = async (updatedFormData: PostSchemaType) => {
+    // TODO: remove this fake delay lol
+    await new Promise((resolve) => {
+      setTimeout(resolve, 3000);
+    });
+
     try {
       // Check for user authentication
       await loginChecker();
@@ -186,26 +187,42 @@ const EditForm = ({ allTags, postDetails, setEditModalOpen }: EditFormProps) => 
       <div>
         {/* Tags */}
         <fieldset>
-          <InputLabel required htmlFor='tags'>
-            Tags
-          </InputLabel>
+          <InputLabel required>Tags</InputLabel>
 
           <Controller
             name='tags'
             control={control}
-            render={({ field: { onChange, onBlur } }) => (
+            render={({ field: { name, onBlur, onChange, value } }) => (
               <CreatableSelect
                 isMulti
-                id='tags'
                 menuPlacement='top'
+                id={name}
                 onBlur={onBlur}
                 options={selectOptions}
+                defaultValue={
+                  value
+                    ? value.map((tag) => ({
+                        value: tag.toLowerCase(),
+                        label: tag
+                      }))
+                    : []
+                }
                 onChange={(selectedOptions) => {
-                  // Convert the selectedOptions(resembles selectOptions) to a string[]
                   const tags = selectedOptions ? selectedOptions.map((option) => option.value) : [];
                   onChange(tags);
                 }}
                 placeholder='Enter one or more tags associated with the article'
+                classNames={{
+                  container: () => "border border-neutral-400 rounded-[0.5rem] py-2",
+                  valueContainer: () => "bg-background",
+                  control: () => "!border-transparent !bg-transparent",
+                  input: () => "bg-background",
+                  clearIndicator: () => "bg-background",
+                  dropdownIndicator: () => "bg-background",
+                  multiValue: () => "!rounded-md !bg-black !text-background !px-4",
+                  multiValueLabel: () => "!text-background",
+                  multiValueRemove: () => "-me-4"
+                }}
               />
             )}
           />
@@ -220,18 +237,29 @@ const EditForm = ({ allTags, postDetails, setEditModalOpen }: EditFormProps) => 
 
       {/* Modal - CTA */}
       <FlexBox className='mt-6 gap-8'>
+        {/* Delete Button */}
+        <DeletePost reset={reset} isSubmitting={isSubmitting} postDetails={postDetails} />
+
         {/* Submit Button */}
         <Button
           type='submit'
           size='small'
           shape='rounded'
           disabled={!isDirty || isSubmitting}
-          className='w-full select-none rounded-full text-background focus-visible:outline-2'>
-          Submit
+          className='relative w-full select-none overflow-hidden rounded-full text-background focus-visible:outline-2'>
+          <span
+            className={cn("absolute translate-y-0 transition-all", {
+              "-translate-y-7": isSubmitting
+            })}>
+            Submit
+          </span>
+          <span
+            className={cn("absolute translate-y-7 transition-all", {
+              "translate-y-0": isSubmitting
+            })}>
+            Submitting . . .
+          </span>
         </Button>
-
-        {/* Delete Button */}
-        <DeletePost reset={reset} isSubmitting={isSubmitting} postDetails={postDetails} />
       </FlexBox>
     </form>
   );

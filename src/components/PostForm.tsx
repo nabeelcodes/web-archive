@@ -19,6 +19,10 @@ type PostFormType = {
 };
 
 const PostForm = ({ allTags, setIsModalOpen }: PostFormType) => {
+  const { verifyToken } = useVerifyToken();
+  const router = useRouter();
+  const session = useSession();
+  const accessToken = session?.data?.accessToken;
   const {
     reset,
     control,
@@ -26,10 +30,6 @@ const PostForm = ({ allTags, setIsModalOpen }: PostFormType) => {
     handleSubmit,
     formState: { errors, isSubmitting }
   } = useForm<PostSchemaType>({ resolver: zodResolver(postSchema) });
-  const { verifyToken } = useVerifyToken();
-  const router = useRouter();
-  const session = useSession();
-  const accessToken = session?.data?.accessToken;
   const selectOptions = allTags.map((tag) => {
     return {
       value: tag.toLowerCase(),
@@ -215,7 +215,7 @@ const PostForm = ({ allTags, setIsModalOpen }: PostFormType) => {
         shape='rounded'
         disabled={isSubmitting}
         className='mt-6 w-full select-none rounded-full text-background focus-visible:outline-2'>
-        Submit article
+        Submit Article
       </Button>
     </form>
   );

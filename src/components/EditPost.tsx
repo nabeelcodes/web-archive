@@ -17,11 +17,12 @@ import {
 
 type EditPostProps = {
   postDetails: Post;
+  allTags: string[];
   editModalOpen: boolean;
   setEditModalOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-const EditPost = ({ postDetails, editModalOpen, setEditModalOpen }: EditPostProps) => {
+const EditPost = ({ postDetails, allTags, editModalOpen, setEditModalOpen }: EditPostProps) => {
   const { verifyToken } = useVerifyToken();
 
   const loginChecker = async () => {
@@ -60,7 +61,7 @@ const EditPost = ({ postDetails, editModalOpen, setEditModalOpen }: EditPostProp
           <DialogDescription>Update details for this article</DialogDescription>
         </DialogHeader>
 
-        <EditForm postDetails={postDetails} setEditModalOpen={setEditModalOpen} />
+        <EditForm allTags={allTags} postDetails={postDetails} setEditModalOpen={setEditModalOpen} />
       </DialogContent>
     </Dialog>
   );

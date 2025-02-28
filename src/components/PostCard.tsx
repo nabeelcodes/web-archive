@@ -12,8 +12,9 @@ import { cn } from "@/utils/helper";
 
 type PostCardProps = {
   post: Post;
-  isPostExpanded: boolean;
+  allTags: string[];
   isInactive: boolean;
+  isPostExpanded: boolean;
   setExpandedCardId: Dispatch<SetStateAction<string>>;
   setTags: (
     value: string[] | ((old: string[]) => string[] | null) | null,
@@ -27,9 +28,10 @@ type PostCardProps = {
 
 const PostCard = ({
   post,
+  allTags,
+  isInactive,
   isPostExpanded,
   setExpandedCardId,
-  isInactive,
   setTags,
   setPage
 }: PostCardProps) => {
@@ -107,7 +109,7 @@ const PostCard = ({
         </div>
 
         {/* Textual data and Tags */}
-        <FlexBox className='relative grow flex-col justify-between gap-16 p-16'>
+        <div className='relative grow space-y-4 p-16'>
           {/* title and description */}
           <div className='max-h-36'>
             <H5 className='line-clamp-2 text-pretty'>{title}</H5>
@@ -147,15 +149,16 @@ const PostCard = ({
               target='_blank'
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className='rounded-full bg-neutral-900 py-8 text-center text-background'>
+              className='block w-full rounded-full bg-neutral-900 py-8 text-center text-background'>
               Visit link
             </motion.a>
           )}
-        </FlexBox>
+        </div>
 
         {/* Edit Button */}
         {session.status === "authenticated" && !isExpanded && (
           <EditPost
+            allTags={allTags}
             postDetails={post}
             editModalOpen={editModalOpen}
             setEditModalOpen={setEditModalOpen}
