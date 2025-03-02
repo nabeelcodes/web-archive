@@ -21,7 +21,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "cdn.stackoverflow.co"
+        hostname: "medium.com"
       }
     ]
   },

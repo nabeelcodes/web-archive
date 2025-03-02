@@ -10,6 +10,7 @@ import Input, { InputLabel } from "@/components/UI/Input";
 import FlexBox from "@/components/UI/FlexBox";
 import P from "@/components/UI/Typography/P";
 import Button from "@/components/UI/Button";
+import { colors } from "@/designSystem/tokens/colors";
 import { useVerifyToken } from "@/apiRoutes/auth-routes";
 import { updatePost } from "@/apiRoutes/admin-routes";
 import { Post, postSchema, PostSchemaType } from "@/utils/types";
@@ -187,7 +188,9 @@ const EditForm = ({ allTags, postDetails, setEditModalOpen }: EditFormProps) => 
       <div>
         {/* Tags */}
         <fieldset>
-          <InputLabel required>Tags</InputLabel>
+          <InputLabel required htmlFor='tags'>
+            Tags
+          </InputLabel>
 
           <Controller
             name='tags'
@@ -195,8 +198,7 @@ const EditForm = ({ allTags, postDetails, setEditModalOpen }: EditFormProps) => 
             render={({ field: { name, onBlur, onChange, value } }) => (
               <CreatableSelect
                 isMulti
-                menuPlacement='top'
-                id={name}
+                inputId={name}
                 onBlur={onBlur}
                 options={selectOptions}
                 defaultValue={
@@ -211,17 +213,27 @@ const EditForm = ({ allTags, postDetails, setEditModalOpen }: EditFormProps) => 
                   const tags = selectedOptions ? selectedOptions.map((option) => option.value) : [];
                   onChange(tags);
                 }}
+                menuPlacement='top'
                 placeholder='Enter one or more tags associated with the article'
+                styles={{
+                  option: (baseStyles, state) => ({
+                    ...baseStyles,
+                    backgroundColor: state.isFocused ? colors.black : "",
+                    color: state.isFocused ? colors.background : ""
+                  })
+                }}
                 classNames={{
-                  container: () => "border border-neutral-400 rounded-[0.5rem] py-2",
-                  valueContainer: () => "bg-background",
+                  container: () => "border border-neutral-400 rounded-[0.5rem] px-4 py-4",
+                  valueContainer: () => "bg-background !pl-10",
                   control: () => "!border-transparent !bg-transparent",
                   input: () => "bg-background",
                   clearIndicator: () => "bg-background",
                   dropdownIndicator: () => "bg-background",
                   multiValue: () => "!rounded-md !bg-black !text-background !px-4",
                   multiValueLabel: () => "!text-background",
-                  multiValueRemove: () => "-me-4"
+                  multiValueRemove: () => "-me-4",
+                  menu: () => "-ml-4",
+                  menuList: () => "bg-background border border-neutral-400"
                 }}
               />
             )}

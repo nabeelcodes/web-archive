@@ -64,6 +64,7 @@ const LoginForm = ({ setIsModalOpen }: { setIsModalOpen: Dispatch<SetStateAction
             type='email'
             placeholder='Enter your email'
             fullWidth
+            autoComplete="on"
           />
         </fieldset>
 
@@ -85,6 +86,7 @@ const LoginForm = ({ setIsModalOpen }: { setIsModalOpen: Dispatch<SetStateAction
             type='password'
             placeholder='Enter your password'
             fullWidth
+            autoComplete="on"
           />
         </fieldset>
 
