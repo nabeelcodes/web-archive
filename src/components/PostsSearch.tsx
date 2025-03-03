@@ -4,6 +4,7 @@ import { PAGE_QUERY_KEY, SEARCH_QUERY_KEY, TAGS_QUERY_KEY } from "@/data/globals
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { useEffect, useState } from "react";
 import { signOut } from "next-auth/react";
+
 import ListStylePicker from "@/components/ListStylePicker";
 import Pagination from "@/components/Pagination";
 import PostCard from "@/components/PostCard";

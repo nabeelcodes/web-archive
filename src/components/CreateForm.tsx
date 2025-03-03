@@ -6,22 +6,21 @@ import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 
 import Form from "@/components/Form";
-import DeletePost from "@/components/DeletePost";
 import FlexBox from "@/components/UI/FlexBox";
 import Button from "@/components/UI/Button";
 import { useVerifyToken } from "@/apiRoutes/auth-routes";
-import { updatePost } from "@/apiRoutes/admin-routes";
-import { Post, postSchema, PostSchemaType } from "@/utils/types";
+import { createPost } from "@/apiRoutes/admin-routes";
+import { postSchema, PostSchemaType } from "@/utils/types";
 import { CustomError } from "@/utils/customError";
 import { cn } from "@/utils/helper";
 
-type EditFormProps = {
+type CreateFormType = {
   allTags: string[];
-  postDetails: Post;
-  setEditModalOpen: Dispatch<SetStateAction<boolean>>;
+  setIsModalOpen: Dispatch<SetStateAction<boolean>>;
+  children: React.ReactNode;
 };
 
-const EditForm = ({ allTags, postDetails, setEditModalOpen }: EditFormProps) => {
+const CreateForm = ({ allTags, setIsModalOpen, children }: CreateFormType) => {
   const { verifyToken } = useVerifyToken();
   const router = useRouter();
   const session = useSession();
@@ -32,10 +31,7 @@ const EditForm = ({ allTags, postDetails, setEditModalOpen }: EditFormProps) => 
     register,
     handleSubmit,
     formState: { errors, isDirty, isSubmitting }
-  } = useForm<PostSchemaType>({
-    resolver: zodResolver(postSchema),
-    defaultValues: postDetails
-  });
+  } = useForm<PostSchemaType>({ resolver: zodResolver(postSchema) });
 
   const loginChecker = async () => {
     const { success } = await verifyToken();
@@ -49,7 +45,7 @@ const EditForm = ({ allTags, postDetails, setEditModalOpen }: EditFormProps) => 
     }
   };
 
-  const editFormHandler = async (updatedFormData: PostSchemaType) => {
+  const createFormHandler = async (formData: PostSchemaType) => {
     // TODO: remove this fake delay lol
     await new Promise((resolve) => {
       setTimeout(resolve, 3000);
@@ -59,14 +55,13 @@ const EditForm = ({ allTags, postDetails, setEditModalOpen }: EditFormProps) => 
       // Check for user authentication
       await loginChecker();
 
-      // Attempting post update
-      const { success, errorData } = await updatePost({
-        postId: postDetails.id,
-        updatedFormData,
+      // Attempting post creation
+      const { success, errorData } = await createPost({
+        formData,
         accessToken
       });
 
-      // Post update : FAILED
+      // Post creation : FAILED
       if (!success) {
         // Parse the error response if available
         const errorTitle = errorData.error.title;
@@ -77,10 +72,10 @@ const EditForm = ({ allTags, postDetails, setEditModalOpen }: EditFormProps) => 
         );
       }
 
-      // Post update : SUCCEEDED
-      toast.success("Article has been updated!");
+      // Post creation : SUCCEEDED
+      toast.success("New article added!");
       reset();
-      setEditModalOpen(false);
+      setIsModalOpen(false);
       router.refresh();
     } catch (error) {
       // Catch network errors and other exceptions
@@ -104,13 +99,13 @@ const EditForm = ({ allTags, postDetails, setEditModalOpen }: EditFormProps) => 
       handleSubmit={handleSubmit}
       control={control}
       errors={errors}
-      formActionHandler={editFormHandler}>
+      formActionHandler={createFormHandler}>
       {/* Modal - CTA */}
-      <FlexBox className='mt-6 gap-8'>
-        {/* Delete Button */}
-        <DeletePost reset={reset} isSubmitting={isSubmitting} postDetails={postDetails} />
+      <FlexBox className='mt-6 flex-col gap-8 xs:flex-row'>
+        {/* Cancel button */}
+        {children}
 
-        {/* Form submit Button */}
+        {/* Form submit button */}
         <Button
           type='submit'
           size='small'
@@ -135,4 +130,4 @@ const EditForm = ({ allTags, postDetails, setEditModalOpen }: EditFormProps) => 
   );
 };
 
-export default EditForm;
+export default CreateForm;

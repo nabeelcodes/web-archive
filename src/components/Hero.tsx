@@ -8,12 +8,12 @@ const Hero = () => {
   return (
     <LayoutContainer
       tag={"header"}
-      className='relative flex min-h-[380px] items-end justify-center text-balance py-2448'>
+      className='relative flex min-h-[380px] items-end justify-center overflow-hidden text-balance py-2448'>
       <Image
         priority
         src={heroImage}
         alt='hero-section-image'
-        className='absolute -top-20 bottom-0 -z-1'
+        className='absolute -top-20 bottom-0 -z-1 min-w-[1250px] max-xs:hidden'
       />
 
       <div className='max-w-screen-md text-center'>

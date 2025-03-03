@@ -55,7 +55,7 @@ const EditPost = ({ postDetails, allTags, editModalOpen, setEditModalOpen }: Edi
         </Button>
       </DialogTrigger>
 
-      <DialogContent className='max-h-[90vh] overflow-y-scroll'>
+      <DialogContent className='max-h-[95vh]'>
         <DialogHeader>
           <DialogTitle>Make Changes</DialogTitle>
           <DialogDescription>Update details for this article</DialogDescription>

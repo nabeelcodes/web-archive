@@ -130,7 +130,8 @@ const DeletePost = ({ reset, isSubmitting, postDetails }: DeletePostProps) => {
               type='submit'
               size='small'
               shape='rounded'
-              className='w-full select-none rounded-full text-background focus-visible:outline-2'>
+              variant='outline'
+              className='w-full select-none rounded-full focus-visible:outline-2'>
               Cancel
             </Button>
           </DialogClose>
