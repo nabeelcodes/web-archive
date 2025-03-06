@@ -46,11 +46,6 @@ const CreateForm = ({ allTags, setIsModalOpen, children }: CreateFormType) => {
   };
 
   const createFormHandler = async (formData: PostSchemaType) => {
-    // TODO: remove this fake delay lol
-    await new Promise((resolve) => {
-      setTimeout(resolve, 3000);
-    });
-
     try {
       // Check for user authentication
       await loginChecker();

@@ -50,11 +50,6 @@ const EditForm = ({ allTags, postDetails, setEditModalOpen }: EditFormProps) => 
   };
 
   const editFormHandler = async (updatedFormData: PostSchemaType) => {
-    // TODO: remove this fake delay lol
-    await new Promise((resolve) => {
-      setTimeout(resolve, 3000);
-    });
-
     try {
       // Check for user authentication
       await loginChecker();
