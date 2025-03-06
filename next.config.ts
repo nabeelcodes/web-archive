@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const cspHeader = `
     default-src 'self';
-    connect-src 'self' http://localhost:8080;
+    connect-src 'self' https://web-archive-api.fly.dev;
     script-src 'self' 'unsafe-eval' 'unsafe-inline';
     style-src 'self' 'unsafe-inline';
     img-src * data:;
