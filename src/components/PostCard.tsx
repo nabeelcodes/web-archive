@@ -105,7 +105,14 @@ const PostCard = ({
         transition={{ duration: 0.5, ease: "anticipate" }}>
         {/* image wrapper */}
         <div className='card-image-wrapper relative isolate aspect-[1200/630] w-full'>
-          <Image src={image} alt='card-image' fill className='z-1 object-cover' />
+          <Image
+            fill
+            src={image}
+            quality={85}
+            alt={`An illustration about ${title}`}
+            sizes='(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw'
+            className='z-1 object-cover'
+          />
         </div>
 
         {/* Textual data and Tags */}

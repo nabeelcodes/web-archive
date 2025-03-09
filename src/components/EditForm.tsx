@@ -101,7 +101,7 @@ const EditForm = ({ allTags, postDetails, setEditModalOpen }: EditFormProps) => 
       errors={errors}
       formActionHandler={editFormHandler}>
       {/* Modal - CTA */}
-      <FlexBox className='mt-6 gap-8'>
+      <FlexBox className='mt-6 gap-12'>
         {/* Delete Button */}
         <DeletePost reset={reset} isSubmitting={isSubmitting} postDetails={postDetails} />
 

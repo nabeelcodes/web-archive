@@ -103,9 +103,10 @@ const DeletePost = ({ reset, isSubmitting, postDetails }: DeletePostProps) => {
         <Button
           size='small'
           shape='rounded'
+          variant='outline'
           disabled={isSubmitting}
           onClick={modalHandler}
-          className='w-full select-none rounded-full bg-red-600 text-background focus-visible:outline-2'>
+          className='w-full select-none rounded-full border-red-600 text-red-600 focus-visible:outline-2'>
           Delete
         </Button>
       </DialogTrigger>
@@ -124,7 +125,7 @@ const DeletePost = ({ reset, isSubmitting, postDetails }: DeletePostProps) => {
           </P>
         </FlexBox>
 
-        <FlexBox className='mt-16 flex-col gap-8 xs:flex-row'>
+        <FlexBox className='mt-16 flex-col gap-12 xs:flex-row'>
           <DialogClose asChild>
             <Button
               type='submit'

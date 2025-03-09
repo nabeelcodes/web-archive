@@ -96,7 +96,7 @@ const CreateForm = ({ allTags, setIsModalOpen, children }: CreateFormType) => {
       errors={errors}
       formActionHandler={createFormHandler}>
       {/* Modal - CTA */}
-      <FlexBox className='mt-6 flex-col gap-8 xs:flex-row'>
+      <FlexBox className='mt-6 flex-col gap-12 xs:flex-row'>
         {/* Cancel button */}
         {children}
 

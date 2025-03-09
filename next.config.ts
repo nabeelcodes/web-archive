@@ -17,11 +17,11 @@ const cspHeader = `
 
 const nextConfig: NextConfig = {
   images: {
-    unoptimized: true,
+    unoptimized: false,
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "medium.com"
+        hostname: "*.*"
       }
     ]
   },
