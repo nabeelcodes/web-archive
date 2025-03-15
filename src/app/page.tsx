@@ -20,7 +20,12 @@ export default async function Home({ searchParams }: PageProps) {
       tags,
       page
     }),
-    { cache: "force-cache", next: { revalidate: 3600, tags: [FETCH_TAGS.posts] } }
+    {
+      next: {
+        revalidate: 3600,
+        tags: [FETCH_TAGS.posts]
+      }
+    }
   );
 
   const apiDataPosts: ApiResponsePost = await apiResponsePosts.json();
