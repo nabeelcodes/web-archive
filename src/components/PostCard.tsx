@@ -3,10 +3,12 @@ import { motion } from "motion/react";
 import { useSession } from "next-auth/react";
 import { Options } from "nuqs";
 import Image from "next/image";
+
 import EditPost from "@/components/EditPost";
 import FlexBox from "@/components/UI/FlexBox";
 import H5 from "@/components/UI/Typography/H5";
 import P from "@/components/UI/Typography/P";
+import { blurPlaceholder } from "@/data/globals";
 import { Post } from "@/utils/types";
 import { cn } from "@/utils/helper";
 
@@ -109,7 +111,8 @@ const PostCard = ({
             fill
             src={image}
             quality={85}
-            alt={`An illustration about ${title}`}
+            blurDataURL={blurPlaceholder}
+            alt={`An illustration about ${title.toLowerCase()}`}
             sizes='(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw'
             className='z-1 object-cover'
           />

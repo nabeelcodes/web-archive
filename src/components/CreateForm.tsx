@@ -1,3 +1,4 @@
+import { revalidateTag } from "next/cache";
 import { Dispatch, SetStateAction } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -13,6 +14,7 @@ import { createPost } from "@/apiRoutes/admin-routes";
 import { postSchema, PostSchemaType } from "@/utils/types";
 import { CustomError } from "@/utils/customError";
 import { cn } from "@/utils/helper";
+import { FETCH_TAGS } from "@/data/globals";
 
 type CreateFormType = {
   allTags: string[];
@@ -72,6 +74,7 @@ const CreateForm = ({ allTags, setIsModalOpen, children }: CreateFormType) => {
       reset();
       setIsModalOpen(false);
       router.refresh();
+      revalidateTag(FETCH_TAGS.posts);
     } catch (error) {
       // Catch network errors and other exceptions
       if (error instanceof CustomError) {

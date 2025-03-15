@@ -1,3 +1,4 @@
+import { revalidateTag } from "next/cache";
 import { Dispatch, SetStateAction } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -14,6 +15,7 @@ import { updatePost } from "@/apiRoutes/admin-routes";
 import { Post, postSchema, PostSchemaType } from "@/utils/types";
 import { CustomError } from "@/utils/customError";
 import { cn } from "@/utils/helper";
+import { FETCH_TAGS } from "@/data/globals";
 
 type EditFormProps = {
   allTags: string[];
@@ -77,6 +79,7 @@ const EditForm = ({ allTags, postDetails, setEditModalOpen }: EditFormProps) => 
       reset();
       setEditModalOpen(false);
       router.refresh();
+      revalidateTag(FETCH_TAGS.posts);
     } catch (error) {
       // Catch network errors and other exceptions
       if (error instanceof CustomError) {

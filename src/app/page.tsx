@@ -1,28 +1,15 @@
-// import { unstable_cache } from "next/cache";
+import type { SearchParams } from "nuqs/server";
 import Hero from "@/components/Hero";
 import PostsSearch from "@/components/PostsSearch";
 import Footer from "@/components/Footer";
 import apiEndpoints from "@/data/apiEndpoints";
+import { FETCH_TAGS } from "@/data/globals";
 import { getUrlQueryParams } from "@/utils/helper";
 import { ApiResponsePost, ApiResponseTags } from "@/utils/types";
-import type { SearchParams } from "nuqs/server";
 
 type PageProps = {
   searchParams: Promise<SearchParams>;
 };
-
-// const getCachedPosts = unstable_cache(
-//   async ({ query, tags, page }) =>
-//     await fetch(
-//       apiEndpoints.posts.getPosts({
-//         query,
-//         tags,
-//         page
-//       })
-//     ),
-//   ["posts"],
-//   { revalidate: 3600 }
-// );
 
 export default async function Home({ searchParams }: PageProps) {
   const { query, tags, page, timedOut } = await getUrlQueryParams(searchParams);
@@ -33,10 +20,8 @@ export default async function Home({ searchParams }: PageProps) {
       tags,
       page
     }),
-    { cache: "force-cache", next: { revalidate: 3600 } }
+    { cache: "force-cache", next: { revalidate: 3600, tags: [FETCH_TAGS.posts] } }
   );
-
-  // const apiResponsePosts = await getCachedPosts({ query, tags, page });
 
   const apiDataPosts: ApiResponsePost = await apiResponsePosts.json();
   // Fetching all tags

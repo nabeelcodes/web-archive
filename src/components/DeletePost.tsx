@@ -1,7 +1,9 @@
+import { revalidateTag } from "next/cache";
+import { CircleAlert } from "lucide-react";
 import { MouseEvent } from "react";
 import { UseFormReset } from "react-hook-form";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { useVerifyToken } from "@/apiRoutes/auth-routes";
 import { deletePost } from "@/apiRoutes/admin-routes";
@@ -19,7 +21,7 @@ import {
   DialogDescription
 } from "@/components/UI/Modal";
 import P from "@/components/UI/Typography/P";
-import { CircleAlert } from "lucide-react";
+import { FETCH_TAGS } from "@/data/globals";
 
 type DeletePostProps = {
   isSubmitting: boolean;
@@ -82,6 +84,7 @@ const DeletePost = ({ reset, isSubmitting, postDetails }: DeletePostProps) => {
       toast.success("Article has been deleted!");
       reset();
       router.refresh();
+      revalidateTag(FETCH_TAGS.posts);
     } catch (error) {
       // Catch network errors and other exceptions
       if (error instanceof CustomError) {
