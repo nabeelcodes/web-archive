@@ -27,8 +27,8 @@ export default async function Home({ searchParams }: PageProps) {
       }
     }
   );
-
   const apiDataPosts: ApiResponsePost = await apiResponsePosts.json();
+
   // Fetching all tags
   const apiResponseTags = await fetch(apiEndpoints.tags.getAllTags());
   const apiDataTags: ApiResponseTags = await apiResponseTags.json();

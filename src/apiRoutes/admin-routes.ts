@@ -1,5 +1,9 @@
+"use server";
+
+import { revalidateTag } from "next/cache";
 import { PostSchemaType } from "@/utils/types";
 import apiEndpoints from "@/data/apiEndpoints";
+import { FETCH_TAGS } from "@/data/globals";
 
 // createPost()
 export const createPost = async ({
@@ -30,6 +34,10 @@ export const createPost = async ({
   });
 
   const success = apiResponse.ok;
+
+  if (success) {
+    revalidateTag(FETCH_TAGS.posts);
+  }
 
   return {
     success,
@@ -67,6 +75,10 @@ export const updatePost = async ({
 
   const success = apiResponse.ok;
 
+  if (success) {
+    revalidateTag(FETCH_TAGS.posts);
+  }
+
   return {
     success,
     errorData: success ? {} : await apiResponse.json()
@@ -90,6 +102,10 @@ export const deletePost = async ({
   });
 
   const success = apiResponse.ok;
+
+  if (success) {
+    revalidateTag(FETCH_TAGS.posts);
+  }
 
   return {
     success,
