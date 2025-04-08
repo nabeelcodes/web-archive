@@ -5,10 +5,11 @@ import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { useEffect, useState } from "react";
 import { signOut } from "next-auth/react";
 
-import ListStylePicker from "@/components/ListStylePicker";
+import SearchByTags from "@/components/SearchByTags";
 import Pagination from "@/components/Pagination";
 import PostCard from "@/components/PostCard";
 import TagList from "@/components/TagList";
+import AllTagsList from "@/components/AllTagsList";
 import SearchInput from "@/components/SearchInput";
 import LayoutContainer from "@/components/UI/LayoutContainer";
 import FlexBox from "@/components/UI/FlexBox";
@@ -16,6 +17,7 @@ import { Grid } from "@/components/UI/Grid";
 import H5 from "@/components/UI/Typography/H5";
 import { matches } from "@/utils/helper";
 import { ApiResponsePost } from "@/utils/types";
+import { AnimatePresence } from "motion/react";
 
 type PostsSearchType = {
   apiData: ApiResponsePost;
@@ -32,7 +34,7 @@ const PostsSearch = ({ apiData, allTags, timedOut }: PostsSearchType) => {
     }
   }, [timedOut]);
 
-  const [postStyle, setPostStyle] = useState<"grid" | "list">("grid");
+  const [allTagsShown, setAllTagsShown] = useState(false);
   const [expandedCardId, setExpandedCardId] = useState<string>("");
   const [query, setQuery] = useQueryState(SEARCH_QUERY_KEY, {
     defaultValue: "",
@@ -64,8 +66,13 @@ const PostsSearch = ({ apiData, allTags, timedOut }: PostsSearchType) => {
         />
 
         {/* grid/list picker & createPost */}
-        <ListStylePicker postStyle={postStyle} allTags={allTags} setPostStyle={setPostStyle} />
+        <SearchByTags allTags={allTags} setAllTagsShown={setAllTagsShown} />
       </FlexBox>
+
+      {/* all tags list */}
+      <AnimatePresence mode='wait'>
+        {allTagsShown ? <AllTagsList allTags={allTags} /> : null}
+      </AnimatePresence>
 
       {/* clicked tags list */}
       {isTagQueryEmpty ? null : <TagList tags={tags} setTags={setTags} />}
