@@ -23,7 +23,8 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "*.*"
       }
-    ]
+    ],
+    deviceSizes: [640, 1024, 1280, 1536]
   },
   async headers() {
     return [
