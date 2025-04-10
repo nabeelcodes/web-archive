@@ -1,6 +1,6 @@
 import type { SearchParams } from "nuqs/server";
 import Hero from "@/components/Hero";
-import PostsSearch from "@/components/PostsSearch";
+import SearchAndPosts from "@/components/SearchAndPosts";
 import Footer from "@/components/Footer";
 import apiEndpoints from "@/data/apiEndpoints";
 import { FETCH_TAGS } from "@/data/globals";
@@ -37,7 +37,7 @@ export default async function Home({ searchParams }: PageProps) {
     <>
       <Hero />
 
-      <PostsSearch apiData={apiDataPosts} allTags={apiDataTags.allTags} timedOut={timedOut} />
+      <SearchAndPosts apiData={apiDataPosts} allTags={apiDataTags.allTags} timedOut={timedOut} />
 
       <Footer />
     </>
