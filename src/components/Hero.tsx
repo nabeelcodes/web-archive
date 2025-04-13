@@ -1,4 +1,5 @@
 import Image from "next/image";
+
 import heroImageDesktop from "/public/heroBanner.svg";
 import heroImageMobile from "/public/heroBannerMobile.svg";
 import LayoutContainer from "@/components/UI/LayoutContainer";
@@ -9,13 +10,13 @@ const Hero = () => {
   return (
     <LayoutContainer
       tag={"header"}
-      className='relative flex min-h-[380px] items-end justify-center overflow-hidden text-balance py-2448'>
+      className='relative flex min-h-[380px] items-end justify-center text-balance py-2448'>
       {/* Desktop Image */}
       <Image
         priority
         src={heroImageDesktop}
         alt='hero-section-image'
-        className='absolute -top-20 bottom-0 -z-1 hidden min-w-[1250px] xs:block'
+        className='absolute -top-20 -z-1 hidden min-w-[1250px] xs:block'
       />
       {/* Mobile Image */}
       <Image
@@ -26,7 +27,7 @@ const Hero = () => {
       />
 
       <div className='max-w-screen-md text-center'>
-        <H1 weight='bold'>Web Archive</H1>
+        <H1 weight='bold'>Web Archives</H1>
 
         <P className='mt-16 text-neutral-700'>
           Stay ahead in the ever-evolving world of web technologies. Browse a curated collection of

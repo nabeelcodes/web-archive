@@ -15,7 +15,11 @@ export const appMetadata: Metadata = {
     "A curated digital library, featuring insightful articles on a wide range of web development topics.",
   authors: [
     {
-      name: "nabeelasif",
+      name: "Mohit Kumar",
+      url: "https://github.com/98mohitkumar"
+    },
+    {
+      name: "Nabeel Asif",
       url: "https://github.com/nabeelcodes"
     }
   ],
@@ -55,7 +59,7 @@ export const appMetadata: Metadata = {
     url: APP_URL,
     images: [
       {
-        url: "https://nextjs.org/og.png", // Must be an absolute URL
+        url: "https://res.cloudinary.com/do884lked/image/upload/v1744565306/og_image_for_web_archives_gndv4m.png", // Must be an absolute URL
         width: 800,
         height: 600
       }
