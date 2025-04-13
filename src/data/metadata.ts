@@ -17,10 +17,6 @@ export const appMetadata: Metadata = {
     {
       name: "nabeelasif",
       url: "https://github.com/nabeelcodes"
-    },
-    {
-      name: "mohitkumar",
-      url: "https://github.com/98mohitkumar"
     }
   ],
   keywords: [
