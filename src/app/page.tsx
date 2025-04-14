@@ -1,4 +1,5 @@
 import type { SearchParams } from "nuqs/server";
+
 import Hero from "@/components/Hero";
 import SearchAndPosts from "@/components/SearchAndPosts";
 import Footer from "@/components/Footer";

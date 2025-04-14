@@ -20,8 +20,15 @@ const TAGS_QUERY_KEY = "tags" as const;
 
 const PAGE_QUERY_KEY = "page" as const;
 
-export { blurPlaceholder, TAGS_QUERY_KEY, SEARCH_QUERY_KEY, PAGE_QUERY_KEY, SOCIAL_LINKS };
-
-export const FETCH_TAGS = {
+const FETCH_TAGS = {
   posts: "posts"
 } as const;
+
+export {
+  blurPlaceholder,
+  TAGS_QUERY_KEY,
+  SEARCH_QUERY_KEY,
+  PAGE_QUERY_KEY,
+  SOCIAL_LINKS,
+  FETCH_TAGS
+};

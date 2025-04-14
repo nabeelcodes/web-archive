@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidateTag } from "next/cache";
+
 import { PostSchemaType } from "@/utils/types";
 import apiEndpoints from "@/data/apiEndpoints";
 import { FETCH_TAGS } from "@/data/globals";

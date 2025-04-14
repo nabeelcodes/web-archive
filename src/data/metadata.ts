@@ -59,7 +59,7 @@ export const appMetadata: Metadata = {
     url: APP_URL,
     images: [
       {
-        url: "https://res.cloudinary.com/do884lked/image/upload/v1744565306/og_image_for_web_archives_gndv4m.png", // Must be an absolute URL
+        url: "https://res.cloudinary.com/do884lked/image/upload/v1744565306/og_image_for_web_archives_gndv4m.png",
         width: 800,
         height: 600
       }

@@ -10,7 +10,7 @@ const Hero = () => {
   return (
     <LayoutContainer
       tag={"header"}
-      className='relative flex min-h-[380px] items-end justify-center text-balance py-2448'>
+      className='relative flex min-h-[380px] items-end justify-center overflow-x-clip text-balance py-2448'>
       {/* Desktop Image */}
       <Image
         priority
