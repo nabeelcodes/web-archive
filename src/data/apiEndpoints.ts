@@ -1,4 +1,5 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const CFW_URL = process.env.NEXT_CFW_URL;
 
 const apiEndpoints = {
   posts: {
@@ -15,6 +16,9 @@ const apiEndpoints = {
   users: {
     login: () => `${API_URL}/api/users/login`,
     fetchCurrentUser: () => `${API_URL}/api/users/current`
+  },
+  metaData: {
+    getMetaDataFromUrl: (linkUrl: string) => `${CFW_URL}?url=${linkUrl}`
   }
 } as const;
 

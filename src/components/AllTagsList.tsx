@@ -1,8 +1,9 @@
 import { motion } from "motion/react";
 import { useState } from "react";
-import Button from "@/components/UI/Button";
-import FlexBox from "@/components/UI/FlexBox";
 import { cn } from "@/utils/helper";
+
+import FlexBox from "@/components/UI/FlexBox";
+import Button from "@/components/UI/Button";
 
 type AllTagsListProps = {
   allTags: string[];
