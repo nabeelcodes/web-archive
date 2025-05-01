@@ -6,13 +6,10 @@ import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 
 import Form from "@/components/Form";
-import FlexBox from "@/components/UI/FlexBox";
-import Button from "@/components/UI/Button";
 import { useVerifyToken } from "@/apiRoutes/auth-routes";
 import { createPost } from "@/apiRoutes/admin-routes";
 import { postSchema, PostSchemaType } from "@/utils/types";
 import { CustomError } from "@/utils/customError";
-import { cn } from "@/utils/helper";
 
 type CreateFormType = {
   allTags: string[];
@@ -29,6 +26,7 @@ const CreateForm = ({ allTags, setIsModalOpen, children }: CreateFormType) => {
     reset,
     control,
     register,
+    getValues,
     handleSubmit,
     formState: { errors, isDirty, isSubmitting }
   } = useForm<PostSchemaType>({ resolver: zodResolver(postSchema) });
@@ -96,33 +94,11 @@ const CreateForm = ({ allTags, setIsModalOpen, children }: CreateFormType) => {
       handleSubmit={handleSubmit}
       control={control}
       errors={errors}
-      formActionHandler={createFormHandler}>
-      {/* Modal - CTA */}
-      <FlexBox className='mt-6 flex-col gap-12 xs:flex-row'>
-        {/* Cancel button */}
-        {children}
-
-        {/* Form submit button */}
-        <Button
-          type='submit'
-          size='small'
-          shape='rounded'
-          disabled={!isDirty || isSubmitting}
-          className='relative w-full select-none overflow-hidden rounded-full text-background focus-visible:outline-2'>
-          <span
-            className={cn("absolute translate-y-0 transition-all", {
-              "-translate-y-7": isSubmitting
-            })}>
-            Submit
-          </span>
-          <span
-            className={cn("absolute translate-y-7 transition-all", {
-              "translate-y-0": isSubmitting
-            })}>
-            Submitting . . .
-          </span>
-        </Button>
-      </FlexBox>
+      getValues={getValues}
+      formActionHandler={createFormHandler}
+      isDirty={isDirty}
+      isSubmitting={isSubmitting}>
+      {children}
     </Form>
   );
 };

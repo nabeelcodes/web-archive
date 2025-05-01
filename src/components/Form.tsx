@@ -1,13 +1,33 @@
-import { Control, FieldErrors, UseFormHandleSubmit, UseFormRegister } from "react-hook-form";
+import {
+  Control,
+  FieldErrors,
+  UseFormGetValues,
+  UseFormHandleSubmit,
+  UseFormRegister
+} from "react-hook-form";
+
 import CreatableMultiSelect from "@/components/CreatableMultiSelect";
 import Input, { InputLabel } from "@/components/UI/Input";
+import Button from "@/components/UI/Button";
+import FlexBox from "@/components/UI/FlexBox";
 import P from "@/components/UI/Typography/P";
+import { useMultiStepForm } from "@/hooks/useMultiStepForm";
 import { PostSchemaType } from "@/utils/types";
+import { cn, fetchMetadataFromCFW } from "@/utils/helper";
 
 type FormType = {
   children: React.ReactNode;
   allTags: string[];
   formActionHandler: (formData: PostSchemaType) => Promise<void>;
+  isDirty: boolean;
+  isSubmitting: boolean;
+  getValues: UseFormGetValues<{
+    title: string;
+    link: string;
+    image: string;
+    tags: [string, ...string[]];
+    description?: string | undefined;
+  }>;
   register: UseFormRegister<{
     link: string;
     title: string;
@@ -41,22 +61,39 @@ type FormType = {
   }>;
 };
 
-const Form = ({
-  children,
-  allTags,
-  register,
-  handleSubmit,
-  control,
-  errors,
-  formActionHandler
-}: FormType) => {
+type SubFormType = Pick<FormType, "register" | "errors">;
+
+type TagsFormType = Pick<FormType, "allTags" | "control">;
+
+const LinkForm = ({ register, errors }: SubFormType) => {
   return (
-    <form
-      className='mt-16 flex flex-col justify-between gap-16'
-      onSubmit={handleSubmit(formActionHandler)}>
-      {/* Modal - Form */}
+    <div className='flex min-h-[9.5rem] flex-col justify-between'>
+      <fieldset>
+        <InputLabel required htmlFor='link'>
+          Link (url)
+        </InputLabel>
+        <Input
+          {...register("link")}
+          id='link'
+          placeholder='Enter a url for the article'
+          fullWidth
+        />
+      </fieldset>
+
+      {errors.link && (
+        <P tag='span' weight='medium' size='tiny' className='text-red-600'>
+          {errors.link.message}
+        </P>
+      )}
+    </div>
+  );
+};
+
+const TitleAndDescriptionForm = ({ register, errors }: SubFormType) => {
+  return (
+    <div className='flex min-h-[9.5rem] flex-col justify-between'>
+      {/* Title */}
       <div>
-        {/* Title */}
         <fieldset>
           <InputLabel required htmlFor='title'>
             Title
@@ -71,8 +108,8 @@ const Form = ({
         )}
       </div>
 
+      {/* Description */}
       <div>
-        {/* Description */}
         <fieldset>
           <InputLabel htmlFor='description'>Description</InputLabel>
           <Input
@@ -89,30 +126,15 @@ const Form = ({
           </P>
         )}
       </div>
+    </div>
+  );
+};
 
+const ImageAndTagsForm = ({ register, errors, allTags, control }: SubFormType & TagsFormType) => {
+  return (
+    <div className='flex min-h-[9.5rem] flex-col justify-between'>
+      {/* Image */}
       <div>
-        {/* Link */}
-        <fieldset>
-          <InputLabel required htmlFor='link'>
-            Link (url)
-          </InputLabel>
-          <Input
-            {...register("link")}
-            id='link'
-            placeholder='Enter a url for the article'
-            fullWidth
-          />
-        </fieldset>
-
-        {errors.link && (
-          <P tag='span' weight='medium' size='tiny' className='text-red-600'>
-            {errors.link.message}
-          </P>
-        )}
-      </div>
-
-      <div>
-        {/* Image */}
         <fieldset>
           <InputLabel required htmlFor='image'>
             Image (url)
@@ -132,8 +154,8 @@ const Form = ({
         )}
       </div>
 
+      {/* Tags */}
       <div>
-        {/* Tags */}
         <fieldset>
           <InputLabel required htmlFor='tags'>
             Tags
@@ -148,9 +170,101 @@ const Form = ({
           </P>
         )}
       </div>
+    </div>
+  );
+};
+
+const Form = ({
+  children,
+  allTags,
+  register,
+  handleSubmit,
+  control,
+  errors,
+  getValues,
+  formActionHandler,
+  isDirty,
+  isSubmitting
+}: FormType) => {
+  const { step, steps, currentStepIndex, isFirstStep, isLastStep, next, back } = useMultiStepForm([
+    <LinkForm register={register} errors={errors} />,
+    <TitleAndDescriptionForm register={register} errors={errors} />,
+    <ImageAndTagsForm register={register} errors={errors} allTags={allTags} control={control} />
+  ]);
+
+  const handleNextAction = async (url: string) => {
+    // fetch metadata from CFW, if on the first step
+    if (isFirstStep && url) {
+      // Fetch metadata from CFW
+      const metadata = await fetchMetadataFromCFW(url);
+      console.log(metadata);
+    }
+
+    // Proceed to the next step
+    next();
+  };
+
+  return (
+    <form
+      className='mt-16 flex flex-col justify-between gap-16'
+      onSubmit={handleSubmit(formActionHandler)}>
+      {/* Rendering all the forms as "step" */}
+      {step}
+
+      <FlexBox className='mt-10 flex-col gap-12 xs:flex-row'>
+        {/* Back button */}
+        {!isFirstStep && (
+          <Button
+            type='button'
+            size='small'
+            shape='rounded'
+            variant='outline'
+            className='relative w-1/2 select-none overflow-hidden rounded-full focus-visible:outline-2'
+            onClick={back}>
+            Back
+          </Button>
+        )}
+
+        {/* Next button */}
+        {!isLastStep && (
+          <Button
+            type='button'
+            size='small'
+            shape='rounded'
+            className='relative ml-auto w-1/2 select-none overflow-hidden rounded-full text-background focus-visible:outline-2'
+            onClick={() => handleNextAction(getValues("link"))}>
+            Next
+          </Button>
+        )}
+
+        {/* Form submit button */}
+        {isLastStep && (
+          <Button
+            type='submit'
+            size='small'
+            shape='rounded'
+            disabled={!isDirty || isSubmitting}
+            className='relative w-1/2 select-none overflow-hidden rounded-full text-background focus-visible:outline-2'>
+            <span
+              className={cn("absolute translate-y-0 transition-all", {
+                "-translate-y-7": isSubmitting
+              })}>
+              Submit
+            </span>
+            <span
+              className={cn("absolute translate-y-7 transition-all", {
+                "translate-y-0": isSubmitting
+              })}>
+              Submitting . . .
+            </span>
+          </Button>
+        )}
+      </FlexBox>
 
       {/* Modal - CTA */}
-      {children}
+      {isLastStep && children}
+
+      {currentStepIndex + 1 + " / " + steps.length}
     </form>
   );
 };

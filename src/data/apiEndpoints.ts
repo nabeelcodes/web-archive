@@ -1,5 +1,5 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
-const CFW_URL = process.env.NEXT_CFW_URL;
+const CFW_URL = process.env.NEXT_PUBLIC_CFW_URL;
 
 const apiEndpoints = {
   posts: {

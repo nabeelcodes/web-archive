@@ -1,8 +1,10 @@
 import { extendTailwindMerge } from "tailwind-merge";
 import clsx, { ClassValue } from "clsx";
 import { SearchParams } from "nuqs";
+
 import { tailwindFontSizeTokens } from "@/designSystem/tokens/typography";
 import { theme } from "@/designSystem/theme";
+import apiEndpoints from "@/data/apiEndpoints";
 
 type FetchOptionsArgs = {
   method?: string;
@@ -140,6 +142,29 @@ export const getUrlQueryParams = async (searchParams: Promise<SearchParams>) => 
   }
 
   return { query, tags, page, timedOut };
+};
+
+/**
+ * The function fetches metadata from a specified URL using Cloudflare Workers.
+ * @param {string} url - The `url` parameter is a string that represents the URL for which you want to
+ * fetch metadata.
+ * @returns The function `fetchMetadataFromCFW` is returning the metadata fetched from the provided
+ * URL.
+ */
+export const fetchMetadataFromCFW = async (url: string) => {
+  try {
+    const response = await fetch(apiEndpoints.metaData.getMetaDataFromUrl(url));
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch metadata: ${response.statusText}`);
+    }
+
+    const metadata = await response.json();
+    return metadata;
+  } catch (error) {
+    console.error("Error fetching metadata:", error);
+    throw error;
+  }
 };
 
 // TODO: Export "loginChecker" from here
