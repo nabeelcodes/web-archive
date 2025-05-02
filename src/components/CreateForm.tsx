@@ -14,10 +14,9 @@ import { CustomError } from "@/utils/customError";
 type CreateFormType = {
   allTags: string[];
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
-  children: React.ReactNode;
 };
 
-const CreateForm = ({ allTags, setIsModalOpen, children }: CreateFormType) => {
+const CreateForm = ({ allTags, setIsModalOpen }: CreateFormType) => {
   const { verifyToken } = useVerifyToken();
   const router = useRouter();
   const session = useSession();
@@ -97,9 +96,8 @@ const CreateForm = ({ allTags, setIsModalOpen, children }: CreateFormType) => {
       getValues={getValues}
       formActionHandler={createFormHandler}
       isDirty={isDirty}
-      isSubmitting={isSubmitting}>
-      {children}
-    </Form>
+      isSubmitting={isSubmitting}
+    />
   );
 };
 

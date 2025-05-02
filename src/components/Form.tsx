@@ -7,6 +7,7 @@ import {
 } from "react-hook-form";
 
 import CreatableMultiSelect from "@/components/CreatableMultiSelect";
+import { StepsIndicator } from "@/components/StepsIndicator";
 import Input, { InputLabel } from "@/components/UI/Input";
 import Button from "@/components/UI/Button";
 import FlexBox from "@/components/UI/FlexBox";
@@ -16,7 +17,6 @@ import { PostSchemaType } from "@/utils/types";
 import { cn, fetchMetadataFromCFW } from "@/utils/helper";
 
 type FormType = {
-  children: React.ReactNode;
   allTags: string[];
   formActionHandler: (formData: PostSchemaType) => Promise<void>;
   isDirty: boolean;
@@ -175,7 +175,6 @@ const ImageAndTagsForm = ({ register, errors, allTags, control }: SubFormType & 
 };
 
 const Form = ({
-  children,
   allTags,
   register,
   handleSubmit,
@@ -211,6 +210,7 @@ const Form = ({
       {/* Rendering all the forms as "step" */}
       {step}
 
+      {/* Buttons and the CTA */}
       <FlexBox className='mt-10 flex-col gap-12 xs:flex-row'>
         {/* Back button */}
         {!isFirstStep && (
@@ -219,7 +219,7 @@ const Form = ({
             size='small'
             shape='rounded'
             variant='outline'
-            className='relative w-1/2 select-none overflow-hidden rounded-full focus-visible:outline-2'
+            className='relative w-full select-none overflow-hidden rounded-full focus-visible:outline-2 xs:w-1/2'
             onClick={back}>
             Back
           </Button>
@@ -231,7 +231,7 @@ const Form = ({
             type='button'
             size='small'
             shape='rounded'
-            className='relative ml-auto w-1/2 select-none overflow-hidden rounded-full text-background focus-visible:outline-2'
+            className='relative ml-auto w-full select-none overflow-hidden rounded-full text-background focus-visible:outline-2 xs:w-1/2'
             onClick={() => handleNextAction(getValues("link"))}>
             Next
           </Button>
@@ -244,7 +244,7 @@ const Form = ({
             size='small'
             shape='rounded'
             disabled={!isDirty || isSubmitting}
-            className='relative w-1/2 select-none overflow-hidden rounded-full text-background focus-visible:outline-2'>
+            className='relative w-full select-none overflow-hidden rounded-full text-background focus-visible:outline-2 xs:w-1/2'>
             <span
               className={cn("absolute translate-y-0 transition-all", {
                 "-translate-y-7": isSubmitting
@@ -261,10 +261,7 @@ const Form = ({
         )}
       </FlexBox>
 
-      {/* Modal - CTA */}
-      {isLastStep && children}
-
-      {currentStepIndex + 1 + " / " + steps.length}
+      <StepsIndicator totalSteps={steps.length} currentStepIndex={currentStepIndex} />
     </form>
   );
 };
