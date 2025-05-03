@@ -26,9 +26,12 @@ const CreateForm = ({ allTags, setIsModalOpen }: CreateFormType) => {
     control,
     register,
     getValues,
+    setValue,
     handleSubmit,
     formState: { errors, isDirty, isSubmitting }
-  } = useForm<PostSchemaType>({ resolver: zodResolver(postSchema) });
+  } = useForm<PostSchemaType>({
+    resolver: zodResolver(postSchema)
+  });
 
   const loginChecker = async () => {
     const { success } = await verifyToken();
@@ -94,6 +97,7 @@ const CreateForm = ({ allTags, setIsModalOpen }: CreateFormType) => {
       control={control}
       errors={errors}
       getValues={getValues}
+      setValue={setValue}
       formActionHandler={createFormHandler}
       isDirty={isDirty}
       isSubmitting={isSubmitting}

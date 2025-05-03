@@ -15,7 +15,7 @@ export const StepsIndicator = ({ totalSteps, currentStepIndex }: StepsIndicatorT
       {stepsArray.map((_, index) => (
         <motion.div
           key={index}
-          className='h-[8px] w-[8px] rounded-full bg-neutral-900'
+          className='min-h-2 min-w-2 rounded-full bg-neutral-900'
           animate={{
             opacity: index === currentStepIndex || index < currentStepIndex ? 1 : 0.2
           }}

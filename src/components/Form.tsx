@@ -3,20 +3,19 @@ import {
   FieldErrors,
   UseFormGetValues,
   UseFormHandleSubmit,
-  UseFormRegister
+  UseFormRegister,
+  UseFormSetValue
 } from "react-hook-form";
 
-import CreatableMultiSelect from "@/components/CreatableMultiSelect";
+import { ImageAndTagsForm, LinkForm, TitleAndDescriptionForm } from "@/components/FormComponents";
 import { StepsIndicator } from "@/components/StepsIndicator";
-import Input, { InputLabel } from "@/components/UI/Input";
 import Button from "@/components/UI/Button";
 import FlexBox from "@/components/UI/FlexBox";
-import P from "@/components/UI/Typography/P";
 import { useMultiStepForm } from "@/hooks/useMultiStepForm";
 import { PostSchemaType } from "@/utils/types";
 import { cn, fetchMetadataFromCFW } from "@/utils/helper";
 
-type FormType = {
+export type FormType = {
   allTags: string[];
   formActionHandler: (formData: PostSchemaType) => Promise<void>;
   isDirty: boolean;
@@ -59,119 +58,7 @@ type FormType = {
     tags: [string, ...string[]];
     description?: string | undefined;
   }>;
-};
-
-type SubFormType = Pick<FormType, "register" | "errors">;
-
-type TagsFormType = Pick<FormType, "allTags" | "control">;
-
-const LinkForm = ({ register, errors }: SubFormType) => {
-  return (
-    <div className='flex min-h-[9.5rem] flex-col justify-between'>
-      <fieldset>
-        <InputLabel required htmlFor='link'>
-          Link (url)
-        </InputLabel>
-        <Input
-          {...register("link")}
-          id='link'
-          placeholder='Enter a url for the article'
-          fullWidth
-        />
-      </fieldset>
-
-      {errors.link && (
-        <P tag='span' weight='medium' size='tiny' className='text-red-600'>
-          {errors.link.message}
-        </P>
-      )}
-    </div>
-  );
-};
-
-const TitleAndDescriptionForm = ({ register, errors }: SubFormType) => {
-  return (
-    <div className='flex min-h-[9.5rem] flex-col justify-between'>
-      {/* Title */}
-      <div>
-        <fieldset>
-          <InputLabel required htmlFor='title'>
-            Title
-          </InputLabel>
-          <Input {...register("title")} id='title' placeholder='Enter a title' fullWidth />
-        </fieldset>
-
-        {errors.title && (
-          <P tag='span' weight='medium' size='tiny' className='text-red-600'>
-            {errors.title.message}
-          </P>
-        )}
-      </div>
-
-      {/* Description */}
-      <div>
-        <fieldset>
-          <InputLabel htmlFor='description'>Description</InputLabel>
-          <Input
-            {...register("description")}
-            id='description'
-            placeholder='Enter a description'
-            fullWidth
-          />
-        </fieldset>
-
-        {errors.description && (
-          <P tag='span' weight='medium' size='tiny' className='text-red-600'>
-            {errors.description.message}
-          </P>
-        )}
-      </div>
-    </div>
-  );
-};
-
-const ImageAndTagsForm = ({ register, errors, allTags, control }: SubFormType & TagsFormType) => {
-  return (
-    <div className='flex min-h-[9.5rem] flex-col justify-between'>
-      {/* Image */}
-      <div>
-        <fieldset>
-          <InputLabel required htmlFor='image'>
-            Image (url)
-          </InputLabel>
-          <Input
-            {...register("image")}
-            id='image'
-            placeholder='Enter an image url for the article'
-            fullWidth
-          />
-        </fieldset>
-
-        {errors.image && (
-          <P tag='span' weight='medium' size='tiny' className='text-red-600'>
-            {errors.image.message}
-          </P>
-        )}
-      </div>
-
-      {/* Tags */}
-      <div>
-        <fieldset>
-          <InputLabel required htmlFor='tags'>
-            Tags
-          </InputLabel>
-
-          <CreatableMultiSelect allTags={allTags} control={control} />
-        </fieldset>
-
-        {errors.tags && (
-          <P tag='span' weight='medium' size='tiny' className='text-red-600'>
-            {errors.tags.message}
-          </P>
-        )}
-      </div>
-    </div>
-  );
+  setValue: UseFormSetValue<PostSchemaType>;
 };
 
 const Form = ({
@@ -183,20 +70,30 @@ const Form = ({
   getValues,
   formActionHandler,
   isDirty,
-  isSubmitting
+  isSubmitting,
+  setValue
 }: FormType) => {
   const { step, steps, currentStepIndex, isFirstStep, isLastStep, next, back } = useMultiStepForm([
-    <LinkForm register={register} errors={errors} />,
-    <TitleAndDescriptionForm register={register} errors={errors} />,
-    <ImageAndTagsForm register={register} errors={errors} allTags={allTags} control={control} />
+    <LinkForm key={1} register={register} errors={errors} />,
+    <TitleAndDescriptionForm key={2} register={register} errors={errors} />,
+    <ImageAndTagsForm
+      key={3}
+      register={register}
+      errors={errors}
+      allTags={allTags}
+      control={control}
+    />
   ]);
 
   const handleNextAction = async (url: string) => {
-    // fetch metadata from CFW, if on the first step
+    // fetch metadata from CFW, iff on the first step
     if (isFirstStep && url) {
       // Fetch metadata from CFW
       const metadata = await fetchMetadataFromCFW(url);
-      console.log(metadata);
+      // Directly update form values
+      setValue("title", metadata.title);
+      setValue("description", metadata.description);
+      setValue("image", metadata.image);
     }
 
     // Proceed to the next step
@@ -205,13 +102,13 @@ const Form = ({
 
   return (
     <form
-      className='mt-16 flex flex-col justify-between gap-16'
+      className='mt-16 flex flex-col justify-between gap-y-24'
       onSubmit={handleSubmit(formActionHandler)}>
       {/* Rendering all the forms as "step" */}
       {step}
 
       {/* Buttons and the CTA */}
-      <FlexBox className='mt-10 flex-col gap-12 xs:flex-row'>
+      <FlexBox className='flex-col gap-16 xs:flex-row'>
         {/* Back button */}
         {!isFirstStep && (
           <Button
