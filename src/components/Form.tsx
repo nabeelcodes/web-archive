@@ -16,17 +16,11 @@ import { PostSchemaType } from "@/utils/types";
 import { cn, fetchMetadataFromCFW } from "@/utils/helper";
 
 export type FormType = {
+  fetchMetadata?: boolean;
   allTags: string[];
   formActionHandler: (formData: PostSchemaType) => Promise<void>;
   isDirty: boolean;
   isSubmitting: boolean;
-  getValues: UseFormGetValues<{
-    title: string;
-    link: string;
-    image: string;
-    tags: [string, ...string[]];
-    description?: string | undefined;
-  }>;
   register: UseFormRegister<{
     link: string;
     title: string;
@@ -58,20 +52,28 @@ export type FormType = {
     tags: [string, ...string[]];
     description?: string | undefined;
   }>;
-  setValue: UseFormSetValue<PostSchemaType>;
+  getValues?: UseFormGetValues<{
+    title: string;
+    link: string;
+    image: string;
+    tags: [string, ...string[]];
+    description?: string | undefined;
+  }>;
+  setValue?: UseFormSetValue<PostSchemaType>;
 };
 
 const Form = ({
+  fetchMetadata,
+  getValues,
+  setValue,
   allTags,
   register,
   handleSubmit,
   control,
   errors,
-  getValues,
   formActionHandler,
   isDirty,
-  isSubmitting,
-  setValue
+  isSubmitting
 }: FormType) => {
   const { step, steps, currentStepIndex, isFirstStep, isLastStep, next, back } = useMultiStepForm([
     <LinkForm key={1} register={register} errors={errors} />,
@@ -85,15 +87,20 @@ const Form = ({
     />
   ]);
 
-  const handleNextAction = async (url: string) => {
-    // fetch metadata from CFW, iff on the first step
-    if (isFirstStep && url) {
-      // Fetch metadata from CFW
-      const metadata = await fetchMetadataFromCFW(url);
-      // Directly update form values
-      setValue("title", metadata.title);
-      setValue("description", metadata.description);
-      setValue("image", metadata.image);
+  const handleNextAction = async () => {
+    // fetch metadata from CFW
+    if (fetchMetadata && isFirstStep && getValues && setValue) {
+      // Extract the value of the link field
+      const url = getValues("link");
+      // Check if the URL is valid
+      if (url) {
+        // Fetch metadata from CFW
+        const metadata = await fetchMetadataFromCFW(url);
+        // Directly update form values
+        setValue("title", metadata.title);
+        setValue("description", metadata.description);
+        setValue("image", metadata.image);
+      }
     }
 
     // Proceed to the next step
@@ -129,7 +136,7 @@ const Form = ({
             size='small'
             shape='rounded'
             className='relative ml-auto w-full select-none overflow-hidden rounded-full text-background focus-visible:outline-2 xs:w-1/2'
-            onClick={() => handleNextAction(getValues("link"))}>
+            onClick={handleNextAction}>
             Next
           </Button>
         )}

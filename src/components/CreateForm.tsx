@@ -91,13 +91,14 @@ const CreateForm = ({ allTags, setIsModalOpen }: CreateFormType) => {
 
   return (
     <Form
+      fetchMetadata
+      getValues={getValues}
+      setValue={setValue}
       allTags={allTags}
       register={register}
       handleSubmit={handleSubmit}
       control={control}
       errors={errors}
-      getValues={getValues}
-      setValue={setValue}
       formActionHandler={createFormHandler}
       isDirty={isDirty}
       isSubmitting={isSubmitting}

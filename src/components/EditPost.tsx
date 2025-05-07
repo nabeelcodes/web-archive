@@ -46,13 +46,8 @@ const EditPost = ({ postDetails, allTags, editModalOpen, setEditModalOpen }: Edi
   return (
     <Dialog open={editModalOpen} onOpenChange={setEditModalOpen}>
       <DialogTrigger asChild>
-        <Button
-          size='small'
-          variant='pill'
-          shape='circle'
-          className='absolute right-2 top-2 z-1'
-          onClick={modalHandler}>
-          <Pencil size={12} />
+        <Button size='small' variant='pill' shape='circle' onClick={modalHandler}>
+          <Pencil size={15} />
         </Button>
       </DialogTrigger>
 

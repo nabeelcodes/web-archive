@@ -11,6 +11,7 @@ import P from "@/components/UI/Typography/P";
 import { blurPlaceholder } from "@/data/globals";
 import { Post } from "@/utils/types";
 import { cn } from "@/utils/helper";
+import DeletePost from "@/components/DeletePost";
 
 type PostCardProps = {
   post: Post;
@@ -165,15 +166,20 @@ const PostCard = ({
           )}
         </div>
 
-        {/* Edit Button */}
-        {session.status === "authenticated" && !isExpanded && (
-          <EditPost
-            allTags={allTags}
-            postDetails={post}
-            editModalOpen={editModalOpen}
-            setEditModalOpen={setEditModalOpen}
-          />
-        )}
+        <FlexBox className='absolute right-2 top-2 z-1 gap-x-8'>
+          {/* Edit Button */}
+          {session.status === "authenticated" && !isExpanded && (
+            <EditPost
+              allTags={allTags}
+              postDetails={post}
+              editModalOpen={editModalOpen}
+              setEditModalOpen={setEditModalOpen}
+            />
+          )}
+
+          {/* Delete Button */}
+          {session.status === "authenticated" && !isExpanded && <DeletePost postDetails={post} />}
+        </FlexBox>
       </motion.div>
     </>
   );

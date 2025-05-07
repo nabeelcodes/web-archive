@@ -6,14 +6,10 @@ import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 
 import Form from "@/components/Form";
-import DeletePost from "@/components/DeletePost";
-import FlexBox from "@/components/UI/FlexBox";
-import Button from "@/components/UI/Button";
 import { useVerifyToken } from "@/apiRoutes/auth-routes";
 import { updatePost } from "@/apiRoutes/admin-routes";
 import { Post, postSchema, PostSchemaType } from "@/utils/types";
 import { CustomError } from "@/utils/customError";
-import { cn } from "@/utils/helper";
 
 type EditFormProps = {
   allTags: string[];
@@ -101,34 +97,10 @@ const EditForm = ({ allTags, postDetails, setEditModalOpen }: EditFormProps) => 
       handleSubmit={handleSubmit}
       control={control}
       errors={errors}
-      formActionHandler={editFormHandler}>
-      {/* Modal - CTA */}
-      <FlexBox className='mt-6 gap-12'>
-        {/* Delete Button */}
-        <DeletePost reset={reset} isSubmitting={isSubmitting} postDetails={postDetails} />
-
-        {/* Form submit Button */}
-        <Button
-          type='submit'
-          size='small'
-          shape='rounded'
-          disabled={!isDirty || isSubmitting}
-          className='relative w-full select-none overflow-hidden rounded-full text-background focus-visible:outline-2'>
-          <span
-            className={cn("absolute translate-y-0 transition-all", {
-              "-translate-y-7": isSubmitting
-            })}>
-            Submit
-          </span>
-          <span
-            className={cn("absolute translate-y-7 transition-all", {
-              "translate-y-0": isSubmitting
-            })}>
-            Submitting . . .
-          </span>
-        </Button>
-      </FlexBox>
-    </Form>
+      formActionHandler={editFormHandler}
+      isDirty={isDirty}
+      isSubmitting={isSubmitting}
+    />
   );
 };
 

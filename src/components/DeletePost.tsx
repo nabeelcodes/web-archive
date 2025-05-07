@@ -1,9 +1,9 @@
-import { CircleAlert } from "lucide-react";
+import { CircleAlert, Trash2 } from "lucide-react";
 import { MouseEvent } from "react";
-import { UseFormReset } from "react-hook-form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
+
 import { useVerifyToken } from "@/apiRoutes/auth-routes";
 import { deletePost } from "@/apiRoutes/admin-routes";
 import { CustomError } from "@/utils/customError";
@@ -22,18 +22,10 @@ import {
 import P from "@/components/UI/Typography/P";
 
 type DeletePostProps = {
-  isSubmitting: boolean;
   postDetails: Post;
-  reset: UseFormReset<{
-    title: string;
-    link: string;
-    image: string;
-    tags: [string, ...string[]];
-    description?: string | undefined;
-  }>;
 };
 
-const DeletePost = ({ reset, isSubmitting, postDetails }: DeletePostProps) => {
+const DeletePost = ({ postDetails }: DeletePostProps) => {
   const { verifyToken } = useVerifyToken();
   const router = useRouter();
   const session = useSession();
@@ -56,7 +48,8 @@ const DeletePost = ({ reset, isSubmitting, postDetails }: DeletePostProps) => {
     await loginChecker();
   };
 
-  const deletePostHandler = async () => {
+  const deletePostHandler = async (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     try {
       // Check for user authentication
       await loginChecker();
@@ -80,7 +73,6 @@ const DeletePost = ({ reset, isSubmitting, postDetails }: DeletePostProps) => {
 
       // Post deletion : SUCCEEDED
       toast.success("Article has been deleted!");
-      reset();
       router.refresh();
     } catch (error) {
       console.error(error);
@@ -104,12 +96,11 @@ const DeletePost = ({ reset, isSubmitting, postDetails }: DeletePostProps) => {
       <DialogTrigger asChild>
         <Button
           size='small'
-          shape='rounded'
-          variant='outline'
-          disabled={isSubmitting}
+          shape='circle'
+          variant='pill'
           onClick={modalHandler}
-          className='w-full select-none rounded-full border-red-600 text-red-600 focus-visible:outline-2'>
-          Delete
+          className='bg-red-600 text-background'>
+          <Trash2 size={15} />
         </Button>
       </DialogTrigger>
 
@@ -134,7 +125,10 @@ const DeletePost = ({ reset, isSubmitting, postDetails }: DeletePostProps) => {
               size='small'
               shape='rounded'
               variant='outline'
-              className='w-full select-none rounded-full focus-visible:outline-2'>
+              className='w-full select-none rounded-full focus-visible:outline-2'
+              onClick={(e) => {
+                e.stopPropagation();
+              }}>
               Cancel
             </Button>
           </DialogClose>
