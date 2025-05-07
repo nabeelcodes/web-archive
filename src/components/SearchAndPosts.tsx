@@ -2,7 +2,7 @@
 
 import { PAGE_QUERY_KEY, TAGS_QUERY_KEY } from "@/data/globals";
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { signOut } from "next-auth/react";
 
 import PostsSearch from "@/components/PostsSearch";
@@ -22,14 +22,6 @@ type SearchAndPostsType = {
 };
 
 const SearchAndPosts = ({ apiData, allTags, timedOut }: SearchAndPostsType) => {
-  useEffect(() => {
-    // If current auth session expired, logout user
-    if (timedOut && timedOut === "true") {
-      // toast won't work since it's a manual refresh by user
-      signOut({ redirect: false });
-    }
-  }, [timedOut]);
-
   const [tags, setTags] = useQueryState(
     TAGS_QUERY_KEY,
     parseAsArrayOf(parseAsString).withDefault([]).withOptions({
@@ -43,6 +35,35 @@ const SearchAndPosts = ({ apiData, allTags, timedOut }: SearchAndPostsType) => {
   const [expandedCardId, setExpandedCardId] = useState<string>("");
   const isTagQueryEmpty = tags.length === 0;
   const allPosts = apiData.posts;
+  const pageLoadRef = useRef(true);
+
+  // signing user out if the session is expired
+  useEffect(() => {
+    // If current auth session expired, logout user
+    if (timedOut && timedOut === "true") {
+      // toast won't work since it's a manual refresh by user
+      signOut({ redirect: false });
+    }
+  }, [timedOut]);
+
+  // Scroll to the top of the main content when the page changes
+  useEffect(() => {
+    // Track if it's the initial mount
+    // to prevent scrolling on the first render
+    const isInitialMount = pageLoadRef.current;
+    if (isInitialMount) {
+      pageLoadRef.current = false;
+      return;
+    }
+
+    // Add a small delay to ensure scroll happens only when
+    // content is loaded
+    const scrollTimeout = setTimeout(() => {
+      document.getElementsByTagName("main")[0]?.scrollIntoView({ behavior: "smooth" });
+    }, 400);
+
+    return () => clearTimeout(scrollTimeout);
+  }, [page]);
 
   return (
     <LayoutContainer tag='main' className='pb-3264 pt-2448'>
