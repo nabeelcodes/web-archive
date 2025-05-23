@@ -18,7 +18,7 @@ import { cn, fetchMetadataFromCFW, validateURL } from "@/utils/helper";
 
 export type FormType = {
   fetchMetadata?: boolean;
-  linkInputValue: string;
+  linkInputValue?: string;
   allTags: string[];
   formActionHandler: (formData: PostSchemaType) => Promise<void>;
   isDirty: boolean;
