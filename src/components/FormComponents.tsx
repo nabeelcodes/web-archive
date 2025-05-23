@@ -1,5 +1,6 @@
 import CreatableMultiSelect from "@/components/CreatableMultiSelect";
 import Input, { InputLabel } from "@/components/UI/Input";
+import Textarea, { TextareaLabel } from "@/components/UI/Textarea";
 import P from "@/components/UI/Typography/P";
 import { FormType } from "@/components/Form";
 
@@ -37,10 +38,16 @@ export const TitleAndDescriptionForm = ({ register, errors }: SubFormType) => {
       {/* Title */}
       <div>
         <fieldset>
-          <InputLabel required htmlFor='title'>
+          <TextareaLabel required htmlFor='title'>
             Title
-          </InputLabel>
-          <Input {...register("title")} id='title' placeholder='Enter a title' fullWidth />
+          </TextareaLabel>
+          <Textarea
+            {...register("title")}
+            id='title'
+            placeholder='Enter a title'
+            fullWidth
+            rows={3}
+          />
         </fieldset>
 
         {errors.title && (
@@ -53,12 +60,13 @@ export const TitleAndDescriptionForm = ({ register, errors }: SubFormType) => {
       {/* Description */}
       <div>
         <fieldset>
-          <InputLabel htmlFor='description'>Description</InputLabel>
-          <Input
+          <TextareaLabel htmlFor='description'>Description</TextareaLabel>
+          <Textarea
             {...register("description")}
             id='description'
             placeholder='Enter a description'
             fullWidth
+            rows={6}
           />
         </fieldset>
 

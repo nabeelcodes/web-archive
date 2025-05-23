@@ -167,6 +167,168 @@ export const fetchMetadataFromCFW = async (url: string) => {
   }
 };
 
+/**
+ * Result type for URL validation
+ * Contains success status and either error message or null
+ */
+type URLValidationResult = {
+  isValid: boolean;
+  error: string | null;
+};
+
+/**
+ * Validates whether a given string is a valid URL
+ * Uses a combination of native URL constructor and regex for optimal performance
+ *
+ * @param url - The URL string to validate
+ * @returns Object containing validation result and specific error message if invalid
+ */
+export const validateURL = (url: string): URLValidationResult => {
+  // Early return for obviously invalid inputs to improve performance
+  if (!url) {
+    return {
+      isValid: false,
+      error: "URL cannot be null or undefined"
+    };
+  }
+
+  if (typeof url !== "string") {
+    return {
+      isValid: false,
+      error: "URL must be a string"
+    };
+  }
+
+  if (url.length === 0) {
+    return {
+      isValid: false,
+      error: "URL cannot be empty"
+    };
+  }
+
+  // Quick length check - URLs longer than 2083 characters are generally not supported
+  // by most browsers and servers (Internet Explorer limit)
+  if (url.length > 2083) {
+    return {
+      isValid: false,
+      error: "URL exceeds maximum length of 2083 characters"
+    };
+  }
+
+  // Trim whitespace to handle common input errors
+  const trimmedUrl = url.trim();
+
+  if (trimmedUrl.length === 0) {
+    return {
+      isValid: false,
+      error: "URL cannot be only whitespace"
+    };
+  }
+
+  // Check for minimum viable URL structure using regex
+  // Updated regex to handle IPv6 and international domains better
+  const basicUrlPattern = /^https?:\/\/[\w\-\.:\[\]]+/i;
+
+  // Quick regex check first (faster than URL constructor for obviously invalid URLs)
+  if (!basicUrlPattern.test(trimmedUrl)) {
+    return {
+      isValid: false,
+      error:
+        "URL must have valid format (protocol://domain). Only http and https protocols are supported"
+    };
+  }
+
+  try {
+    // Use native URL constructor for comprehensive validation
+    // This handles edge cases, encoding, and follows URL specification
+    const urlObject = new URL(trimmedUrl);
+
+    // Additional checks for common requirements
+    // Ensure protocol is http or https (modify as needed for your use case)
+    const validProtocols = new Set(["http:", "https:"]);
+    if (!validProtocols.has(urlObject.protocol)) {
+      return {
+        isValid: false,
+        error: `Invalid protocol '${urlObject.protocol}'. Only http and https are supported`
+      };
+    }
+
+    // Ensure hostname exists and is not empty
+    if (!urlObject.hostname || urlObject.hostname.length === 0) {
+      return {
+        isValid: false,
+        error: "URL must contain a valid hostname"
+      };
+    }
+
+    // Validate port if present
+    if (urlObject.port && (parseInt(urlObject.port) < 1 || parseInt(urlObject.port) > 65535)) {
+      return {
+        isValid: false,
+        error: `Invalid port '${urlObject.port}'. Port must be between 1 and 65535`
+      };
+    }
+
+    // Check for valid hostname pattern (allows IPv6, IDN, and standard domains)
+    // Skip detailed hostname validation for IPv6 addresses (enclosed in brackets)
+    if (!urlObject.hostname.startsWith("[") && !urlObject.hostname.endsWith("]")) {
+      // Check if hostname is a valid domain (must contain at least one dot for TLD)
+      // Exception: 'localhost' is considered valid
+      if (urlObject.hostname !== "localhost" && !urlObject.hostname.includes(".")) {
+        return {
+          isValid: false,
+          error: `Invalid hostname '${urlObject.hostname}'. Domain must contain at least one dot (e.g., example.com) or be 'localhost'`
+        };
+      }
+
+      // Additional check: ensure it's not just a single word without proper TLD
+      if (urlObject.hostname !== "localhost" && urlObject.hostname.includes(".")) {
+        const parts = urlObject.hostname.split(".");
+        const tld = parts[parts.length - 1];
+
+        // TLD must be at least 2 characters and contain only letters
+        if (tld.length < 2 || !/^[a-zA-Z\u00a1-\uffff]{2,}$/.test(tld)) {
+          return {
+            isValid: false,
+            error: `Invalid top-level domain '${tld}'. TLD must be at least 2 characters and contain only letters`
+          };
+        }
+
+        // Check for empty domain parts (e.g., "example..com")
+        if (parts.some((part) => part.length === 0)) {
+          return {
+            isValid: false,
+            error: `Invalid hostname '${urlObject.hostname}'. Domain contains empty parts`
+          };
+        }
+      }
+
+      // Allow IDN domains and punycode with proper domain structure
+      const hostnamePattern =
+        /^[a-zA-Z0-9\u00a1-\uffff]([a-zA-Z0-9\u00a1-\uffff-]{0,61}[a-zA-Z0-9\u00a1-\uffff])?(\.[a-zA-Z0-9\u00a1-\uffff]([a-zA-Z0-9\u00a1-\uffff-]{0,61}[a-zA-Z0-9\u00a1-\uffff])?)*$/;
+      if (!hostnamePattern.test(urlObject.hostname)) {
+        return {
+          isValid: false,
+          error: `Invalid hostname '${urlObject.hostname}'. Hostname contains invalid characters or format`
+        };
+      }
+    }
+
+    // If we get here, the URL passed all validation checks
+    return {
+      isValid: true,
+      error: null
+    };
+  } catch (error) {
+    // URL constructor throws TypeError for invalid URLs
+    const errorMessage = error instanceof Error ? error.message : "Unknown URL parsing error";
+    return {
+      isValid: false,
+      error: `Invalid URL format: ${errorMessage}`
+    };
+  }
+};
+
 // TODO: Export "loginChecker" from here
 // export const loginChecker = async ({
 //   verifyToken

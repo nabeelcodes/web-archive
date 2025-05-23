@@ -23,6 +23,7 @@ const CreateForm = ({ allTags, setIsModalOpen }: CreateFormType) => {
   const accessToken = session?.data?.accessToken;
   const {
     reset,
+    watch,
     control,
     register,
     getValues,
@@ -32,6 +33,9 @@ const CreateForm = ({ allTags, setIsModalOpen }: CreateFormType) => {
   } = useForm<PostSchemaType>({
     resolver: zodResolver(postSchema)
   });
+  // getting realtime value of the link input
+  // to set disable state of the next button
+  const linkInputValue = watch("link");
 
   const loginChecker = async () => {
     const { success } = await verifyToken();
@@ -92,6 +96,7 @@ const CreateForm = ({ allTags, setIsModalOpen }: CreateFormType) => {
   return (
     <Form
       fetchMetadata
+      linkInputValue={linkInputValue}
       getValues={getValues}
       setValue={setValue}
       allTags={allTags}

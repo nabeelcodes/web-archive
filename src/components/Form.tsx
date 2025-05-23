@@ -6,6 +6,7 @@ import {
   UseFormRegister,
   UseFormSetValue
 } from "react-hook-form";
+import { toast } from "sonner";
 
 import { ImageAndTagsForm, LinkForm, TitleAndDescriptionForm } from "@/components/FormComponents";
 import { StepsIndicator } from "@/components/StepsIndicator";
@@ -13,10 +14,11 @@ import Button from "@/components/UI/Button";
 import FlexBox from "@/components/UI/FlexBox";
 import { useMultiStepForm } from "@/hooks/useMultiStepForm";
 import { PostSchemaType } from "@/utils/types";
-import { cn, fetchMetadataFromCFW } from "@/utils/helper";
+import { cn, fetchMetadataFromCFW, validateURL } from "@/utils/helper";
 
 export type FormType = {
   fetchMetadata?: boolean;
+  linkInputValue: string;
   allTags: string[];
   formActionHandler: (formData: PostSchemaType) => Promise<void>;
   isDirty: boolean;
@@ -64,6 +66,7 @@ export type FormType = {
 
 const Form = ({
   fetchMetadata,
+  linkInputValue,
   getValues,
   setValue,
   allTags,
@@ -93,14 +96,19 @@ const Form = ({
       // Extract the value of the link field
       const url = getValues("link");
       // Check if the URL is valid
-      if (url) {
-        // Fetch metadata from CFW
-        const metadata = await fetchMetadataFromCFW(url);
-        // Directly update form values
-        setValue("title", metadata.title);
-        setValue("description", metadata.description);
-        setValue("image", metadata.image);
+      const { isValid, error } = validateURL(url);
+      if (!isValid) {
+        toast.error("You entered an invalid URL", {
+          description: error && error
+        });
+        return;
       }
+      // Fetch metadata from CFW
+      const metadata = await fetchMetadataFromCFW(url);
+      // Directly update form values
+      setValue("title", metadata.title);
+      setValue("description", metadata.description);
+      setValue("image", metadata.image);
     }
 
     // Proceed to the next step
@@ -136,7 +144,8 @@ const Form = ({
             size='small'
             shape='rounded'
             className='relative ml-auto w-full select-none overflow-hidden rounded-full text-background focus-visible:outline-2 xs:w-1/2'
-            onClick={handleNextAction}>
+            onClick={handleNextAction}
+            disabled={linkInputValue?.length === 0 ? true : false}>
             Next
           </Button>
         )}

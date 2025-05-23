@@ -5,13 +5,13 @@ import { Options } from "nuqs";
 import Image from "next/image";
 
 import EditPost from "@/components/EditPost";
+import DeletePost from "@/components/DeletePost";
 import FlexBox from "@/components/UI/FlexBox";
 import H5 from "@/components/UI/Typography/H5";
 import P from "@/components/UI/Typography/P";
 import { blurPlaceholder } from "@/data/globals";
 import { Post } from "@/utils/types";
 import { cn } from "@/utils/helper";
-import DeletePost from "@/components/DeletePost";
 
 type PostCardProps = {
   post: Post;
@@ -120,23 +120,27 @@ const PostCard = ({
         </div>
 
         {/* Textual data and Tags */}
-        <div className='relative grow space-y-4 p-16'>
+        <div className='p-16'>
           {/* title and description */}
-          <div className='max-h-36'>
-            <H5 className='line-clamp-2 text-pretty'>{title}</H5>
-            <P
-              size='small'
-              className={cn(
-                "mt-4 text-neutral-700",
-                isExpanded ? "line-clamp-none" : "line-clamp-2"
-              )}>
-              {description}
-            </P>
-          </div>
+          <H5
+            className={cn(
+              "line-clamp-2 text-pretty",
+              isExpanded ? "line-clamp-none" : "line-clamp-2"
+            )}>
+            {title}
+          </H5>
+          <P
+            size='small'
+            className={cn(
+              "mt-4 text-neutral-700",
+              isExpanded ? "line-clamp-none" : "line-clamp-2"
+            )}>
+            {description}
+          </P>
 
           {/* tags */}
           <FlexBox
-            className={cn("flex-wrap gap-8 overflow-x-hidden", {
+            className={cn("mt-16 flex-wrap gap-8 overflow-x-hidden", {
               "pointer-events-none": isExpanded
             })}>
             {tagList.map((tag, index) => (
@@ -160,7 +164,7 @@ const PostCard = ({
               target='_blank'
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className='block w-full rounded-full bg-neutral-900 py-8 text-center text-background'>
+              className='mt-16 block w-full rounded-full bg-neutral-900 py-8 text-center text-background'>
               Visit link
             </motion.a>
           )}
