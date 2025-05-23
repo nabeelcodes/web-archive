@@ -145,7 +145,7 @@ const Form = ({
             shape='rounded'
             className='relative ml-auto w-full select-none overflow-hidden rounded-full text-background focus-visible:outline-2 xs:w-1/2'
             onClick={handleNextAction}
-            disabled={linkInputValue?.length === 0 ? true : false}>
+            disabled={!linkInputValue}>
             Next
           </Button>
         )}
