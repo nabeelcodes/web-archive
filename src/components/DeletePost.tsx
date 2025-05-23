@@ -72,8 +72,10 @@ const DeletePost = ({ postDetails }: DeletePostProps) => {
       }
 
       // Post deletion : SUCCEEDED
-      toast.success("Article has been deleted!");
       router.refresh();
+      setTimeout(() => {
+        toast.success("Article has been deleted!");
+      }, 1000);
     } catch (error) {
       console.error(error);
 

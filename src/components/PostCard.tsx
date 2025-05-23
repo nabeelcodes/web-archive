@@ -27,6 +27,7 @@ type PostCardProps = {
     value: string | ((old: string) => string | null) | null,
     options?: Options
   ) => Promise<URLSearchParams>;
+  setShowTagList: Dispatch<SetStateAction<boolean>>;
 };
 
 const PostCard = ({
@@ -36,7 +37,8 @@ const PostCard = ({
   isPostExpanded,
   setExpandedCardId,
   setTags,
-  setPage
+  setPage,
+  setShowTagList
 }: PostCardProps) => {
   const { title, description, link, image, tags: tagList, id } = post;
   const [isExpanded, setIsExpanded] = useState(false);
@@ -64,6 +66,8 @@ const PostCard = ({
       if (prev.includes(tag)) return prev;
       // skip everything if duplicate tag attempted
       setPage("1");
+      // Show TagList when PostCard tag is clicked
+      setShowTagList(true);
       return prev.concat(tag);
     });
 

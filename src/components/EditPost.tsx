@@ -13,7 +13,8 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription
+  DialogDescription,
+  DialogClose
 } from "@/components/UI/Modal";
 
 type EditPostProps = {
@@ -51,13 +52,27 @@ const EditPost = ({ postDetails, allTags, editModalOpen, setEditModalOpen }: Edi
         </Button>
       </DialogTrigger>
 
-      <DialogContent className='max-h-[95vh]'>
+      <DialogContent className='max-h-[95vh] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Make Changes</DialogTitle>
           <DialogDescription>Update details for this article</DialogDescription>
         </DialogHeader>
 
-        <EditForm allTags={allTags} postDetails={postDetails} setEditModalOpen={setEditModalOpen} />
+        <EditForm allTags={allTags} postDetails={postDetails} setEditModalOpen={setEditModalOpen}>
+          <DialogClose asChild>
+            <Button
+              type='submit'
+              size='small'
+              shape='rounded'
+              variant='outline'
+              className='w-full select-none rounded-full focus-visible:outline-2 xs:w-1/2'
+              onClick={(e) => {
+                e.stopPropagation();
+              }}>
+              Cancel
+            </Button>
+          </DialogClose>
+        </EditForm>
       </DialogContent>
     </Dialog>
   );

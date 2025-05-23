@@ -14,9 +14,13 @@ type PostsSearchType = {
     value: string | ((old: string) => string | null) | null,
     options?: Options
   ) => Promise<URLSearchParams>;
+  setTags: (
+    value: string[] | ((old: string[]) => string[] | null) | null,
+    options?: Options
+  ) => Promise<URLSearchParams>;
 };
 
-const PostsSearch = ({ allTags, setPage }: PostsSearchType) => {
+const PostsSearch = ({ allTags, setPage, setTags }: PostsSearchType) => {
   const [query, setQuery] = useQueryState(SEARCH_QUERY_KEY, {
     defaultValue: "",
     shallow: false,
@@ -41,7 +45,7 @@ const PostsSearch = ({ allTags, setPage }: PostsSearchType) => {
 
       {/* all tags list */}
       <AnimatePresence mode='wait'>
-        {allTagsShown ? <AllTagsList allTags={allTags} /> : null}
+        {allTagsShown ? <AllTagsList allTags={allTags} setTags={setTags} /> : null}
       </AnimatePresence>
     </>
   );

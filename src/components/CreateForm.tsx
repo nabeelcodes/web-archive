@@ -72,8 +72,10 @@ const CreateForm = ({ allTags, setIsModalOpen }: CreateFormType) => {
       }
 
       // Post creation : SUCCEEDED
-      toast.success("New article added!");
       reset();
+      setTimeout(() => {
+        toast.success("New article added!");
+      }, 1000);
       setIsModalOpen(false);
       router.refresh();
     } catch (error) {

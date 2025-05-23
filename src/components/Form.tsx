@@ -7,6 +7,7 @@ import {
   UseFormSetValue
 } from "react-hook-form";
 import { toast } from "sonner";
+import { useState } from "react";
 
 import { ImageAndTagsForm, LinkForm, TitleAndDescriptionForm } from "@/components/FormComponents";
 import { StepsIndicator } from "@/components/StepsIndicator";
@@ -89,6 +90,10 @@ const Form = ({
       control={control}
     />
   ]);
+  // State to manage the fetching state
+  // This state is used to show the loading state of the button
+  // when fetching metadata from CFW
+  const [fetchingFromCfw, setFetchingFromCfw] = useState(false);
 
   const handleNextAction = async () => {
     // fetch metadata from CFW
@@ -103,12 +108,14 @@ const Form = ({
         });
         return;
       }
+      setFetchingFromCfw(true);
       // Fetch metadata from CFW
       const metadata = await fetchMetadataFromCFW(url);
       // Directly update form values
       setValue("title", metadata.title);
       setValue("description", metadata.description);
       setValue("image", metadata.image);
+      setFetchingFromCfw(false);
     }
 
     // Proceed to the next step
@@ -146,7 +153,18 @@ const Form = ({
             className='relative ml-auto w-full select-none overflow-hidden rounded-full text-background focus-visible:outline-2 xs:w-1/2'
             onClick={handleNextAction}
             disabled={!linkInputValue}>
-            Next
+            <span
+              className={cn("absolute translate-y-0 transition-all", {
+                "-translate-y-7": fetchingFromCfw
+              })}>
+              Next
+            </span>
+            <span
+              className={cn("absolute translate-y-7 transition-all", {
+                "translate-y-0": fetchingFromCfw
+              })}>
+              Fetching metadata . . .
+            </span>
           </Button>
         )}
 

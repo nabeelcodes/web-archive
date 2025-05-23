@@ -33,6 +33,7 @@ const SearchAndPosts = ({ apiData, allTags, timedOut }: SearchAndPostsType) => {
     shallow: false
   });
   const [expandedCardId, setExpandedCardId] = useState<string>("");
+  const [showTagList, setShowTagList] = useState(false);
   const isTagQueryEmpty = tags.length === 0;
   const allPosts = apiData.posts;
   const pageLoadRef = useRef(true);
@@ -68,10 +69,12 @@ const SearchAndPosts = ({ apiData, allTags, timedOut }: SearchAndPostsType) => {
   return (
     <LayoutContainer tag='main' className='pb-3264 pt-2448'>
       {/* posts search */}
-      <PostsSearch allTags={allTags} setPage={setPage} />
+      <PostsSearch allTags={allTags} setPage={setPage} setTags={setTags} />
 
       {/* clicked tags list */}
-      {isTagQueryEmpty ? null : <TagList tags={tags} setTags={setTags} />}
+      {isTagQueryEmpty ? null : showTagList ? (
+        <TagList tags={tags} setTags={setTags} setShowTagList={setShowTagList} />
+      ) : null}
 
       {/* posts grid */}
       {allPosts?.length > 0 ? (
@@ -95,6 +98,7 @@ const SearchAndPosts = ({ apiData, allTags, timedOut }: SearchAndPostsType) => {
                 setExpandedCardId={setExpandedCardId}
                 setTags={setTags}
                 setPage={setPage}
+                setShowTagList={setShowTagList}
               />
             );
           })}
