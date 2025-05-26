@@ -59,9 +59,10 @@ const EditPost = ({ postDetails, allTags, editModalOpen, setEditModalOpen }: Edi
         </DialogHeader>
 
         <EditForm allTags={allTags} postDetails={postDetails} setEditModalOpen={setEditModalOpen}>
+          {/* Cancel button */}
           <DialogClose asChild>
             <Button
-              type='submit'
+              type='button'
               size='small'
               shape='rounded'
               variant='outline'

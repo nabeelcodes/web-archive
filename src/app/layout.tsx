@@ -38,7 +38,13 @@ export default async function RootLayout({
         </SessionProvider>
 
         {/* Sonner Toaster component */}
-        <Toaster position='top-center' duration={5000} richColors closeButton />
+        <Toaster
+          position='top-center'
+          duration={5000}
+          richColors
+          // closeButton
+          className='!z-[100]'
+        />
       </body>
     </html>
   );

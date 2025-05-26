@@ -40,7 +40,12 @@ const PostsSearch = ({ allTags, setPage, setTags }: PostsSearchType) => {
         />
 
         {/* grid/list picker & createPost */}
-        <SearchByTags allTags={allTags} setAllTagsShown={setAllTagsShown} />
+        <SearchByTags
+          allTags={allTags}
+          setTags={setTags}
+          allTagsShown={allTagsShown}
+          setAllTagsShown={setAllTagsShown}
+        />
       </FlexBox>
 
       {/* all tags list */}

@@ -39,3 +39,7 @@
     @apply bg-gradient-to-t from-background to-transparent;
   }
 }
+
+textarea {
+  field-sizing: content;
+}
