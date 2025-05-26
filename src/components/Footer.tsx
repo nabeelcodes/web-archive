@@ -1,17 +1,19 @@
 import { Figma, Github, Twitter } from "lucide-react";
+
+import SocialLink from "@/components/SocialLink";
+import AdminLogin from "@/components/AdminLogin";
 import LayoutContainer from "@/components/UI/LayoutContainer";
 import { Grid, GridCol } from "@/components/UI/Grid";
 import FlexBox from "@/components/UI/FlexBox";
 import P from "@/components/UI/Typography/P";
-import H5 from "@/components/UI/Typography/H5";
+import H4 from "@/components/UI/Typography/H4";
 import Tailwindcss from "@/components/SVG/Tailwindcss";
 import Nextjs from "@/components/SVG/Nextjs";
-import SocialLink from "@/components/SocialLink";
-import AdminLogin from "@/components/AdminLogin";
-import { SOCIAL_LINKS } from "@/data/globals";
 import Typescript from "@/components/SVG/Typescript";
 import Express from "@/components/SVG/Express";
 import Mongodb from "@/components/SVG/Mongodb";
+import { SOCIAL_LINKS } from "@/data/globals";
+import H5 from "@/components/UI/Typography/H5";
 
 const Footer = () => {
   return (
@@ -26,7 +28,7 @@ const Footer = () => {
               md: 10,
               lg: 6
             }}>
-            <H5>Web Archive</H5>
+            <H4 className='text-h5'>Web Archive</H4>
 
             <P size='small' className='mt-2 text-pretty text-neutral-700'>
               Stay ahead in the ever-evolving world of web technologies. Browse a curated collection
@@ -55,9 +57,9 @@ const Footer = () => {
           {/* Follow / Socials */}
           <GridCol colSizeConfig={{ xs: 12, sm: 4, lg: 3 }}>
             <section>
-              <P tag='h6' weight='bold'>
+              <H5 weight='bold' className='text-h6'>
                 Follow
-              </P>
+              </H5>
               <FlexBox className='mt-10 gap-12'>
                 <SocialLink url={SOCIAL_LINKS.site.github} title='Github'>
                   <Github size={16} className='text-background' />
@@ -77,9 +79,9 @@ const Footer = () => {
           {/* Tech Stack */}
           <GridCol colSizeConfig={{ xxs: 12, sm: 4, lg: 3 }}>
             <section>
-              <P tag='h6' weight='bold'>
+              <H5 weight='bold' className='text-h6'>
                 Tech Stack
-              </P>
+              </H5>
 
               <FlexBox className='mt-10 gap-12 lg:flex-wrap'>
                 <Nextjs />

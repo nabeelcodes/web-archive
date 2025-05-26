@@ -10,7 +10,7 @@ import Pagination from "@/components/Pagination";
 import PostCard from "@/components/PostCard";
 import TagList from "@/components/TagList";
 import LayoutContainer from "@/components/UI/LayoutContainer";
-import H5 from "@/components/UI/Typography/H5";
+import H3 from "@/components/UI/Typography/H3";
 import { Grid } from "@/components/UI/Grid";
 import { matches } from "@/utils/helper";
 import { ApiResponsePost } from "@/utils/types";
@@ -105,12 +105,12 @@ const SearchAndPosts = ({ apiData, allTags, timedOut }: SearchAndPostsType) => {
         </Grid>
       ) : (
         // Fallback
-        <H5
+        <H3
           tag='p'
           weight='semibold'
-          className='grid-center my-2440 h-32 text-center text-neutral-600'>
+          className='grid-center my-2440 h-32 text-center text-h5 text-neutral-600'>
           No relevant posts found.
-        </H5>
+        </H3>
       )}
 
       {/* pagination */}
