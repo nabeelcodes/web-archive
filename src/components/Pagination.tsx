@@ -3,7 +3,7 @@ import { Options } from "nuqs";
 
 import Button from "@/components/UI/Button";
 import FlexBox from "@/components/UI/FlexBox";
-import H5 from "@/components/UI/Typography/H5";
+import H3 from "@/components/UI/Typography/H3";
 import { matches } from "@/utils/helper";
 
 type PaginationProps = {
@@ -76,7 +76,7 @@ const Pagination = ({ page, nextPageExists, totalPages, setPage }: PaginationPro
       </FlexBox>
 
       {/* Page number */}
-      <H5 className='-ms-48 font-geistMono'>{+page}</H5>
+      <H3 className='-ms-48 font-geistMono text-h5'>{+page}</H3>
 
       {/* Last/First page Button */}
       <Button
