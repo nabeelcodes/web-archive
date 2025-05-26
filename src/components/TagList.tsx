@@ -1,7 +1,9 @@
+import { Dispatch, SetStateAction } from "react";
 import { X } from "lucide-react";
+import { Options } from "nuqs";
+
 import FlexBox from "@/components/UI/FlexBox";
 import Button from "@/components/UI/Button";
-import { Options } from "nuqs";
 
 type TagListProps = {
   tags: string[];
@@ -9,13 +11,15 @@ type TagListProps = {
     value: string[] | ((old: string[]) => string[] | null) | null,
     options?: Options
   ) => Promise<URLSearchParams>;
+  setShowTagList: Dispatch<SetStateAction<boolean>>;
 };
 
-const TagList = ({ tags, setTags }: TagListProps) => {
+const TagList = ({ tags, setTags, setShowTagList }: TagListProps) => {
   const handleTagClose = (currentTag: string) => {
     const newTags = tags.filter((tag) => tag !== currentTag);
 
     setTags(newTags);
+    setShowTagList(false);
   };
 
   return (
@@ -35,7 +39,13 @@ const TagList = ({ tags, setTags }: TagListProps) => {
       ))}
 
       {tags.length > 1 && (
-        <Button shape='circle' size='small' onClick={() => setTags([])}>
+        <Button
+          shape='circle'
+          size='small'
+          onClick={() => {
+            setTags([]);
+            setShowTagList(false);
+          }}>
           <X size={16} />
         </Button>
       )}

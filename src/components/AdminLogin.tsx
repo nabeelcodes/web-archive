@@ -4,6 +4,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { MoveRight } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
+
 import { scrollToTop } from "@/utils/helper";
 import LoginForm from "@/components/LoginForm";
 import FlexBox from "@/components/UI/FlexBox";

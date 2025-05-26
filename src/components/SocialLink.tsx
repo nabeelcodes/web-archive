@@ -8,8 +8,8 @@ type SocialLinkProps = {
 
 const SocialLink = ({ children, url, title }: SocialLinkProps) => {
   return (
-    <a href={url} target='_blank' title={title}>
-      <Button size='small' variant='pill' shape='circle'>
+    <a href={url} target='_blank' title={title} aria-label={title}>
+      <Button size='small' variant='pill' shape='circle' title={title} aria-label={title}>
         {children}
       </Button>
     </a>

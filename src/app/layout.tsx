@@ -2,10 +2,10 @@ import { Manrope, Geist_Mono } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Toaster } from "sonner";
-import { siteConfig } from "@/data/globals";
-import type { Metadata } from "next";
-import "./globals.css";
+
+import { appMetadata, appViewport } from "@/data/metadata";
 import { auth } from "@/auth";
+import "./globals.css";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -17,10 +17,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"]
 });
 
-export const metadata: Metadata = {
-  title: siteConfig.title,
-  description: siteConfig.description
-};
+export const metadata = appMetadata;
+
+export const viewport = appViewport;
 
 export default async function RootLayout({
   children
@@ -39,7 +38,13 @@ export default async function RootLayout({
         </SessionProvider>
 
         {/* Sonner Toaster component */}
-        <Toaster position='top-center' duration={5000} richColors closeButton />
+        <Toaster
+          position='top-center'
+          duration={5000}
+          richColors
+          // closeButton
+          className='!z-[100]'
+        />
       </body>
     </html>
   );

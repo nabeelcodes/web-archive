@@ -2,6 +2,7 @@ import { Dispatch, MouseEvent, SetStateAction } from "react";
 import { toast } from "sonner";
 import { Pencil } from "lucide-react";
 import { signOut } from "next-auth/react";
+
 import { useVerifyToken } from "@/apiRoutes/auth-routes";
 import { Post } from "@/utils/types";
 import EditForm from "@/components/EditForm";
@@ -12,7 +13,8 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription
+  DialogDescription,
+  DialogClose
 } from "@/components/UI/Modal";
 
 type EditPostProps = {
@@ -45,23 +47,33 @@ const EditPost = ({ postDetails, allTags, editModalOpen, setEditModalOpen }: Edi
   return (
     <Dialog open={editModalOpen} onOpenChange={setEditModalOpen}>
       <DialogTrigger asChild>
-        <Button
-          size='small'
-          variant='pill'
-          shape='circle'
-          className='absolute right-2 top-2 z-1'
-          onClick={modalHandler}>
-          <Pencil size={12} />
+        <Button size='small' variant='pill' shape='circle' onClick={modalHandler}>
+          <Pencil size={15} />
         </Button>
       </DialogTrigger>
 
-      <DialogContent className='max-h-[95vh]'>
+      <DialogContent className='max-h-[95vh] overflow-y-auto'>
         <DialogHeader>
           <DialogTitle>Make Changes</DialogTitle>
           <DialogDescription>Update details for this article</DialogDescription>
         </DialogHeader>
 
-        <EditForm allTags={allTags} postDetails={postDetails} setEditModalOpen={setEditModalOpen} />
+        <EditForm allTags={allTags} postDetails={postDetails} setEditModalOpen={setEditModalOpen}>
+          {/* Cancel button */}
+          <DialogClose asChild>
+            <Button
+              type='button'
+              size='small'
+              shape='rounded'
+              variant='outline'
+              className='w-full select-none rounded-full focus-visible:outline-2 xs:w-1/2'
+              onClick={(e) => {
+                e.stopPropagation();
+              }}>
+              Cancel
+            </Button>
+          </DialogClose>
+        </EditForm>
       </DialogContent>
     </Dialog>
   );

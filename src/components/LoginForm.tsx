@@ -3,10 +3,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { signIn } from "next-auth/react";
+
 import Input, { InputLabel } from "@/components/UI/Input";
 import Button from "@/components/UI/Button";
 import P from "@/components/UI/Typography/P";
-import { scrollToTop } from "@/utils/helper";
+import { cn, scrollToTop } from "@/utils/helper";
 import { loginSchema, LoginSchemaType } from "@/utils/types";
 
 const LoginForm = ({ setIsModalOpen }: { setIsModalOpen: Dispatch<SetStateAction<boolean>> }) => {
@@ -103,8 +104,19 @@ const LoginForm = ({ setIsModalOpen }: { setIsModalOpen: Dispatch<SetStateAction
         size='small'
         shape='rounded'
         disabled={isSubmitting}
-        className='mt-6 w-full select-none rounded-full text-background focus-visible:outline-2'>
-        Login
+        className='relative mt-6 w-full select-none overflow-hidden rounded-full text-background focus-visible:outline-2'>
+        <span
+          className={cn("absolute translate-y-0 transition-all", {
+            "-translate-y-7": isSubmitting
+          })}>
+          Login
+        </span>
+        <span
+          className={cn("absolute translate-y-7 transition-all", {
+            "translate-y-0": isSubmitting
+          })}>
+          Logging in . . .
+        </span>
       </Button>
     </form>
   );

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Plus } from "lucide-react";
 import { signOut } from "next-auth/react";
+
 import { useVerifyToken } from "@/apiRoutes/auth-routes";
 import CreateForm from "@/components/CreateForm";
 import Button from "@/components/UI/Button";
@@ -11,8 +12,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
-  DialogClose
+  DialogDescription
 } from "@/components/UI/Modal";
 
 const CreatePost = ({ allTags }: { allTags: string[] }) => {
@@ -51,19 +51,7 @@ const CreatePost = ({ allTags }: { allTags: string[] }) => {
           <DialogDescription>Enter details for a new article</DialogDescription>
         </DialogHeader>
 
-        <CreateForm allTags={allTags} setIsModalOpen={setIsModalOpen}>
-          {/* Cancel button */}
-          <DialogClose asChild>
-            <Button
-              type='submit'
-              size='small'
-              shape='rounded'
-              variant='outline'
-              className='w-full select-none rounded-full focus-visible:outline-2'>
-              Cancel
-            </Button>
-          </DialogClose>
-        </CreateForm>
+        <CreateForm allTags={allTags} setIsModalOpen={setIsModalOpen} />
       </DialogContent>
     </Dialog>
   );

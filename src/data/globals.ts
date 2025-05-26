@@ -1,8 +1,5 @@
-const siteConfig = {
-  title: "Web Archive",
-  description:
-    "A curated digital library, featuring insightful articles on a wide range of web development topics."
-} as const;
+const blurPlaceholder =
+  "data:image/webp;base64,UklGRgwCAABXRUJQVlA4WAoAAAAgAAAAAQAAAgAASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAAAAAAAAAAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggHgAAAJABAJ0BKgIAAwAHQJYlpAAC51m2AAD+5R4qGAAAAA==";
 
 const SOCIAL_LINKS = {
   dev: {
@@ -11,7 +8,8 @@ const SOCIAL_LINKS = {
   },
   site: {
     github: "https://github.com/nabeelcodes/web-archive",
-    figma: "",
+    figma:
+      "https://www.figma.com/design/7LZ47lPEUCIz3eF7UW7Me3/web-archive?node-id=0-1&p=f&t=sKZahAMHBzmJDYxp-0",
     twitter: ""
   }
 } as const;
@@ -22,4 +20,15 @@ const TAGS_QUERY_KEY = "tags" as const;
 
 const PAGE_QUERY_KEY = "page" as const;
 
-export { siteConfig, TAGS_QUERY_KEY, SEARCH_QUERY_KEY, PAGE_QUERY_KEY, SOCIAL_LINKS };
+const FETCH_TAGS = {
+  posts: "posts"
+} as const;
+
+export {
+  blurPlaceholder,
+  TAGS_QUERY_KEY,
+  SEARCH_QUERY_KEY,
+  PAGE_QUERY_KEY,
+  SOCIAL_LINKS,
+  FETCH_TAGS
+};

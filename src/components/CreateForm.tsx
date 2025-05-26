@@ -6,32 +6,36 @@ import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 
 import Form from "@/components/Form";
-import FlexBox from "@/components/UI/FlexBox";
-import Button from "@/components/UI/Button";
 import { useVerifyToken } from "@/apiRoutes/auth-routes";
 import { createPost } from "@/apiRoutes/admin-routes";
 import { postSchema, PostSchemaType } from "@/utils/types";
 import { CustomError } from "@/utils/customError";
-import { cn } from "@/utils/helper";
 
 type CreateFormType = {
   allTags: string[];
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
-  children: React.ReactNode;
 };
 
-const CreateForm = ({ allTags, setIsModalOpen, children }: CreateFormType) => {
+const CreateForm = ({ allTags, setIsModalOpen }: CreateFormType) => {
   const { verifyToken } = useVerifyToken();
   const router = useRouter();
   const session = useSession();
   const accessToken = session?.data?.accessToken;
   const {
     reset,
+    watch,
     control,
     register,
+    getValues,
+    setValue,
     handleSubmit,
     formState: { errors, isDirty, isSubmitting }
-  } = useForm<PostSchemaType>({ resolver: zodResolver(postSchema) });
+  } = useForm<PostSchemaType>({
+    resolver: zodResolver(postSchema)
+  });
+  // getting realtime value of the link input
+  // to set disable state of the next button
+  const linkInputValue = watch("link");
 
   const loginChecker = async () => {
     const { success } = await verifyToken();
@@ -68,11 +72,15 @@ const CreateForm = ({ allTags, setIsModalOpen, children }: CreateFormType) => {
       }
 
       // Post creation : SUCCEEDED
-      toast.success("New article added!");
       reset();
+      setTimeout(() => {
+        toast.success("New article added!");
+      }, 1000);
       setIsModalOpen(false);
       router.refresh();
     } catch (error) {
+      console.error(error);
+
       // Catch network errors and other exceptions
       if (error instanceof CustomError) {
         toast.error(error.title, {
@@ -89,39 +97,19 @@ const CreateForm = ({ allTags, setIsModalOpen, children }: CreateFormType) => {
 
   return (
     <Form
+      fetchMetadata
+      linkInputValue={linkInputValue}
+      getValues={getValues}
+      setValue={setValue}
       allTags={allTags}
       register={register}
       handleSubmit={handleSubmit}
       control={control}
       errors={errors}
-      formActionHandler={createFormHandler}>
-      {/* Modal - CTA */}
-      <FlexBox className='mt-6 flex-col gap-8 xs:flex-row'>
-        {/* Cancel button */}
-        {children}
-
-        {/* Form submit button */}
-        <Button
-          type='submit'
-          size='small'
-          shape='rounded'
-          disabled={!isDirty || isSubmitting}
-          className='relative w-full select-none overflow-hidden rounded-full text-background focus-visible:outline-2'>
-          <span
-            className={cn("absolute translate-y-0 transition-all", {
-              "-translate-y-7": isSubmitting
-            })}>
-            Submit
-          </span>
-          <span
-            className={cn("absolute translate-y-7 transition-all", {
-              "translate-y-0": isSubmitting
-            })}>
-            Submitting . . .
-          </span>
-        </Button>
-      </FlexBox>
-    </Form>
+      formActionHandler={createFormHandler}
+      isDirty={isDirty}
+      isSubmitting={isSubmitting}
+    />
   );
 };
 

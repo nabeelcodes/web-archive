@@ -1,14 +1,17 @@
 import { Dispatch, SetStateAction, useRef, useState, MouseEvent } from "react";
-import { motion } from "motion/react";
 import { useSession } from "next-auth/react";
-import { Options } from "nuqs";
+import { motion } from "motion/react";
 import Image from "next/image";
+import { Options } from "nuqs";
+
 import EditPost from "@/components/EditPost";
+import DeletePost from "@/components/DeletePost";
 import FlexBox from "@/components/UI/FlexBox";
-import H5 from "@/components/UI/Typography/H5";
+import H2 from "@/components/UI/Typography/H2";
 import P from "@/components/UI/Typography/P";
 import { Post } from "@/utils/types";
 import { cn } from "@/utils/helper";
+import { blurPlaceholder } from "@/data/globals";
 
 type PostCardProps = {
   post: Post;
@@ -24,6 +27,7 @@ type PostCardProps = {
     value: string | ((old: string) => string | null) | null,
     options?: Options
   ) => Promise<URLSearchParams>;
+  setShowTagList: Dispatch<SetStateAction<boolean>>;
 };
 
 const PostCard = ({
@@ -33,7 +37,8 @@ const PostCard = ({
   isPostExpanded,
   setExpandedCardId,
   setTags,
-  setPage
+  setPage,
+  setShowTagList
 }: PostCardProps) => {
   const { title, description, link, image, tags: tagList, id } = post;
   const [isExpanded, setIsExpanded] = useState(false);
@@ -61,6 +66,8 @@ const PostCard = ({
       if (prev.includes(tag)) return prev;
       // skip everything if duplicate tag attempted
       setPage("1");
+      // Show TagList when PostCard tag is clicked
+      setShowTagList(true);
       return prev.concat(tag);
     });
 
@@ -105,27 +112,40 @@ const PostCard = ({
         transition={{ duration: 0.5, ease: "anticipate" }}>
         {/* image wrapper */}
         <div className='card-image-wrapper relative isolate aspect-[1200/630] w-full'>
-          <Image src={image} alt='card-image' fill className='z-1 object-cover' />
+          <Image
+            fill
+            quality={85}
+            src={image}
+            alt={`An illustration about ${title.toLowerCase()}`}
+            placeholder='blur'
+            blurDataURL={blurPlaceholder}
+            sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+            className='z-1 object-cover'
+          />
         </div>
 
         {/* Textual data and Tags */}
-        <div className='relative grow space-y-4 p-16'>
+        <div className='p-16'>
           {/* title and description */}
-          <div className='max-h-36'>
-            <H5 className='line-clamp-2 text-pretty'>{title}</H5>
-            <P
-              size='small'
-              className={cn(
-                "mt-4 text-neutral-700",
-                isExpanded ? "line-clamp-none" : "line-clamp-2"
-              )}>
-              {description}
-            </P>
-          </div>
+          <H2
+            className={cn(
+              "line-clamp-2 text-pretty text-h5",
+              isExpanded ? "line-clamp-none" : "line-clamp-2"
+            )}>
+            {title}
+          </H2>
+          <P
+            size='small'
+            className={cn(
+              "mt-4 text-neutral-700",
+              isExpanded ? "line-clamp-none" : "line-clamp-2"
+            )}>
+            {description}
+          </P>
 
           {/* tags */}
           <FlexBox
-            className={cn("flex-wrap gap-8 overflow-x-hidden", {
+            className={cn("mt-16 flex-wrap gap-8 overflow-x-hidden", {
               "pointer-events-none": isExpanded
             })}>
             {tagList.map((tag, index) => (
@@ -149,21 +169,26 @@ const PostCard = ({
               target='_blank'
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className='block w-full rounded-full bg-neutral-900 py-8 text-center text-background'>
+              className='mt-16 block w-full rounded-full bg-neutral-900 py-8 text-center text-background'>
               Visit link
             </motion.a>
           )}
         </div>
 
-        {/* Edit Button */}
-        {session.status === "authenticated" && !isExpanded && (
-          <EditPost
-            allTags={allTags}
-            postDetails={post}
-            editModalOpen={editModalOpen}
-            setEditModalOpen={setEditModalOpen}
-          />
-        )}
+        <FlexBox className='absolute right-2 top-2 z-1 gap-x-8'>
+          {/* Edit Button */}
+          {session.status === "authenticated" && !isExpanded && (
+            <EditPost
+              allTags={allTags}
+              postDetails={post}
+              editModalOpen={editModalOpen}
+              setEditModalOpen={setEditModalOpen}
+            />
+          )}
+
+          {/* Delete Button */}
+          {session.status === "authenticated" && !isExpanded && <DeletePost postDetails={post} />}
+        </FlexBox>
       </motion.div>
     </>
   );

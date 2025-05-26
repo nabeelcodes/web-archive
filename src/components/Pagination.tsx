@@ -1,9 +1,10 @@
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
+import { Options } from "nuqs";
+
 import Button from "@/components/UI/Button";
 import FlexBox from "@/components/UI/FlexBox";
 import H5 from "@/components/UI/Typography/H5";
 import { matches } from "@/utils/helper";
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
-import { Options } from "nuqs";
 
 type PaginationProps = {
   page: string;
@@ -45,6 +46,7 @@ const Pagination = ({ page, nextPageExists, totalPages, setPage }: PaginationPro
   return (
     <FlexBox className='items-center justify-between gap-32'>
       <FlexBox className='items-center gap-8'>
+        {/* Prev page Button */}
         <Button
           shape='circle'
           size='small'
@@ -58,6 +60,7 @@ const Pagination = ({ page, nextPageExists, totalPages, setPage }: PaginationPro
           <ChevronLeft size={16} />
         </Button>
 
+        {/* Next page Button */}
         <Button
           shape='circle'
           size='small'
@@ -72,8 +75,10 @@ const Pagination = ({ page, nextPageExists, totalPages, setPage }: PaginationPro
         </Button>
       </FlexBox>
 
+      {/* Page number */}
       <H5 className='-ms-48 font-geistMono'>{+page}</H5>
 
+      {/* Last/First page Button */}
       <Button
         shape='circle'
         size='small'

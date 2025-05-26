@@ -1,13 +1,29 @@
-import { Control, FieldErrors, UseFormHandleSubmit, UseFormRegister } from "react-hook-form";
-import CreatableMultiSelect from "@/components/CreatableMultiSelect";
-import Input, { InputLabel } from "@/components/UI/Input";
-import P from "@/components/UI/Typography/P";
-import { PostSchemaType } from "@/utils/types";
+import {
+  Control,
+  FieldErrors,
+  UseFormGetValues,
+  UseFormHandleSubmit,
+  UseFormRegister,
+  UseFormSetValue
+} from "react-hook-form";
+import { toast } from "sonner";
+import { useState } from "react";
 
-type FormType = {
-  children: React.ReactNode;
+import { ImageAndTagsForm, LinkForm, TitleAndDescriptionForm } from "@/components/FormComponents";
+import { StepsIndicator } from "@/components/StepsIndicator";
+import Button from "@/components/UI/Button";
+import FlexBox from "@/components/UI/FlexBox";
+import { useMultiStepForm } from "@/hooks/useMultiStepForm";
+import { PostSchemaType } from "@/utils/types";
+import { cn, fetchMetadataFromCFW, validateURL } from "@/utils/helper";
+
+export type FormType = {
+  fetchMetadata?: boolean;
+  linkInputValue?: string;
   allTags: string[];
   formActionHandler: (formData: PostSchemaType) => Promise<void>;
+  isDirty: boolean;
+  isSubmitting: boolean;
   register: UseFormRegister<{
     link: string;
     title: string;
@@ -39,118 +55,144 @@ type FormType = {
     tags: [string, ...string[]];
     description?: string | undefined;
   }>;
+  getValues?: UseFormGetValues<{
+    title: string;
+    link: string;
+    image: string;
+    tags: [string, ...string[]];
+    description?: string | undefined;
+  }>;
+  setValue?: UseFormSetValue<PostSchemaType>;
 };
 
 const Form = ({
-  children,
+  fetchMetadata,
+  linkInputValue,
+  getValues,
+  setValue,
   allTags,
   register,
   handleSubmit,
   control,
   errors,
-  formActionHandler
+  formActionHandler,
+  isDirty,
+  isSubmitting
 }: FormType) => {
+  const { step, steps, currentStepIndex, isFirstStep, isLastStep, next, back } = useMultiStepForm([
+    <LinkForm key={1} register={register} errors={errors} />,
+    <TitleAndDescriptionForm key={2} register={register} errors={errors} />,
+    <ImageAndTagsForm
+      key={3}
+      register={register}
+      errors={errors}
+      allTags={allTags}
+      control={control}
+    />
+  ]);
+  // State to manage the fetching state
+  // This state is used to show the loading state of the button
+  // when fetching metadata from CFW
+  const [fetchingFromCfw, setFetchingFromCfw] = useState(false);
+
+  const handleNextAction = async () => {
+    // fetch metadata from CFW
+    if (fetchMetadata && isFirstStep && getValues && setValue) {
+      // Extract the value of the link field
+      const url = getValues("link");
+      // Check if the URL is valid
+      const { isValid, error } = validateURL(url);
+      if (!isValid) {
+        toast.error("You entered an invalid URL", {
+          description: error && error
+        });
+        return;
+      }
+      setFetchingFromCfw(true);
+      // Fetch metadata from CFW
+      const metadata = await fetchMetadataFromCFW(url);
+      // Directly update form values
+      setValue("title", metadata.title);
+      setValue("description", metadata.description);
+      setValue("image", metadata.image);
+      setFetchingFromCfw(false);
+    }
+
+    // Proceed to the next step
+    next();
+  };
+
   return (
     <form
-      className='mt-16 flex flex-col justify-between gap-16'
+      className='mt-16 flex flex-col justify-between gap-y-24'
       onSubmit={handleSubmit(formActionHandler)}>
-      {/* Modal - Form */}
-      <div>
-        {/* Title */}
-        <fieldset>
-          <InputLabel required htmlFor='title'>
-            Title
-          </InputLabel>
-          <Input {...register("title")} id='title' placeholder='Enter a title' fullWidth />
-        </fieldset>
+      {/* Rendering all the forms as "step" */}
+      {step}
 
-        {errors.title && (
-          <P tag='span' weight='medium' size='tiny' className='text-red-600'>
-            {errors.title.message}
-          </P>
+      {/* Buttons and the CTA */}
+      <FlexBox className='flex-col gap-16 xs:flex-row'>
+        {/* Back button */}
+        {!isFirstStep && (
+          <Button
+            type='button'
+            size='small'
+            shape='rounded'
+            variant='outline'
+            className='relative w-full select-none overflow-hidden rounded-full focus-visible:outline-2 xs:w-1/2'
+            onClick={back}>
+            Back
+          </Button>
         )}
-      </div>
 
-      <div>
-        {/* Description */}
-        <fieldset>
-          <InputLabel htmlFor='description'>Description</InputLabel>
-          <Input
-            {...register("description")}
-            id='description'
-            placeholder='Enter a description'
-            fullWidth
-          />
-        </fieldset>
-
-        {errors.description && (
-          <P tag='span' weight='medium' size='tiny' className='text-red-600'>
-            {errors.description.message}
-          </P>
+        {/* Next button */}
+        {!isLastStep && (
+          <Button
+            type='button'
+            size='small'
+            shape='rounded'
+            className='relative ml-auto w-full select-none overflow-hidden rounded-full text-background focus-visible:outline-2 xs:w-1/2'
+            onClick={handleNextAction}
+            disabled={!linkInputValue}>
+            <span
+              className={cn("absolute translate-y-0 transition-all", {
+                "-translate-y-7": fetchingFromCfw
+              })}>
+              Next
+            </span>
+            <span
+              className={cn("absolute translate-y-7 transition-all", {
+                "translate-y-0": fetchingFromCfw
+              })}>
+              Fetching metadata . . .
+            </span>
+          </Button>
         )}
-      </div>
 
-      <div>
-        {/* Link */}
-        <fieldset>
-          <InputLabel required htmlFor='link'>
-            Link (url)
-          </InputLabel>
-          <Input
-            {...register("link")}
-            id='link'
-            placeholder='Enter a url for the article'
-            fullWidth
-          />
-        </fieldset>
-
-        {errors.link && (
-          <P tag='span' weight='medium' size='tiny' className='text-red-600'>
-            {errors.link.message}
-          </P>
+        {/* Form submit button */}
+        {isLastStep && (
+          <Button
+            type='submit'
+            size='small'
+            shape='rounded'
+            disabled={!isDirty || isSubmitting}
+            className='relative w-full select-none overflow-hidden rounded-full text-background focus-visible:outline-2 xs:w-1/2'>
+            <span
+              className={cn("absolute translate-y-0 transition-all", {
+                "-translate-y-7": isSubmitting
+              })}>
+              Submit
+            </span>
+            <span
+              className={cn("absolute translate-y-7 transition-all", {
+                "translate-y-0": isSubmitting
+              })}>
+              Submitting . . .
+            </span>
+          </Button>
         )}
-      </div>
+      </FlexBox>
 
-      <div>
-        {/* Image */}
-        <fieldset>
-          <InputLabel required htmlFor='image'>
-            Image (url)
-          </InputLabel>
-          <Input
-            {...register("image")}
-            id='image'
-            placeholder='Enter an image url for the article'
-            fullWidth
-          />
-        </fieldset>
-
-        {errors.image && (
-          <P tag='span' weight='medium' size='tiny' className='text-red-600'>
-            {errors.image.message}
-          </P>
-        )}
-      </div>
-
-      <div>
-        {/* Tags */}
-        <fieldset>
-          <InputLabel required htmlFor='tags'>
-            Tags
-          </InputLabel>
-
-          <CreatableMultiSelect allTags={allTags} control={control} />
-        </fieldset>
-
-        {errors.tags && (
-          <P tag='span' weight='medium' size='tiny' className='text-red-600'>
-            {errors.tags.message}
-          </P>
-        )}
-      </div>
-
-      {/* Modal - CTA */}
-      {children}
+      <StepsIndicator totalSteps={steps.length} currentStepIndex={currentStepIndex} />
     </form>
   );
 };
