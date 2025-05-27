@@ -67,7 +67,11 @@ const SearchAndPosts = ({ apiData, allTags, timedOut }: SearchAndPostsType) => {
   }, [page]);
 
   return (
-    <LayoutContainer tag='main' className='pb-3264 pt-2448'>
+    <LayoutContainer
+      tag='main'
+      className='pb-3264 pt-2448'
+      aria-hidden='false'
+      data-aria-hidden='false'>
       {/* posts search */}
       <PostsSearch allTags={allTags} setPage={setPage} setTags={setTags} />
 

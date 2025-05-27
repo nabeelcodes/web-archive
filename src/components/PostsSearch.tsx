@@ -50,7 +50,11 @@ const PostsSearch = ({ allTags, setPage, setTags }: PostsSearchType) => {
 
       {/* all tags list */}
       <AnimatePresence mode='wait'>
-        {allTagsShown ? <AllTagsList allTags={allTags} setTags={setTags} /> : null}
+        {allTagsShown ? (
+          <div className='hidden sm:block'>
+            <AllTagsList allTags={allTags} setTags={setTags} />
+          </div>
+        ) : null}
       </AnimatePresence>
     </>
   );
