@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Web Archives
+
+A curated digital library featuring insightful articles on web development topics. Built with Next.js, TypeScript, and TailwindCSS.
+
+## Features
+
+- 📚 Curated collection of web development articles
+- 🔍 Search and filter articles by tags
+- 🎨 Modern, responsive UI with custom design system
+- 🔐 Admin authentication for content management
+- 🌐 SEO optimized
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org/) - React framework
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
+- [TailwindCSS](https://tailwindcss.com/) - Styling
+- [MongoDB](https://www.mongodb.com/) - Database
+- [Next Auth](https://next-auth.js.org/) - Authentication
+- [NUQS](https://nuqs.47ng.com/) - URL Query State Management
+- [Zod](https://zod.dev/) - Schema validation
+- [React Hook Form](https://react-hook-form.com/) - Form handling
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```sh
+git clone https://github.com/nabeelcodes/web-archive.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```sh
+pnpm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Create a `.env` file with the following variables:
 
-## Learn More
+```
+NEXT_PUBLIC_URL=
+NEXT_PUBLIC_API_URL=
+NEXT_PUBLIC_CFW_URL=
+```
 
-To learn more about Next.js, take a look at the following resources:
+4. Run the development server:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```sh
+pnpm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-## Deploy on Vercel
+## Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `/src/app` - Next.js app router files
+- `/src/components` - React components
+- `/src/designSystem` - Theme and design tokens
+- `/src/utils` - Utility functions and types
+- `/public` - Static assets
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Authors
+
+- [Nabeel Asif](https://github.com/nabeelcodes)
+- [Mohit Kumar](https://mohitkumar.dev)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
