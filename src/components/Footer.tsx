@@ -98,7 +98,7 @@ const Footer = () => {
 
       {/* banner */}
       <section className='bg-neutral-900'>
-        <LayoutContainer className='py-10'>
+        <LayoutContainer className='py-20 md:py-10'>
           <FlexBox className='flex-col items-start gap-10 md:flex-row md:items-center md:justify-between'>
             <P className='text-background' size='small'>
               Copyright © {new Date().getFullYear()}, Web Archive. All rights reserved.
