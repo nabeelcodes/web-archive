@@ -10,7 +10,7 @@ const SOCIAL_LINKS = {
     github: "https://github.com/nabeelcodes/web-archive",
     figma:
       "https://www.figma.com/design/7LZ47lPEUCIz3eF7UW7Me3/web-archive?node-id=0-1&p=f&t=sKZahAMHBzmJDYxp-0",
-    twitter: ""
+    bluesky: "https://bsky.app/profile/webarchives.bsky.social"
   }
 } as const;
 

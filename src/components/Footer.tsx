@@ -1,4 +1,4 @@
-import { Figma, Github, Twitter } from "lucide-react";
+import { Figma, Github } from "lucide-react";
 
 import SocialLink from "@/components/SocialLink";
 import AdminLogin from "@/components/AdminLogin";
@@ -7,13 +7,14 @@ import { Grid, GridCol } from "@/components/UI/Grid";
 import FlexBox from "@/components/UI/FlexBox";
 import P from "@/components/UI/Typography/P";
 import H4 from "@/components/UI/Typography/H4";
+import H5 from "@/components/UI/Typography/H5";
+import Bluesky from "@/components/SVG/Bluesky";
 import Tailwindcss from "@/components/SVG/Tailwindcss";
 import Nextjs from "@/components/SVG/Nextjs";
 import Typescript from "@/components/SVG/Typescript";
 import Express from "@/components/SVG/Express";
 import Mongodb from "@/components/SVG/Mongodb";
 import { SOCIAL_LINKS } from "@/data/globals";
-import H5 from "@/components/UI/Typography/H5";
 
 const Footer = () => {
   return (
@@ -69,8 +70,8 @@ const Footer = () => {
                   <Figma size={16} className='text-background' />
                 </SocialLink>
 
-                <SocialLink url={SOCIAL_LINKS.site.twitter} title='Twitter'>
-                  <Twitter size={16} className='text-background' />
+                <SocialLink url={SOCIAL_LINKS.site.bluesky} title='Twitter'>
+                  <Bluesky size={16} className='text-background' />
                 </SocialLink>
               </FlexBox>
             </section>
