@@ -73,7 +73,7 @@ const SearchAndPosts = ({ apiData, allTags, timedOut }: SearchAndPostsType) => {
       aria-hidden='false'
       data-aria-hidden='false'>
       {/* posts search */}
-      <PostsSearch allTags={allTags} setPage={setPage} setTags={setTags} />
+      <PostsSearch allTags={allTags} setPage={setPage} tagsInUrl={tags} setTags={setTags} />
 
       {/* clicked tags list */}
       {isTagQueryEmpty ? null : showTagList ? (

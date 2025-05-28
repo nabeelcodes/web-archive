@@ -8,6 +8,7 @@ import CreatePost from "@/components/CreatePost";
 
 type SearchByTagsProps = {
   allTags: string[];
+  tagsInUrl: string[];
   allTagsShown: boolean;
   setAllTagsShown: Dispatch<SetStateAction<boolean>>;
   setTags: (
@@ -16,7 +17,13 @@ type SearchByTagsProps = {
   ) => Promise<URLSearchParams>;
 };
 
-const SearchByTags = ({ allTags, allTagsShown, setTags, setAllTagsShown }: SearchByTagsProps) => {
+const SearchByTags = ({
+  allTags,
+  allTagsShown,
+  tagsInUrl,
+  setTags,
+  setAllTagsShown
+}: SearchByTagsProps) => {
   const session = useSession();
 
   const handleClickForDesktopMode = () => {
@@ -35,7 +42,7 @@ const SearchByTags = ({ allTags, allTagsShown, setTags, setAllTagsShown }: Searc
       </Button>
 
       {/* Vaul enabled only for mobile screens */}
-      <SearchWithVaul allTags={allTags} setTags={setTags}>
+      <SearchWithVaul allTags={allTags} setTags={setTags} tagsInUrl={tagsInUrl}>
         <Button className='h-[41.6px] shrink-0 gap-6 rounded-full bg-neutral-900 px-1620 text-small sm:hidden'>
           All Tags
         </Button>

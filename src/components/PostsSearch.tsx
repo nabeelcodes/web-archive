@@ -10,6 +10,7 @@ import FlexBox from "@/components/UI/FlexBox";
 
 type PostsSearchType = {
   allTags: string[];
+  tagsInUrl: string[];
   setPage: (
     value: string | ((old: string) => string | null) | null,
     options?: Options
@@ -20,7 +21,7 @@ type PostsSearchType = {
   ) => Promise<URLSearchParams>;
 };
 
-const PostsSearch = ({ allTags, setPage, setTags }: PostsSearchType) => {
+const PostsSearch = ({ allTags, setPage, tagsInUrl, setTags }: PostsSearchType) => {
   const [query, setQuery] = useQueryState(SEARCH_QUERY_KEY, {
     defaultValue: "",
     shallow: false,
@@ -43,6 +44,7 @@ const PostsSearch = ({ allTags, setPage, setTags }: PostsSearchType) => {
         <SearchByTags
           allTags={allTags}
           setTags={setTags}
+          tagsInUrl={tagsInUrl}
           allTagsShown={allTagsShown}
           setAllTagsShown={setAllTagsShown}
         />
@@ -52,7 +54,7 @@ const PostsSearch = ({ allTags, setPage, setTags }: PostsSearchType) => {
       <AnimatePresence mode='wait'>
         {allTagsShown ? (
           <div className='hidden sm:block'>
-            <AllTagsList allTags={allTags} setTags={setTags} />
+            <AllTagsList allTags={allTags} setTags={setTags} tagsInUrl={tagsInUrl} />
           </div>
         ) : null}
       </AnimatePresence>

@@ -4,6 +4,7 @@ import { Drawer } from "vaul";
 
 type SearchWithVaulProps = {
   allTags: string[];
+  tagsInUrl: string[];
   children: React.ReactNode;
   setTags: (
     value: string[] | ((old: string[]) => string[] | null) | null,
@@ -11,7 +12,7 @@ type SearchWithVaulProps = {
   ) => Promise<URLSearchParams>;
 };
 
-const SearchWithVaul = ({ children, allTags, setTags }: SearchWithVaulProps) => {
+const SearchWithVaul = ({ children, allTags, tagsInUrl, setTags }: SearchWithVaulProps) => {
   const { Root, Trigger, Portal, Overlay, Content, Handle, Title, Description } = Drawer;
 
   return (
@@ -30,7 +31,7 @@ const SearchWithVaul = ({ children, allTags, setTags }: SearchWithVaulProps) => 
             Use the tags to filter out the posts.
           </Description>
 
-          <AllTagsList allTags={allTags} setTags={setTags} inVaul />
+          <AllTagsList allTags={allTags} setTags={setTags} tagsInUrl={tagsInUrl} inVaul />
         </Content>
       </Portal>
     </Root>
