@@ -103,7 +103,7 @@ const CreateForm = ({ allTags, setIsModalOpen }: CreateFormType) => {
       setValue={setValue}
       allTags={allTags}
       register={register}
-      handleSubmit={handleSubmit}
+      submitHandler={handleSubmit}
       control={control}
       errors={errors}
       formActionHandler={createFormHandler}

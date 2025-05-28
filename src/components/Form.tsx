@@ -31,7 +31,7 @@ export type FormType = {
     tags: [string, ...string[]];
     description?: string | undefined;
   }>;
-  handleSubmit: UseFormHandleSubmit<
+  submitHandler: UseFormHandleSubmit<
     {
       link: string;
       title: string;
@@ -39,7 +39,13 @@ export type FormType = {
       tags: [string, ...string[]];
       description?: string | undefined;
     },
-    undefined
+    {
+      link: string;
+      title: string;
+      image: string;
+      tags: [string, ...string[]];
+      description?: string | undefined;
+    }
   >;
   control: Control<{
     link: string;
@@ -72,7 +78,7 @@ const Form = ({
   setValue,
   allTags,
   register,
-  handleSubmit,
+  submitHandler,
   control,
   errors,
   formActionHandler,
@@ -125,7 +131,7 @@ const Form = ({
   return (
     <form
       className='mt-16 flex flex-col justify-between gap-y-24'
-      onSubmit={handleSubmit(formActionHandler)}>
+      onSubmit={submitHandler(formActionHandler)}>
       {/* Rendering all the forms as "step" */}
       {step}
 
