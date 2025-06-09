@@ -5,7 +5,6 @@ import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import { useEffect, useState, useRef } from "react";
 import { signOut } from "next-auth/react";
 
-import LoadingPosts from "@/components/LoadingPosts";
 import PostsSearch from "@/components/PostsSearch";
 import Pagination from "@/components/Pagination";
 import PostCard from "@/components/PostCard";
@@ -35,17 +34,9 @@ const SearchAndPosts = ({ apiData, allTags, timedOut }: SearchAndPostsType) => {
   });
   const [expandedCardId, setExpandedCardId] = useState<string>("");
   const [showTagList, setShowTagList] = useState(false);
-  const [dataLoaded, setDataLoaded] = useState(false);
   const isTagQueryEmpty = tags.length === 0;
   const allPosts = apiData.posts;
   const pageLoadRef = useRef(true);
-
-  // Setting dataLoaded to true when allPosts and allTags are available
-  useEffect(() => {
-    if (allPosts && allPosts.length > 0 && allTags && allTags.length > 0) {
-      setDataLoaded(true);
-    }
-  }, [allPosts, allTags]);
 
   // Signing user out if the session is expired
   useEffect(() => {
@@ -74,11 +65,6 @@ const SearchAndPosts = ({ apiData, allTags, timedOut }: SearchAndPostsType) => {
 
     return () => clearTimeout(scrollTimeout);
   }, [page]);
-
-  // If data is not loaded yet, show loading state
-  if (!dataLoaded) {
-    return <LoadingPosts />;
-  }
 
   return (
     <LayoutContainer

@@ -2,16 +2,18 @@ import type { SearchParams } from "nuqs/server";
 
 import Hero from "@/components/Hero";
 import Footer from "@/components/Footer";
+import LoadingPosts from "@/components/LoadingPosts";
 import SearchAndPosts from "@/components/SearchAndPosts";
 import { getUrlQueryParams } from "@/utils/helper";
 import { FETCH_TAGS } from "@/data/globals";
 import apiEndpoints from "@/data/apiEndpoints";
+import { Suspense } from "react";
 
 type PageProps = {
   searchParams: Promise<SearchParams>;
 };
 
-export default async function Home({ searchParams }: PageProps) {
+const Posts = async ({ searchParams }: PageProps) => {
   const { query, tags, page, timedOut } = await getUrlQueryParams(searchParams);
 
   // Fetch initial data concurrently using Promise.all
@@ -26,9 +28,19 @@ export default async function Home({ searchParams }: PageProps) {
   ]);
 
   return (
+    <SearchAndPosts apiData={apiDataPosts} allTags={apiDataTags.allTags} timedOut={timedOut} />
+  );
+};
+
+export default async function Home({ searchParams }: PageProps) {
+  return (
     <>
       <Hero />
-      <SearchAndPosts apiData={apiDataPosts} allTags={apiDataTags.allTags} timedOut={timedOut} />
+
+      <Suspense fallback={<LoadingPosts />}>
+        <Posts searchParams={searchParams} />
+      </Suspense>
+
       <Footer />
     </>
   );
