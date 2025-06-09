@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const cspHeader = `
     default-src 'self';
-    connect-src 'self' https://web-archive-api.fly.dev https://localhost:8080 https://fetch-metadata.nabeeldesigner91.workers.dev;
+    connect-src 'self' https://web-archive-api.nabeeldesigner91.workers.dev http://127.0.0.1:8787 https://fetch-metadata.nabeeldesigner91.workers.dev;
     script-src 'self' 'unsafe-eval' 'unsafe-inline';
     style-src 'self' 'unsafe-inline';
     img-src * data:;
