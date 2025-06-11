@@ -9,11 +9,11 @@ import P from "@/components/UI/Typography/P";
 import H4 from "@/components/UI/Typography/H4";
 import H5 from "@/components/UI/Typography/H5";
 import Bluesky from "@/components/SVG/Bluesky";
-import Tailwindcss from "@/components/SVG/Tailwindcss";
 import Nextjs from "@/components/SVG/Nextjs";
 import Typescript from "@/components/SVG/Typescript";
-import Express from "@/components/SVG/Express";
-import Mongodb from "@/components/SVG/Mongodb";
+import Tailwindcss from "@/components/SVG/Tailwindcss";
+import Cloudflare from "@/components/SVG/Cloudflare";
+import Hono from "@/components/SVG/Hono";
 import { SOCIAL_LINKS } from "@/data/globals";
 
 const Footer = () => {
@@ -70,7 +70,7 @@ const Footer = () => {
                   <Figma size={16} className='text-background' />
                 </SocialLink>
 
-                <SocialLink url={SOCIAL_LINKS.site.bluesky} title='Twitter'>
+                <SocialLink url={SOCIAL_LINKS.site.bluesky} title='Bluesky'>
                   <Bluesky size={16} className='text-background' />
                 </SocialLink>
               </FlexBox>
@@ -88,8 +88,8 @@ const Footer = () => {
                 <Nextjs />
                 <Typescript />
                 <Tailwindcss />
-                <Express />
-                <Mongodb />
+                <Hono />
+                <Cloudflare />
               </FlexBox>
             </section>
           </GridCol>

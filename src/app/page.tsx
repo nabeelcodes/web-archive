@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { SearchParams } from "nuqs/server";
 
 import Hero from "@/components/Hero";
@@ -7,7 +8,6 @@ import SearchAndPosts from "@/components/SearchAndPosts";
 import { getUrlQueryParams } from "@/utils/helper";
 import { FETCH_TAGS } from "@/data/globals";
 import apiEndpoints from "@/data/apiEndpoints";
-import { Suspense } from "react";
 
 type PageProps = {
   searchParams: Promise<SearchParams>;
