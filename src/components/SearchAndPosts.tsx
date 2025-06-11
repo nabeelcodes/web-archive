@@ -38,7 +38,7 @@ const SearchAndPosts = ({ apiData, allTags, timedOut }: SearchAndPostsType) => {
   const allPosts = apiData.posts;
   const pageLoadRef = useRef(true);
 
-  // signing user out if the session is expired
+  // Signing user out if the session is expired
   useEffect(() => {
     // If current auth session expired, logout user
     if (timedOut && timedOut === "true") {

@@ -3,7 +3,7 @@ const Tailwindcss = () => (
     <svg
       xmlns='http://www.w3.org/2000/svg'
       xmlnsXlink='http://www.w3.org/1999/xlink'
-      viewBox='0,0,256,256'
+      viewBox='0 0 256 256'
       fillRule='nonzero'
       width='40px'
       height='40px'

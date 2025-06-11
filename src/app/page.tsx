@@ -1,44 +1,45 @@
+import { Suspense } from "react";
 import type { SearchParams } from "nuqs/server";
 
 import Hero from "@/components/Hero";
-import SearchAndPosts from "@/components/SearchAndPosts";
 import Footer from "@/components/Footer";
-import apiEndpoints from "@/data/apiEndpoints";
-import { FETCH_TAGS } from "@/data/globals";
+import LoadingPosts from "@/components/LoadingPosts";
+import SearchAndPosts from "@/components/SearchAndPosts";
 import { getUrlQueryParams } from "@/utils/helper";
-import { ApiResponsePost, ApiResponseTags } from "@/utils/types";
+import { FETCH_TAGS } from "@/data/globals";
+import apiEndpoints from "@/data/apiEndpoints";
 
 type PageProps = {
   searchParams: Promise<SearchParams>;
 };
 
-export default async function Home({ searchParams }: PageProps) {
+const Posts = async ({ searchParams }: PageProps) => {
   const { query, tags, page, timedOut } = await getUrlQueryParams(searchParams);
-  // Fetching all posts
-  const apiResponsePosts = await fetch(
-    apiEndpoints.posts.getPosts({
-      query,
-      tags,
-      page
-    }),
-    {
+
+  // Fetch initial data concurrently using Promise.all
+  const [apiDataPosts, apiDataTags] = await Promise.all([
+    fetch(apiEndpoints.posts.getPosts({ query, tags, page }), {
       next: {
         revalidate: 3600,
         tags: [FETCH_TAGS.posts]
       }
-    }
+    }).then((res) => res.json()),
+    fetch(apiEndpoints.tags.getAllTags()).then((res) => res.json())
+  ]);
+
+  return (
+    <SearchAndPosts apiData={apiDataPosts} allTags={apiDataTags.allTags} timedOut={timedOut} />
   );
-  const apiDataPosts: ApiResponsePost = await apiResponsePosts.json();
+};
 
-  // Fetching all tags
-  const apiResponseTags = await fetch(apiEndpoints.tags.getAllTags());
-  const apiDataTags: ApiResponseTags = await apiResponseTags.json();
-
+export default async function Home({ searchParams }: PageProps) {
   return (
     <>
       <Hero />
 
-      <SearchAndPosts apiData={apiDataPosts} allTags={apiDataTags.allTags} timedOut={timedOut} />
+      <Suspense fallback={<LoadingPosts />}>
+        <Posts searchParams={searchParams} />
+      </Suspense>
 
       <Footer />
     </>
