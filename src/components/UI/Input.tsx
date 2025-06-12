@@ -2,10 +2,30 @@ import { ComponentPropsWithRef, ReactNode } from "react";
 import { cn, matches } from "@/utils/helper";
 import FlexBox from "./FlexBox";
 
+type InputLabelProps = ComponentPropsWithRef<"label"> & {
+  required?: boolean;
+};
+
 type InputProps = ComponentPropsWithRef<"input"> & {
   fullWidth?: boolean;
   suffix?: ReactNode;
   shape?: "pill" | "rounded";
+};
+
+export const InputLabel = ({
+  children,
+  className,
+  required = false,
+  ...props
+}: InputLabelProps) => {
+  return (
+    <label
+      className={cn("mb-4 inline-block text-small font-medium text-neutral-700", className)}
+      {...props}>
+      {children}
+      {required && <span className='text-red-500'>*</span>}
+    </label>
+  );
 };
 
 const Input = ({
@@ -44,23 +64,3 @@ const Input = ({
 };
 
 export default Input;
-
-type InputLabelProps = ComponentPropsWithRef<"label"> & {
-  required?: boolean;
-};
-
-export const InputLabel = ({
-  children,
-  className,
-  required = false,
-  ...props
-}: InputLabelProps) => {
-  return (
-    <label
-      className={cn("mb-4 inline-block text-small font-medium text-neutral-700", className)}
-      {...props}>
-      {children}
-      {required && <span className='text-red-500'>*</span>}
-    </label>
-  );
-};

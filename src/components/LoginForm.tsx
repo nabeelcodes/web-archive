@@ -1,8 +1,9 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { signIn } from "next-auth/react";
+import { toast } from "sonner";
 
 import Input, { InputLabel } from "@/components/UI/Input";
 import Button from "@/components/UI/Button";
@@ -17,6 +18,7 @@ const LoginForm = ({ setIsModalOpen }: { setIsModalOpen: Dispatch<SetStateAction
     handleSubmit,
     formState: { errors, isSubmitting }
   } = useForm<LoginSchemaType>({ resolver: zodResolver(loginSchema) });
+  const [passwordIsVisible, setPasswordIsVisible] = useState(false);
 
   const loginFormHandler = async (formData: LoginSchemaType) => {
     const { email, password } = formData;
@@ -84,10 +86,27 @@ const LoginForm = ({ setIsModalOpen }: { setIsModalOpen: Dispatch<SetStateAction
           <Input
             {...register("password")}
             id='password'
-            type='password'
+            type={passwordIsVisible ? "text" : "password"}
             placeholder='Enter your password'
-            fullWidth
             autoComplete='on'
+            fullWidth
+            suffix={
+              passwordIsVisible ? (
+                <button
+                  type='button'
+                  className='absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer'
+                  onClick={() => setPasswordIsVisible((prevState) => !prevState)}>
+                  <EyeOff size={20} className='text-neutral-900' />
+                </button>
+              ) : (
+                <button
+                  type='button'
+                  className='absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer'
+                  onClick={() => setPasswordIsVisible((prevState) => !prevState)}>
+                  <Eye size={20} className='text-neutral-900' />
+                </button>
+              )
+            }
           />
         </fieldset>
 
