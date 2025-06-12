@@ -15,7 +15,6 @@ A curated digital library featuring insightful articles on web development topic
 - [Next.js](https://nextjs.org/) - React framework
 - [TypeScript](https://www.typescriptlang.org/) - Type safety
 - [TailwindCSS](https://tailwindcss.com/) - Styling
-- [MongoDB](https://www.mongodb.com/) - Database
 - [Next Auth](https://next-auth.js.org/) - Authentication
 - [NUQS](https://nuqs.47ng.com/) - URL Query State Management
 - [Zod](https://zod.dev/) - Schema validation
