@@ -24,29 +24,29 @@ A curated digital library featuring insightful articles on web development topic
 
 1. Clone the repository:
 
-```sh
-git clone https://github.com/nabeelcodes/web-archive.git
-```
+   ```sh
+   git clone https://github.com/nabeelcodes/web-archive.git
+   ```
 
 2. Install dependencies:
 
-```sh
-pnpm install
-```
+   ```sh
+   pnpm install
+   ```
 
 3. Create a `.env` file with the following variables:
 
-```
-NEXT_PUBLIC_URL=
-NEXT_PUBLIC_API_URL=
-NEXT_PUBLIC_CFW_URL=
-```
+   ```env
+   NEXT_PUBLIC_URL=
+   NEXT_PUBLIC_API_URL=
+   NEXT_PUBLIC_CFW_URL=
+   ```
 
 4. Run the development server:
 
-```sh
-pnpm run dev
-```
+   ```sh
+   pnpm run dev
+   ```
 
 Open [http://localhost:3000](http://localhost:3000) to view the app.
 
