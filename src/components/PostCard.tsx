@@ -148,7 +148,7 @@ const PostCard = ({
             className={cn("mt-16 flex-wrap gap-8 overflow-x-hidden", {
               "pointer-events-none": isExpanded
             })}>
-            {tagList.map((tag, index) => (
+            {tagList.sort().map((tag, index) => (
               <P
                 id='tag'
                 size='tiny'
