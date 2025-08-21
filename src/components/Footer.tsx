@@ -29,7 +29,7 @@ const Footer = () => {
               md: 10,
               lg: 6
             }}>
-            <H4 className='text-h5'>Web Archive</H4>
+            <H4 className='text-h5'>Web Archives</H4>
 
             <P size='small' className='mt-2 text-pretty text-neutral-700'>
               Stay ahead in the ever-evolving world of web technologies. Browse a curated collection
