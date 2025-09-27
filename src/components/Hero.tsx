@@ -27,7 +27,9 @@ const Hero = () => {
       />
 
       <div className='max-w-screen-md text-center'>
-        <H1 weight='bold'>Web Archives</H1>
+        <H1 weight='bold' className='uppercase'>
+          Web Archives
+        </H1>
 
         <P className='mt-16 text-neutral-700'>
           Stay ahead in the ever-evolving world of web technologies. Browse a curated collection of
