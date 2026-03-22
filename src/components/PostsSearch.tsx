@@ -27,7 +27,7 @@ const PostsSearch = ({ allTags, setPage, tagsInUrl, setTags }: PostsSearchType) 
     shallow: false,
     throttleMs: 1000
   });
-  const [allTagsShown, setAllTagsShown] = useState(false);
+  const [allTagsShown, setAllTagsShown] = useState(true);
   const isSearchQueryEmpty = query.trim().length === 0;
 
   return (

@@ -24,6 +24,7 @@ const nextConfig: NextConfig = {
         hostname: "*.*"
       }
     ],
+    qualities: [75, 85],
     deviceSizes: [640, 1024, 1280, 1536]
   },
   async headers() {

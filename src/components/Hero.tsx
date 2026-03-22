@@ -1,7 +1,7 @@
 import Image from "next/image";
 
-import heroImageDesktop from "/public/heroBanner.svg";
-import heroImageMobile from "/public/heroBannerMobile.svg";
+import heroImageDesktop from "../../public/heroBanner.svg";
+import heroImageMobile from "../../public/heroBannerMobile.svg";
 import LayoutContainer from "@/components/UI/LayoutContainer";
 import H1 from "@/components/UI/Typography/H1";
 import P from "@/components/UI/Typography/P";

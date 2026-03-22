@@ -38,7 +38,7 @@ const SearchByTags = ({
       <Button
         className='hidden h-[41.6px] shrink-0 gap-6 rounded-full bg-neutral-900 px-1620 text-small sm:block'
         onClick={handleClickForDesktopMode}>
-        All Tags
+        {allTagsShown ? "Hide Tags" : "Show Tags"}
       </Button>
 
       {/* Vaul enabled only for mobile screens */}

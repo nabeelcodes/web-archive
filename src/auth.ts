@@ -1,19 +1,17 @@
 import NextAuth from "next-auth";
-import Credentials from "next-auth/providers/credentials";
+import CredentialsProvider from "next-auth/providers/credentials";
 import apiEndpoints from "@/data/apiEndpoints";
 
 // declaring custom types for next-auth
 declare module "next-auth" {
   interface User {
-    userData: {
-      username: string;
-      email: string;
-    };
+    name: string;
+    email: string;
     accessToken: string;
   }
   interface Session {
     user: {
-      username: string;
+      name: string;
       email: string;
     };
     accessToken: string;
@@ -22,18 +20,17 @@ declare module "next-auth" {
 
 const authjsConfig = NextAuth({
   providers: [
-    Credentials({
+    CredentialsProvider({
+      name: "Credentials",
       credentials: {
-        email: { type: "email" },
-        password: { type: "password" }
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" }
       },
       authorize: async (credentials) => {
-        const { email, password } = credentials;
-
         const apiResponse = await fetch(apiEndpoints.users.login(), {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password })
+          body: JSON.stringify(credentials)
         });
 
         if (!apiResponse.ok) {
@@ -42,7 +39,13 @@ const authjsConfig = NextAuth({
 
         const apiData = await apiResponse.json();
 
-        return apiData;
+        // Return user object in NextAuth expected format
+        return {
+          id: apiData.userData.username,
+          name: apiData.userData.username,
+          email: apiData.userData.email,
+          accessToken: apiData.accessToken
+        };
       }
     })
   ],
@@ -54,8 +57,8 @@ const authjsConfig = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         // Store JWT token from Express API
-        token.username = user.userData.username;
-        token.email = user.userData.email;
+        token.name = user.name;
+        token.email = user.email;
         token.accessToken = user.accessToken;
       }
       return token;
@@ -63,7 +66,7 @@ const authjsConfig = NextAuth({
     // setting session cookie
     async session({ session, token }) {
       if (token.accessToken && token.email) {
-        session.user.username = token.username as string;
+        session.user.name = token.name as string;
         session.user.email = token.email;
         session.accessToken = token.accessToken as string;
       }
