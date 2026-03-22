@@ -5,17 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import apiEndpoints from "@/data/apiEndpoints";
 
-interface AuthRequest extends NextRequest {
-  auth: {
-    user?: {
-      username: string;
-      email: string;
-    };
-    accessToken: string;
-  };
-}
-
-export default auth(async (req: AuthRequest) => {
+export default auth(async (req) => {
   const jwt = req.auth?.accessToken;
   const currentUrl = req.nextUrl.origin;
 

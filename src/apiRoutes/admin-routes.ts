@@ -37,7 +37,7 @@ export const createPost = async ({
   const success = apiResponse.ok;
 
   if (success) {
-    revalidateTag(FETCH_TAGS.posts);
+    revalidateTag(FETCH_TAGS.posts, "max");
   }
 
   return {
@@ -77,7 +77,7 @@ export const updatePost = async ({
   const success = apiResponse.ok;
 
   if (success) {
-    revalidateTag(FETCH_TAGS.posts);
+    revalidateTag(FETCH_TAGS.posts, "max");
   }
 
   return {
@@ -105,7 +105,7 @@ export const deletePost = async ({
   const success = apiResponse.ok;
 
   if (success) {
-    revalidateTag(FETCH_TAGS.posts);
+    revalidateTag(FETCH_TAGS.posts, "max");
   }
 
   return {
