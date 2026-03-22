@@ -27,7 +27,7 @@ const AdminLogin = () => {
 
   // authenticated and session exists
   if (session.status === "authenticated") {
-    const adminName = session.data.user.username;
+    const adminName = session.data.user.name;
 
     return (
       <FlexBox className='items-center gap-10'>
